@@ -1,2 +1,0 @@
-interface IInterpreter extends IStocksStimulationModel {
-}
