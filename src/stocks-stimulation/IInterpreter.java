@@ -1,3 +1,2 @@
 interface IInterpreter implements IStockStimulationModel {
-
 }

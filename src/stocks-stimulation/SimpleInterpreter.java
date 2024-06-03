@@ -1,0 +1,3 @@
+class SimpleInterpreter implements IInterpreter {
+
+}
