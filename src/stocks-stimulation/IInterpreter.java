@@ -1,2 +1,2 @@
-interface IInterpreter implements IStockStimulationModel {
+interface IInterpreter extends IStocksStimulationModel {
 }
