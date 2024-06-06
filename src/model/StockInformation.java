@@ -25,27 +25,25 @@ class StockInformation {
       br.readLine(); // Skip header
       while ((line = br.readLine()) != null) {
         String[] values = line.split(",");
-        String date = values[0];
+        LocalDate date = LocalDate.parse(values[0]); // parses correctly!
         double open = Double.parseDouble(values[1]);
         double close = Double.parseDouble(values[4]);
-        prices.add(new StockPrice(date, open, close));
+        prices.put(date, new StockPrice(open, close));
       }
     } catch (IOException e) {
       logger.severe("Error reading file: " + e.getMessage());
     }
   }
 
-  // method (haven't been implemented)
-
   protected double calculateChange(LocalDate startDate, LocalDate endDate) {
-    return prices.get(endDate).closePrice - prices.get(startDate).closePrice;
+    return getPriceOn(endDate) - getPriceOn(startDate);
   }
 
   protected double movingAverage(LocalDate date, int numDays) {
     double total = 0;
 
     for (int i = 0; i < numDays; i++) {
-      total += prices.get(date.minusDays(i)).closePrice;
+      total += getPriceOn(date.minusDays(i));
     }
 
     return total / numDays;
@@ -66,6 +64,10 @@ class StockInformation {
   }
 
   public double getPriceOn(LocalDate date) {
-    return prices.get(date).closePrice;
+    StockPrice price;
+    while ((price = prices.get(date)) == null) {
+      date = date.minusDays(1);
+    }
+    return price.closePrice;
   }
 }

@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.List;
 
-interface IStocksModel {
+public interface IStocksModel {
 
   double calculateChange(String symbol, LocalDate startDate, LocalDate endDate);
 

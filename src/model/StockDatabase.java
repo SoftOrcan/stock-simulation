@@ -21,7 +21,6 @@ public class StockDatabase {
     api.getData(symbol);
     // file now exists?
     return new StockInformation(symbol);
-    // TODO: exceptions
   }
 
   double calculateChange(String symbol, LocalDate startDate, LocalDate endDate) {
