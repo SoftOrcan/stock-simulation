@@ -2,7 +2,7 @@
 
 ---
 ## Features
-#### Stock:
+### Stock:
 - [x] Calculate the net profit/loss of a stock from and to a specified date range.
 - [x] Calculate the x-day moving average of a stock over a specified time period. The x-day moving 
   average is the average of the last x days (starting from the given date). Note: This 
@@ -12,7 +12,7 @@
   A crossover signals a "buy" opportunity. A crossover can be defined over any period of time, 
   although the 30-day period (i.e. the 30-day crossover) is usually popular.
 
-#### Portfolio:
+### Portfolio:
 - [x] Create a portfolio with a specified name. A portfolio is utilized to contain shares of one 
   or more stock.
 - [x] Add a stock to a portfolio, representative of purchasing a share of a stock to a portfolio.
