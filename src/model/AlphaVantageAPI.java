@@ -1,6 +1,8 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,7 +40,14 @@ class AlphaVantageAPI {
               + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
       InputStream in = url.openStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-      PrintWriter writer = new PrintWriter("./data/" + stockSymbol + ".csv");
+
+      // Ensure the data directory exists
+      File dataDirectory = new File("./data");
+      if (!dataDirectory.exists()) {
+        dataDirectory.mkdirs();
+      }
+
+      PrintWriter writer = new PrintWriter(new FileWriter(new File(dataDirectory, stockSymbol + ".csv")));
 
       String line;
       while ((line = reader.readLine()) != null) {
@@ -46,8 +55,7 @@ class AlphaVantageAPI {
       }
       reader.close();
       writer.close();
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       logger.severe("Malformed URL: " + e.getMessage());
     } catch (IOException e) {
       logger.severe("IO Exception: " + e.getMessage());
