@@ -7,10 +7,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
 
 public class AlphaVantageAPI {
-
-  private String apiKey;
+  private final Logger logger = Logger.getLogger(AlphaVantageAPI.class.getName());
+  private final String apiKey;
 
   public AlphaVantageAPI(String apiKey) {
     this.apiKey = apiKey;
@@ -21,8 +22,7 @@ public class AlphaVantageAPI {
   }
 
   public void getData(String stockSymbol) {
-
-    URL url = null;
+    URL url;
 
     try {
       /*
@@ -36,7 +36,7 @@ public class AlphaVantageAPI {
               + ".co/query?function=TIME_SERIES_DAILY"
               + "&outputsize=full"
               + "&symbol"
-              + "=" + stockSymbol + "&apikey="+apiKey+"&datatype=csv");
+              + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
       InputStream in = url.openStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       FileWriter fileWriter = new FileWriter(stockSymbol + ".csv");
@@ -49,12 +49,9 @@ public class AlphaVantageAPI {
       fileWriter.close();
     }
     catch (MalformedURLException e) {
-      throw new RuntimeException("the alphavantage API has either changed or "
-              + "no longer works");
+      logger.severe("Malformed URL: " + e.getMessage());
     } catch (IOException e) {
-      throw new RuntimeException("IO Exception: " + e.getMessage());
+      logger.severe("IO Exception: " + e.getMessage());
     }
-
   }
-
 }

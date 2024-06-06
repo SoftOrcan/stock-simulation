@@ -3,8 +3,6 @@ import org.junit.Test;
 
 import model.AlphaVantageAPI;
 
-import static org.junit.Assert.*;
-
 public class AlphaVantageAPITest {
   AlphaVantageAPI api;
 
@@ -18,5 +16,4 @@ public class AlphaVantageAPITest {
   public void testAlphaVantageAPI() {
     api.getData("GOOG");
   }
-
 }

@@ -1,14 +1,11 @@
 package model;
 
 public class StockPrice {
-  String date;
   double openPrice;
   double closePrice;
 
-  public StockPrice(String date, double openPrice, double closePrice) {
-    this.date = date;
+  public StockPrice(double openPrice, double closePrice) {
     this.openPrice = openPrice;
     this.closePrice = closePrice;
   }
-
 }
