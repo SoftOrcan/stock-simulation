@@ -6,6 +6,9 @@ import view.IStocksView;
 import java.time.LocalDate;
 import java.util.Scanner;
 
+/**
+ * A TextualStocksController 
+ */
 public class TextualStocksController implements IStocksController {
   private final IStocksModel model;
   private final IStocksView view;
@@ -63,7 +66,7 @@ public class TextualStocksController implements IStocksController {
         view.displayMessage("Crossovers of " + symbol + ": " +
                 model.findCrossovers(symbol, start, end, x) + ".");
         break;
-      case "portfolio-create": // portfolio name
+      case "portfolio-create": // name
         name = sc.next();
         model.createPortfolio(name);
         view.displayMessage("Created portfolio " + name + ".");
@@ -73,7 +76,7 @@ public class TextualStocksController implements IStocksController {
         symbol = sc.next();
         amount = sc.nextInt();
         model.addStockToPortfolio(name, symbol, amount);
-        view.displayMessage("Added " + amount +  " of " + symbol + " to portfolio " + name + ".");
+        view.displayMessage("Added " + amount + " of " + symbol + " to portfolio " + name + ".");
         break;
       case "portfolio-remove": // name, symbol
         name = sc.next();
@@ -94,7 +97,7 @@ public class TextualStocksController implements IStocksController {
   protected String menu() {
     String ls = System.lineSeparator();
 
-    return  "Dates must not have spaces and be parsable by LocalDate::parse" + ls + ls +
+    return "Dates must not have spaces and be parsable by LocalDate::parse" + ls + ls +
             "stock-examine-period [symbol] [start-date] [end-date]" + ls +
             "stock-examine-average [symbol] [date] [number of days]" + ls +
             "stock-examine-crossovers [symbol] [start-date] [end-date] [number of days]" + ls +

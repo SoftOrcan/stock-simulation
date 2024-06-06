@@ -29,8 +29,7 @@ public class AlphaVantageAPI {
       create the URL. This is the query to the web service. The query string
       includes the type of query (DAILY stock prices), stock symbol to be
       looked up, the API key and the format of the returned
-      data (comma-separated values:csv). This service also supports JSON
-      which you are welcome to use.
+      data (comma-separated values:csv).
        */
       url = new URL("https://www.alphavantage"
               + ".co/query?function=TIME_SERIES_DAILY"
