@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Simulation Features</title>
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+        }
+        .separator {
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<h1>Stock Simulation - Re: Deliverables</h1>
+<div class="separator"></div>
+<h2>Program Features</h2>
+<ul style="list-style-type: none;">
+    <li>
+        <p><span class="bold">Stocks:</span></p>
+        <label><input type="checkbox" checked> Calculate the net profit/loss of a stock from and
+            to a specified date range.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Calculate the x-day moving average of a stock over
+            a specified time period. The x-day moving average is the average of the last x days
+            (starting from the given date). Note: This corresponds to the last x days when the
+            stock prices are available.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Calculate the x-day crossovers of a stock over a
+        specified time period. An x-day crossover happens when the closing price for a day is
+        greater than the x-day moving average for that day. A crossover signals a "buy"
+        opportunity. A crossover can be defined over any period of time, although the 30-day
+        period (i.e. the 30-day crossover) is usually popular.</label></li>
+    <li>
+        <p><span class="bold">Portfolio:</span></p>
+        <label><input type="checkbox" checked> Create a portfolio with a specified name. A
+            portfolio is utilized to contain shares of one or more stock.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Add a stock to a portfolio, representative of
+            purchasing a share of a stock to a portfolio.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Remove a stock from a portfolio.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Calculate the value of a portfolio on a specific
+            date. Calculate by identifying the value of each stock in the portfolio on the
+            specified date multiplied by the quantity of the respective stock.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Quit the application.</label></li>
+</ul>
+</body>
+</html>
