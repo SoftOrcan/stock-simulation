@@ -1,7 +1,7 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,14 +39,14 @@ public class AlphaVantageAPI {
               + "=" + stockSymbol + "&apikey=" + apiKey + "&datatype=csv");
       InputStream in = url.openStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-      FileWriter fileWriter = new FileWriter(stockSymbol + ".csv");
+      PrintWriter writer = new PrintWriter("./data/" + stockSymbol + ".csv");
 
       String line;
       while ((line = reader.readLine()) != null) {
-        fileWriter.write(line + "\n");
+        writer.write(line + "\n");
       }
       reader.close();
-      fileWriter.close();
+      writer.close();
     }
     catch (MalformedURLException e) {
       logger.severe("Malformed URL: " + e.getMessage());

@@ -1,5 +1,6 @@
 package view;
 
-interface IStocksView {
+public interface IStocksView {
 
+  void displayMessage(String s);
 }
