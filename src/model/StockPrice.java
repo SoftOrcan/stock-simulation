@@ -1,10 +1,10 @@
 package model;
 
-public class StockPrice {
-  double openPrice;
-  double closePrice;
+class StockPrice {
+  final double openPrice;
+  final double closePrice;
 
-  public StockPrice(double openPrice, double closePrice) {
+  StockPrice(double openPrice, double closePrice) {
     this.openPrice = openPrice;
     this.closePrice = closePrice;
   }

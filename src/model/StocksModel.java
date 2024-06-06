@@ -14,11 +14,6 @@ public class StocksModel implements IStocksModel {
     stockDatabase = new StockDatabase();
   }
 
-  public StocksModel(Map<String, Portfolio> portfolios, StockDatabase stockDatabase) {
-    this.portfolios = portfolios;
-    this.stockDatabase = stockDatabase;
-  }
-
   public double calculateChange(String symbol, LocalDate startDate, LocalDate endDate) {
     return stockDatabase.calculateChange(symbol, startDate, endDate);
   }
@@ -27,8 +22,9 @@ public class StocksModel implements IStocksModel {
     return stockDatabase.movingAverage(symbol, date, numDays);
   }
 
-  public List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate, int x) {
-    return stockDatabase.findCrossovers(symbol, startDate, endDate, x);
+  public List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
+                                        int numDays) {
+    return stockDatabase.findCrossovers(symbol, startDate, endDate, numDays);
   }
 
   public void createPortfolio(String portfolioName) {

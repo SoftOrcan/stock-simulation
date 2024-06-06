@@ -14,7 +14,7 @@ class StockInformation {
   private final Logger logger = Logger.getLogger(StockInformation.class.getName());
   private final Map<LocalDate, StockPrice> prices;
 
-  public StockInformation(String symbol) {
+  StockInformation(String symbol) {
     this.prices = new HashMap<>();
     this.getHistoricalPrices(symbol);
   }
@@ -22,10 +22,10 @@ class StockInformation {
   private void getHistoricalPrices(String symbol) {
     try (BufferedReader br = new BufferedReader(new FileReader("./data/" + symbol + ".csv"))) {
       String line;
-      br.readLine(); // Skip header
+      br.readLine(); // Skip header.
       while ((line = br.readLine()) != null) {
         String[] values = line.split(",");
-        LocalDate date = LocalDate.parse(values[0]); // parses correctly!
+        LocalDate date = LocalDate.parse(values[0]);
         double open = Double.parseDouble(values[1]);
         double close = Double.parseDouble(values[4]);
         prices.put(date, new StockPrice(open, close));
@@ -35,21 +35,21 @@ class StockInformation {
     }
   }
 
-  protected double calculateChange(LocalDate startDate, LocalDate endDate) {
+  double calculateChange(LocalDate startDate, LocalDate endDate) {
     return getPriceOn(endDate) - getPriceOn(startDate);
   }
 
-  protected double movingAverage(LocalDate date, int numDays) {
+  double movingAverage(LocalDate date, int x) {
     double total = 0;
 
-    for (int i = 0; i < numDays; i++) {
+    for (int i = 0; i < x; i++) {
       total += getPriceOn(date.minusDays(i));
     }
 
-    return total / numDays;
+    return total / x;
   }
 
-  protected List<LocalDate> findCrossovers(LocalDate startDate, LocalDate endDate, int x) {
+  List<LocalDate> findCrossovers(LocalDate startDate, LocalDate endDate, int x) {
     LocalDate date = startDate;
     List<LocalDate> crossovers = new ArrayList<>();
 
@@ -63,7 +63,7 @@ class StockInformation {
     return crossovers;
   }
 
-  public double getPriceOn(LocalDate date) {
+  double getPriceOn(LocalDate date) {
     StockPrice price;
     while ((price = prices.get(date)) == null) {
       date = date.minusDays(1);

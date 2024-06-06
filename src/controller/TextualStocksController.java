@@ -20,12 +20,12 @@ public class TextualStocksController implements IStocksController {
 
   public void control() {
     Scanner sc = new Scanner(System.in);
-    // Print the welcome message
+    // Print the welcome message.
     view.displayMessage(menu());
 
-    while (sc.hasNext()) { // Continue until the user quits
-      view.displayMessage("Type instruction: "); // Prompt for the instruction name
-      String userInstruction = sc.next(); // Take an instruction name
+    while (sc.hasNext()) { // Continue until the user quits.
+      view.displayMessage("Enter instruction: "); // Prompt for the instruction name.
+      String userInstruction = sc.next(); // Take an instruction name.
       if (userInstruction.equals("quit") || userInstruction.equals("q")) {
         break;
       } else {
@@ -44,21 +44,21 @@ public class TextualStocksController implements IStocksController {
     int amount;
 
     switch (userInstruction) {
-      case "stock-examine-period": // symbol, start, end
+      case "stock-examine-period": // Params: symbol, start, end
         symbol = sc.next();
         start = LocalDate.parse(sc.next());
         end = LocalDate.parse(sc.next());
         view.displayMessage("Gain/Loss of " + symbol + ": " +
                 model.calculateChange(symbol, start, end) + ".");
         break;
-      case "stock-examine-average": // symbol, date, x
+      case "stock-examine-average": // Params: symbol, date, x
         symbol = sc.next();
         date = LocalDate.parse(sc.next());
         x = sc.nextInt();
         view.displayMessage("Moving average of " + symbol + ": " +
                 model.movingAverage(symbol, date, x) + ".");
         break;
-      case "stock-examine-crossovers": // symbol, start, end, x
+      case "stock-examine-crossovers": // Params: symbol, start, end, x
         symbol = sc.next();
         start = LocalDate.parse(sc.next());
         end = LocalDate.parse(sc.next());
@@ -66,25 +66,25 @@ public class TextualStocksController implements IStocksController {
         view.displayMessage("Crossovers of " + symbol + ": " +
                 model.findCrossovers(symbol, start, end, x) + ".");
         break;
-      case "portfolio-create": // name
+      case "portfolio-create": // Params: name
         name = sc.next();
         model.createPortfolio(name);
         view.displayMessage("Created portfolio " + name + ".");
         break;
-      case "portfolio-add": // name, symbol, amount
+      case "portfolio-add": // Params: name, symbol, amount
         name = sc.next();
         symbol = sc.next();
         amount = sc.nextInt();
         model.addStockToPortfolio(name, symbol, amount);
         view.displayMessage("Added " + amount + " of " + symbol + " to portfolio " + name + ".");
         break;
-      case "portfolio-remove": // name, symbol
+      case "portfolio-remove": // Params: name, symbol
         name = sc.next();
         symbol = sc.next();
         model.removeStockFromPortfolio(name, symbol);
         view.displayMessage("Removed " + symbol + " from portfolio " + name + ".");
         break;
-      case "portfolio-value": // name, date
+      case "portfolio-value": // Params: name, date
         name = sc.next();
         date = LocalDate.parse(sc.next());
         view.displayMessage("Value of " + name + ": " + model.valueOfPortfolio(name, date) + ".");
@@ -94,9 +94,8 @@ public class TextualStocksController implements IStocksController {
     }
   }
 
-  protected String menu() {
+  private String menu() {
     String ls = System.lineSeparator();
-
     return "Dates must not have spaces and be parsable by LocalDate::parse" + ls + ls +
             "stock-examine-period [symbol] [start-date] [end-date]" + ls +
             "stock-examine-average [symbol] [date] [number of days]" + ls +
@@ -104,12 +103,7 @@ public class TextualStocksController implements IStocksController {
             "portfolio-create [name]" + ls +
             "portfolio-add [name] [symbol] [amount]" + ls +
             "portfolio-remove [name] [symbol]" + ls +
-            "portfolio-value [name] [date]";
+            "portfolio-value [name] [date]" + ls +
+            "quit or q";
   }
-
-  // take in model and view
-
-  // read/parse user input (similar to spreadsheet maybe?)
-
-  // instead of print, call methods on view
 }

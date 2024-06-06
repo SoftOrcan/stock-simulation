@@ -9,19 +9,19 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-public class AlphaVantageAPI {
+class AlphaVantageAPI {
   private final Logger logger = Logger.getLogger(AlphaVantageAPI.class.getName());
   private final String apiKey;
 
-  public AlphaVantageAPI(String apiKey) {
+  AlphaVantageAPI(String apiKey) {
     this.apiKey = apiKey;
   }
 
-  public AlphaVantageAPI() {
+  AlphaVantageAPI() {
     this.apiKey = "RJ7QQ6OIQNL5BMJP";
   }
 
-  public void getData(String stockSymbol) {
+  void getData(String stockSymbol) {
     URL url;
 
     try {

@@ -10,9 +10,9 @@ import java.util.Map;
  * (via the 'remove()' method) and calculate the cumulative value of the portfolio based on the
  * prices of the stocks on a given date (via the 'value()' method).
  */
-public class Portfolio {
+class Portfolio {
   // A portfolio is a hashmap <Symbol, AmountPurchased>, represented as a <String, Integer>.
-  Map<String, Integer> portfolio;
+  private final Map<String, Integer> portfolio;
 
   /**
    * Package-private initial state of a Portfolio, represented as an empty HashMap.
@@ -23,7 +23,7 @@ public class Portfolio {
   }
 
   /**
-   * Add a stock (termed as 'symbol') and the quantity of the stock to a Portfolio.
+   * Package-private. Add a stock (termed as 'symbol') and the quantity of the stock to a Portfolio.
    *
    * @param symbol   The stock to add.
    * @param quantity The quantity of stocks purchased.
@@ -33,7 +33,7 @@ public class Portfolio {
   }
 
   /**
-   * Remove a stock (termed as 'symbol') from a Portfolio.
+   * Package-private. Remove a stock (termed as 'symbol') from a Portfolio.
    *
    * @param symbol The stock to remove.
    */
@@ -42,18 +42,20 @@ public class Portfolio {
   }
 
   /**
-   * Calculate the value of a Portfolio based on the stocks' value on a given date (termed as
-   * 'date') and the quantity of each stock. Retrieve data relating to the stocks' value via
-   * StockDatabase (termed as 'stockDatabase').
+   * Package-private. Calculate the value of a Portfolio based on the stocks' value on a given date
+   * (termed as 'date') and the quantity of each stock. Retrieve data relating to the stocks'
+   * value via StockDatabase (termed as 'stockDatabase').
    *
    * @param date          The specified date to retrieve data regarding a stock on.
-   * @param stockDatabase The database to retrieve information regarding a stock.
+   * @param stockDatabase The database to retrieve information regarding a stock from.
    * @return The cumulative value of a Portfolio.
    */
   double value(LocalDate date, StockDatabase stockDatabase) {
     double total = 0;
-    // For every value in the Portfolio HashMap...
+    // For every value in the HashMap...
     for (String symbol : portfolio.keySet()) {
+      // Find the price of a stock on the given date and multiply it by the quantity of stock
+      // purchased.
       total += portfolio.get(symbol) * stockDatabase.getPriceOf(symbol, date);
     }
     return total;
