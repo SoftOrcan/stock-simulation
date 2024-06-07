@@ -1,6 +1,5 @@
 # Stock Simulation
 
----
 ## Features
 ### Stock:
 - [x] Calculate the net profit/loss of a stock from and to a specified date range.
