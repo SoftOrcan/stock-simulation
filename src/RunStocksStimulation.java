@@ -1,20 +1,20 @@
 import java.io.File;
 
-import controller.IStocksController;
-import controller.TextualStocksController;
-import model.IStocksModel;
-import model.StocksModel;
-import view.IStocksView;
-import view.StocksView;
+import controller.IStockController;
+import controller.TextualStockController;
+import model.IStockModel;
+import model.StockModel;
+import view.IStockView;
+import view.StockView;
 
 public class RunStocksStimulation {
   public static void main(String[] args) {
     if (!new File("./data").exists()) {
       new File("./data").mkdirs();
     }
-    IStocksModel model = new StocksModel();
-    IStocksView view = new StocksView();
-    IStocksController controller = new TextualStocksController(model, view);
+    IStockModel model = new StockModel();
+    IStockView view = new StockView();
+    IStockController controller = new TextualStockController(model, view);
     controller.control();
   }
 }

@@ -1,5 +1,8 @@
 package view;
 
-public interface IStocksView {
+/**
+ * Rerep
+ */
+public interface IStockView {
   void displayMessage(String s);
 }

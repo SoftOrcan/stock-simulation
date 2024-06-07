@@ -1,5 +1,5 @@
 package controller;
 
-public interface IStocksController {
+public interface IStockController {
   void control();
 }

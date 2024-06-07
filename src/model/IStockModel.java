@@ -4,19 +4,20 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The IStocksModel interface represents the "backend" of StocksStimulation. Such that, it
- * contains methods to calculate the net profit/loss of a stock on a given date (via the
- * 'calculateChange()' method), the moving average of a stock over a time range (via the
- * 'movingAverage ()' method), and the crossovers of a stock over a time period (via the
- * 'findCrossovers()' method).
+ * The IStockModel interface represents the "backend" of StocksStimulation. Such that, it
+ * contains methods to...
+ * <li>Calculate the net profit/loss of a stock over a time period (via the 'calculateChange()'
+ * method).</li>
+ * <li>The moving average of a stock over a time period (via the 'movingAverage ()' method).</li>
+ * <li>The crossovers of a stock over a time period (via the 'findCrossovers()' method).</li>
  *
- * <p> Additionally, the IStocksModel interface has capabilities to create (via the
- * 'createPortfolio()' method), modify (via the 'addStockToPortfolio()' and
- * 'removeStockFromPortfolio()' methods), and calculate the value of a portfolio based on the
- * stocks purchased and the price of the stocks on a given date (via the 'valueOfPortfolio()'
- * method).</p>
+ * <p> Additionally, the IStockModel interface has capabilities to...</p>
+ * <li>Create (via the 'createPortfolio()' method)</li>
+ * <li>Modify (via the 'addStockToPortfolio()' and 'removeStockFromPortfolio()' methods)</li>
+ * <li>Calculate the value of a portfolio based on the stocks purchased and the price of the
+ * stocks on a given date (via the 'valueOfPortfolio()' method).</li>
  */
-public interface IStocksModel {
+public interface IStockModel {
   /**
    * Calculate the net profit/loss of a stock (termed as 'symbol') from and to a specified date
    * range.

@@ -1,7 +1,7 @@
 package controller;
 
-import model.IStocksModel;
-import view.IStocksView;
+import model.IStockModel;
+import view.IStockView;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -9,11 +9,11 @@ import java.util.Scanner;
 /**
  * A TextualStocksController 
  */
-public class TextualStocksController implements IStocksController {
-  private final IStocksModel model;
-  private final IStocksView view;
+public class TextualStockController implements IStockController {
+  private final IStockModel model;
+  private final IStockView view;
 
-  public TextualStocksController(IStocksModel model, IStocksView view) {
+  public TextualStockController(IStockModel model, IStockView view) {
     this.model = model;
     this.view = view;
   }
@@ -24,7 +24,6 @@ public class TextualStocksController implements IStocksController {
     view.displayMessage(menu());
 
     while (sc.hasNext()) { // Continue until the user quits.
-      view.displayMessage("Enter instruction: "); // Prompt for the instruction name.
       String userInstruction = sc.next(); // Take an instruction name.
       if (userInstruction.equals("quit") || userInstruction.equals("q")) {
         break;
@@ -34,7 +33,7 @@ public class TextualStocksController implements IStocksController {
     }
   }
 
-  private void processCommand(String userInstruction, Scanner sc, IStocksModel model) {
+  private void processCommand(String userInstruction, Scanner sc, IStockModel model) {
     String symbol;
     LocalDate date;
     LocalDate start;
@@ -104,6 +103,7 @@ public class TextualStocksController implements IStocksController {
             "portfolio-add [name] [symbol] [amount]" + ls +
             "portfolio-remove [name] [symbol]" + ls +
             "portfolio-value [name] [date]" + ls +
-            "quit or q";
+            "quit or q" + ls + ls +
+            "Enter instruction: ";
   }
 }

@@ -10,6 +10,7 @@ import java.util.logging.Logger;
  * The StockDatabase class
  */
 class StockDatabase {
+  // Logger to record functionality or capture thrown exceptions.
   private final Logger logger = Logger.getLogger(StockDatabase.class.getName());
   private final AlphaVantageAPI api = new AlphaVantageAPI();
 
