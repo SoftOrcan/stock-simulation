@@ -30,7 +30,11 @@ public class StockModelTest {
   @Test
   public void testCreatePortfolio() {
     model.createPortfolio("Portfolio One");
-    assertNotNull(model);
+    assertEquals(0, model.valueOfPortfolio("Portfolio One",
+            LocalDate.of(2023, 6, 6)), 0.01);
+    model.createPortfolio("Portfolio Two");
+    assertEquals(0, model.valueOfPortfolio("Portfolio Two",
+            LocalDate.of(2023, 6, 6)), 0.01);
   }
 
   /**
