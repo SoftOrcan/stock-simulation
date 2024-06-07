@@ -5,20 +5,29 @@ import java.util.List;
 import model.IStockModel;
 
 class MockStockModel implements IStockModel {
+  private final List<String> log;
+
+  MockStockModel() {
+    log = new ArrayList<>();
+  }
+
+  List<String> getLog() {
+    return log;
+  }
 
   public double calculateChange(String symbol, LocalDate startDate, LocalDate endDate) {
-    // Return a mock value for calculateChange.
+    log.add(String.format("calculateChange: %s, %s, %s", symbol, startDate, endDate));
     return 0;
   }
 
   public double movingAverage(String symbol, LocalDate date, int numDays) {
-    // Return a mock value for movingAverage.
+    log.add(String.format("movingAverage: %s, %s, %d", symbol, date, numDays));
     return 0;
   }
 
   public List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
                                         int x) {
-    // Return a mock list of dates for findCrossovers.
+    log.add(String.format("findCrossovers: %s, %s, %s, %d", symbol, startDate, endDate, x));
     return new ArrayList<>();
   }
 
@@ -28,18 +37,22 @@ class MockStockModel implements IStockModel {
 
   public void createPortfolio(String portfolioName) {
     // Mock implementation for createPortfolio.
+    log.add(String.format("createPortfolio: %s", portfolioName));
   }
 
   public void addStockToPortfolio(String portfolioName, String symbol, int amount) {
     // Mock implementation for addStockToPortfolio.
+    log.add(String.format("addStockToPortfolio: %s, %s, %d", portfolioName, symbol, amount));
   }
 
   public void removeStockFromPortfolio(String portfolioName, String symbol) {
     // Mock implementation for removeStockFromPortfolio.
+    log.add(String.format("removeStockFromPortfolio: %s, %s", portfolioName, symbol));
   }
 
   public double valueOfPortfolio(String portfolioName, LocalDate date) {
     // Return a mock value for valueOfPortfolio.
+    log.add(String.format("valueOfPortfolio: %s, %s", portfolioName, date));
     return 0;
   }
 

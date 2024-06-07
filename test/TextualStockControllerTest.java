@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.util.List;
 
 import controller.TextualStockController;
-import model.IStockModel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests and examples for TextualStockController class.
@@ -16,10 +15,11 @@ import static org.junit.Assert.*;
 public class TextualStockControllerTest {
   private TextualStockController controller;
   private MockStockView mockView;
+  private MockStockModel mockModel;
 
   @Before
   public void setUp() {
-    IStockModel mockModel = new MockStockModel();
+    mockModel = new MockStockModel();
     mockView = new MockStockView();
     controller = new TextualStockController(mockModel, mockView);
   }
@@ -40,6 +40,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Gain/Loss of AAPL: 0.0.", last(mockView.getMessages()));
+    assertEquals("calculateChange: AAPL, 2023-01-01, 2023-06-01", last(mockModel.getLog()));
   }
 
   @Test
@@ -54,6 +55,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Moving average of AAPL: 0.0.", last(mockView.getMessages()));
+    assertEquals("movingAverage: AAPL, 2023-01-01, 30", last(mockModel.getLog()));
   }
 
   @Test
@@ -68,6 +70,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Crossovers of AAPL: [].", last(mockView.getMessages()));
+    assertEquals("findCrossovers: AAPL, 2023-01-01, 2023-06-01, 20", last(mockModel.getLog()));
   }
 
   @Test
@@ -82,6 +85,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Created portfolio MyPortfolio.", last(mockView.getMessages()));
+    assertEquals("createPortfolio: MyPortfolio", last(mockModel.getLog()));
   }
 
   @Test
@@ -97,6 +101,7 @@ public class TextualStockControllerTest {
     // Check if the correct message is displayed.
     assertEquals("Added 10 of AAPL to portfolio MyPortfolio.",
             last(mockView.getMessages()));
+    assertEquals("addStockToPortfolio: MyPortfolio, AAPL, 10", last(mockModel.getLog()));
   }
 
   @Test
@@ -111,6 +116,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Removed AAPL from portfolio MyPortfolio.", last(mockView.getMessages()));
+    assertEquals("removeStockFromPortfolio: MyPortfolio, AAPL", last(mockModel.getLog()));
   }
 
   @Test
@@ -125,6 +131,7 @@ public class TextualStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Value of MyPortfolio: 0.0.", last(mockView.getMessages()));
+    assertEquals("valueOfPortfolio: MyPortfolio, 2023-06-06", last(mockModel.getLog()));
   }
 
   @Test

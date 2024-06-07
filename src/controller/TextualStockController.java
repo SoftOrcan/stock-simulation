@@ -75,29 +75,23 @@ public class TextualStockController implements IStockController {
         symbol = sc.next(); // Retrieve the stock name from the input.
         start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
         end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
-        verifySymbol(symbol, () -> {
-          view.displayMessage("Gain/Loss of " + symbol + ": " +
-                  model.calculateChange(symbol, start, end) + ".");
-        });
+        verifySymbol(symbol, () -> view.displayMessage("Gain/Loss of " + symbol + ": " +
+                model.calculateChange(symbol, start, end) + "."));
         break;
       case "stock-examine-average": // Params: symbol, date, x
         symbol = sc.next(); // Retrieve the stock name from the input.
         date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
         numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
-        verifySymbol(symbol, () -> {
-          view.displayMessage("Moving average of " + symbol + ": " +
-                  model.movingAverage(symbol, date, numDays) + ".");
-        });
+        verifySymbol(symbol, () -> view.displayMessage("Moving average of " + symbol + ": " +
+                model.movingAverage(symbol, date, numDays) + "."));
         break;
       case "stock-examine-crossovers": // Params: symbol, start, end, x
         symbol = sc.next(); // Retrieve the stock name from the input.
         start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
         end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
         numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
-        verifySymbol(symbol, () -> {
-          view.displayMessage("Crossovers of " + symbol + ": " +
-                  model.findCrossovers(symbol, start, end, numDays) + ".");
-        });
+        verifySymbol(symbol, () -> view.displayMessage("Crossovers of " + symbol + ": " +
+                model.findCrossovers(symbol, start, end, numDays) + "."));
         break;
       case "portfolio-create": // Params: name
         name = sc.next(); // Retrieve the name of the portfolio from the input.
@@ -133,10 +127,8 @@ public class TextualStockController implements IStockController {
       case "portfolio-value": // Params: name, date
         name = sc.next(); // Retrieve the name of the portfolio from the input.
         date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
-        verifyPortfolio(name, () -> {
-          view.displayMessage("Value of " + name + ": " + model.valueOfPortfolio(name, date)
-                  + ".");
-        });
+        verifyPortfolio(name, () -> view.displayMessage("Value of " + name + ": "
+                + model.valueOfPortfolio(name, date) + "."));
         break;
       default:
         view.displayMessage("Undefined instruction: " + userInstruction + ".");
