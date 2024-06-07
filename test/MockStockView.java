@@ -1,20 +1,41 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import view.IStockView;
 
 class MockStockView implements IStockView {
-  private String lastDisplayedMessage;
+  private final List<String> messages;
+  private final List<String> errors;
 
-  @Override
-  public void displayMessage(String s) {
+  MockStockView() {
+    messages = new ArrayList<>();
+    errors = new ArrayList<>();
+  }
+
+  public void displayMessage(String message) {
     // Store the last displayed message.
-    lastDisplayedMessage = s;
+    messages.add(message);
+  }
+
+  public void displayError(String error) {
+    errors.add(error);
   }
 
   /**
-   * Retrieve the last displayed message for testing purposes.
+   * Retrieve list of messages in order of receipt for testing purposes.
    *
-   * @return The last displayed message for testing purposes.
+   * @return The list of messages
    */
-  String getLastDisplayedMessage() {
-    return lastDisplayedMessage;
+  List<String> getMessages() {
+    return messages;
+  }
+
+  /**
+   * Retrieve list of errors in order of receipt for testing purposes.
+   *
+   * @return The list of errors
+   */
+  List<String> getErrors() {
+    return errors;
   }
 }

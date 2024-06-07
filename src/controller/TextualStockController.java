@@ -4,20 +4,40 @@ import model.IStockModel;
 import view.IStockView;
 
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * A TextualStocksController 
+ * A TextualStocksController receives and "parses" inputs by calling the appropriate, corresponding
+ * method(s) in IStockModel (via the 'control()' and 'processCommand()' methods). In addition, the
+ * controller interacts with IStockView by displaying the output textually, and contains the
+ * method 'menu()' to display the available features of the program.
  */
 public class TextualStockController implements IStockController {
+  // The model, or "backend", which contains methods to "parse" the user input (i.e. compute
+  // the result).
   private final IStockModel model;
+  // The view, or "frontend", which displays the output textually to the user.
   private final IStockView view;
 
+  /**
+   * A TextualStocksController receives and "parses" inputs by calling the appropriate,
+   * corresponding method(s) in IStockModel (via the 'control()' and 'processCommand()' methods).
+   * In addition, the controller interacts with IStockView by displaying the output textually.
+   * This constructor is public as it is called by tests beyond the package's scope.
+   *
+   * @param model The model, which contains methods to compute the user input.
+   * @param view  The view to display the output textually to the user.
+   */
   public TextualStockController(IStockModel model, IStockView view) {
     this.model = model;
     this.view = view;
   }
 
+  /**
+   * Display the menu to the user, and process user inputs by either calling methods in
+   * IStockController or halt the program at the keystroke 'q'.
+   */
   public void control() {
     Scanner sc = new Scanner(System.in);
     // Print the welcome message.
@@ -25,7 +45,7 @@ public class TextualStockController implements IStockController {
 
     while (sc.hasNext()) { // Continue until the user quits.
       String userInstruction = sc.next(); // Take an instruction name.
-      if (userInstruction.equals("quit") || userInstruction.equals("q")) {
+      if (userInstruction.equals("q") || userInstruction.equals("quit")) {
         break;
       } else {
         processCommand(userInstruction, sc, model);
@@ -33,66 +53,133 @@ public class TextualStockController implements IStockController {
     }
   }
 
+  /**
+   * Process the user input by parsing and calling the corresponding method in IStockModel and
+   * displaying the result via IStockView.
+   *
+   * @param userInstruction The user input to parse.
+   * @param sc              The scanner to parse the user input.
+   * @param model           The IStockModel to compute based on the command provided.
+   */
   private void processCommand(String userInstruction, Scanner sc, IStockModel model) {
-    String symbol;
-    LocalDate date;
-    LocalDate start;
-    LocalDate end;
-    String name;
-    int x;
-    int amount;
+    String symbol; // The stock symbol to examine.
+    LocalDate date; // The date to examine.
+    LocalDate start; // The start date to examine.
+    LocalDate end; // The end date to examine.
+    String name; // The name of a portfolio.
+    int numDays; // The range of days to de-advance.
+    int amount; // The amount of stocks to purchase.
 
     switch (userInstruction) {
       case "stock-examine-period": // Params: symbol, start, end
-        symbol = sc.next();
-        start = LocalDate.parse(sc.next());
-        end = LocalDate.parse(sc.next());
-        view.displayMessage("Gain/Loss of " + symbol + ": " +
-                model.calculateChange(symbol, start, end) + ".");
+        symbol = sc.next(); // Retrieve the stock name from the input.
+        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
+        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
+        verifySymbol(symbol, () -> {
+          view.displayMessage("Gain/Loss of " + symbol + ": " +
+                  model.calculateChange(symbol, start, end) + ".");
+        });
         break;
       case "stock-examine-average": // Params: symbol, date, x
-        symbol = sc.next();
-        date = LocalDate.parse(sc.next());
-        x = sc.nextInt();
-        view.displayMessage("Moving average of " + symbol + ": " +
-                model.movingAverage(symbol, date, x) + ".");
+        symbol = sc.next(); // Retrieve the stock name from the input.
+        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
+        numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
+        verifySymbol(symbol, () -> {
+          view.displayMessage("Moving average of " + symbol + ": " +
+                  model.movingAverage(symbol, date, numDays) + ".");
+        });
         break;
       case "stock-examine-crossovers": // Params: symbol, start, end, x
-        symbol = sc.next();
-        start = LocalDate.parse(sc.next());
-        end = LocalDate.parse(sc.next());
-        x = sc.nextInt();
-        view.displayMessage("Crossovers of " + symbol + ": " +
-                model.findCrossovers(symbol, start, end, x) + ".");
+        symbol = sc.next(); // Retrieve the stock name from the input.
+        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
+        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
+        numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
+        verifySymbol(symbol, () -> {
+          view.displayMessage("Crossovers of " + symbol + ": " +
+                  model.findCrossovers(symbol, start, end, numDays) + ".");
+        });
         break;
       case "portfolio-create": // Params: name
-        name = sc.next();
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
         model.createPortfolio(name);
         view.displayMessage("Created portfolio " + name + ".");
         break;
       case "portfolio-add": // Params: name, symbol, amount
-        name = sc.next();
-        symbol = sc.next();
-        amount = sc.nextInt();
-        model.addStockToPortfolio(name, symbol, amount);
-        view.displayMessage("Added " + amount + " of " + symbol + " to portfolio " + name + ".");
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
+        symbol = sc.next(); // Retrieve the stock name from the input.
+        try {
+          amount = sc.nextInt(); // Retrieve the quantity of stock purchased from the input.
+          if (amount <= 0) {
+            view.displayError("Must use positive amount.");
+            break;
+          }
+          verifyPortfolio(name, () -> verifySymbol(symbol, () -> {
+            model.addStockToPortfolio(name, symbol, amount);
+            view.displayMessage("Added " + amount + " of " + symbol + " to portfolio "
+                    + name + ".");
+          }));
+        } catch (InputMismatchException e) {
+          view.displayError("Must use integer for amount.");
+        }
         break;
       case "portfolio-remove": // Params: name, symbol
-        name = sc.next();
-        symbol = sc.next();
-        model.removeStockFromPortfolio(name, symbol);
-        view.displayMessage("Removed " + symbol + " from portfolio " + name + ".");
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
+        symbol = sc.next(); // Retrieve the stock name from the input.
+        verifyPortfolio(name, () -> {
+          model.removeStockFromPortfolio(name, symbol);
+          view.displayMessage("Removed " + symbol + " from portfolio " + name + ".");
+        });
         break;
       case "portfolio-value": // Params: name, date
-        name = sc.next();
-        date = LocalDate.parse(sc.next());
-        view.displayMessage("Value of " + name + ": " + model.valueOfPortfolio(name, date) + ".");
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
+        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
+        verifyPortfolio(name, () -> {
+          view.displayMessage("Value of " + name + ": " + model.valueOfPortfolio(name, date)
+                  + ".");
+        });
         break;
       default:
         view.displayMessage("Undefined instruction: " + userInstruction + ".");
+        view.displayMessage(menu());
     }
   }
 
+  /**
+   * Validate a stock is an available symbol through the AlphaVantage API. If the symbol exists,
+   * call a command, specified by the user instruction.
+   *
+   * @param symbol The stock symbol to validate.
+   * @param macro  The command to execute.
+   */
+  private void verifySymbol(String symbol, Runnable macro) {
+    if (model.validSymbol(symbol)) {
+      macro.run();
+    } else {
+      view.displayError("Stock symbol " + symbol + " does not exist.");
+    }
+  }
+
+  /**
+   * Validate a portfolio exists based on its name. If the portfolio exists, call a command,
+   * specified by the user instruction.
+   *
+   * @param name  The portfolio name to validate.
+   * @param macro The command to execute.
+   */
+  private void verifyPortfolio(String name, Runnable macro) {
+    if (model.hasPortfolio(name)) {
+      macro.run();
+    } else {
+      view.displayError("Portfolio " + name + " does not exist.");
+    }
+  }
+
+  /**
+   * Provide the available features of the program and the parameters which the methods require
+   * to compute the result.
+   *
+   * @return A String displaying the available features of the program.
+   */
   private String menu() {
     String ls = System.lineSeparator();
     return "Dates must not have spaces and be parsable by LocalDate::parse" + ls + ls +
@@ -103,7 +190,7 @@ public class TextualStockController implements IStockController {
             "portfolio-add [name] [symbol] [amount]" + ls +
             "portfolio-remove [name] [symbol]" + ls +
             "portfolio-value [name] [date]" + ls +
-            "quit or q" + ls + ls +
+            "q: quit the program" + ls + ls +
             "Enter instruction: ";
   }
 }

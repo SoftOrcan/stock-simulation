@@ -56,7 +56,7 @@ class Portfolio {
     for (String symbol : portfolio.keySet()) {
       // Find the price of a stock on the given date and multiply it by the quantity of stock
       // purchased.
-      total += portfolio.get(symbol) * stockDatabase.getPriceOf(symbol, date);
+      total += portfolio.get(symbol) * stockDatabase.getPriceOn(symbol, date);
     }
     return total;
   }

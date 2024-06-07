@@ -20,7 +20,7 @@ class AlphaVantageAPI {
   private final String apiKey; // The apiKey to access AlphaVantageAPI.
 
   /**
-   * Generated key to access data from AlphaVantage.
+   * Generated key to access data from the AlphaVantage API.
    */
   AlphaVantageAPI() {
     this.apiKey = "RJ7QQ6OIQNL5BMJP";
@@ -33,7 +33,6 @@ class AlphaVantageAPI {
    */
   void getData(String symbol) {
     URL url;
-
     try {
       // Create the URL. This is the query to the web service. The query string includes the type
       // of query (i.e. DAILY stock prices), stock symbol to be looked up, the API key and the
@@ -56,13 +55,48 @@ class AlphaVantageAPI {
       }
       reader.close();
       writer.close();
-    }
-    catch (MalformedURLException e) {
+    } catch (MalformedURLException e) {
       // Log a severe message with the exception message.
       logger.severe("Malformed URL: " + e.getMessage());
     } catch (IOException e) {
       // Log a severe message with the exception message.
       logger.severe("IO Exception: " + e.getMessage());
     }
+  }
+
+  /**
+   * Determine if a stock symbol exists.
+   *
+   * @param symbol The stock to validate.
+   * @return If a stock symbol exists or not.
+   */
+  public boolean isValidSymbol(String symbol) {
+    URL url;
+    try {
+      // Generate a URL to search for the symbol.
+      url = new URL("https://www.alphavantage"
+              + ".co/query?function=SYMBOL_SEARCH"
+              + "&keywords=" + symbol + "&apikey=" + apiKey + "&datatype=csv");
+      InputStream in = url.openStream(); // Open an input stream to read data from the URL.
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+      String line;
+      reader.readLine(); // Skip header.
+      // While there are entries...
+      while ((line = reader.readLine()) != null) {
+        String[] values = line.split(",");
+        if (values[0].equals(symbol)) {
+          // If the symbol exists, return true.
+          return true;
+        }
+      }
+    } catch (MalformedURLException e) {
+      // Log a severe message with the exception message.
+      logger.severe("Malformed URL: " + e.getMessage());
+    } catch (IOException e) {
+      // Log a severe message with the exception message.
+      logger.severe("IO Exception: " + e.getMessage());
+    }
+    return false;
   }
 }

@@ -57,6 +57,14 @@ public interface IStockModel {
                                  int numDays);
 
   /**
+   * Determine if a symbol exists.
+   *
+   * @param symbol The symbol.
+   * @return If a symbol exists or not.
+   */
+  boolean validSymbol(String symbol);
+
+  /**
    * Create a portfolio with a specified name. A portfolio is utilized to contain shares of one or
    * more stock.
    *
@@ -92,4 +100,12 @@ public interface IStockModel {
    * @return The value of a portfolio on a specific date.
    */
   double valueOfPortfolio(String portfolioName, LocalDate date);
+
+  /**
+   * Determine if a portfolio exists.
+   *
+   * @param portfolioName The name of the portfolio.
+   * @return If a portfolio exists or not.
+   */
+  boolean hasPortfolio(String portfolioName);
 }

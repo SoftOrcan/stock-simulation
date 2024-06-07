@@ -44,12 +44,12 @@ class StockInformation {
    * @param symbol The stock to examine.
    */
   private void getHistoricalPrices(String symbol) {
-    try (BufferedReader br = // Attempt to read the .csv file, if it exists.
+    try (BufferedReader reader = // Attempt to read the .csv file, if it exists.
                  new BufferedReader(new FileReader("./data/" + symbol + ".csv"))) {
       String line;
-      br.readLine(); // Skip header.
+      reader.readLine(); // Skip header.
       // While there are entries...
-      while ((line = br.readLine()) != null) {
+      while ((line = reader.readLine()) != null) {
         String[] values = line.split(",");
         LocalDate date = LocalDate.parse(values[0]); // Retrieve the data of the stock.
         double open = Double.parseDouble(values[1]); // Retrieve the opening price of the stock.

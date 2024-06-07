@@ -78,6 +78,16 @@ public class StockModel implements IStockModel {
   }
 
   /**
+   * Determine if a symbol exists.
+   *
+   * @param symbol The symbol.
+   * @return If a symbol exists or not.
+   */
+  public boolean validSymbol(String symbol) {
+    return stockDatabase.isValidSymbol(symbol);
+  }
+
+  /**
    * Create a portfolio with a specified name.
    *
    * @param portfolioName The name of the portfolio.
@@ -118,5 +128,15 @@ public class StockModel implements IStockModel {
    */
   public double valueOfPortfolio(String portfolioName, LocalDate date) {
     return portfolios.get(portfolioName).value(date, stockDatabase);
+  }
+
+  /**
+   * Determine if the portfolio exists.
+   *
+   * @param portfolioName The name of the portfolio.
+   * @return Whether the portfolio exists or not.
+   */
+  public boolean hasPortfolio(String portfolioName) {
+    return portfolios.containsKey(portfolioName);
   }
 }

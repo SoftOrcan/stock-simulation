@@ -12,7 +12,7 @@ class StockPrice {
    * Package-private constructor that permits the creation of a StockPrice, representing a
    * stock's opening and closing prices.
    *
-   * @param openPrice The opening price of the stock.
+   * @param openPrice  The opening price of the stock.
    * @param closePrice The closing price of the stock.
    */
   StockPrice(double openPrice, double closePrice) {

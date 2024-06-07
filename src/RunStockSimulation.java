@@ -7,7 +7,7 @@ import model.StockModel;
 import view.IStockView;
 import view.StockView;
 
-public class RunStocksStimulation {
+public class RunStockSimulation {
   public static void main(String[] args) {
     if (!new File("./data").exists()) {
       new File("./data").mkdirs();
