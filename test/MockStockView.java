@@ -3,6 +3,9 @@ import java.util.List;
 
 import view.IStockView;
 
+/**
+ * The MockStockView class is a mock for IStockView.
+ */
 class MockStockView implements IStockView {
   private final List<String> messages;
   private final List<String> errors;

@@ -4,6 +4,9 @@ import java.util.List;
 
 import model.IStockModel;
 
+/**
+ * The MockStockModel class is a mock for IStockModel.
+ */
 class MockStockModel implements IStockModel {
   private final List<String> log;
 
