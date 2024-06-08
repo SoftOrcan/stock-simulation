@@ -8,7 +8,6 @@ import model.IStockModel;
 import model.StockModel;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests and examples for StockModel class.
