@@ -27,7 +27,7 @@ public interface IStockModel {
    * @param endDate   The end date to examine.
    * @return The net profit/loss of a stock over a specified time range.
    */
-  double calculateChange(String symbol, LocalDate startDate, LocalDate endDate);
+  double stockChange(String symbol, LocalDate startDate, LocalDate endDate);
 
   /**
    * Calculate the x-day moving average of a stock over a specified time period. The x-day moving
@@ -39,7 +39,7 @@ public interface IStockModel {
    * @param numDays The last x days to examine.
    * @return The moving average of a stock over a specified time period.
    */
-  double movingAverage(String symbol, LocalDate date, int numDays);
+  double stockMovingAverage(String symbol, LocalDate date, int numDays);
 
   /**
    * Calculate the x-day crossovers of a stock over a specified time period. An x-day crossover
@@ -53,8 +53,8 @@ public interface IStockModel {
    * @param numDays   The x-days to examine.
    * @return The x-day crossovers of a stock over a specified time period.
    */
-  List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
-                                 int numDays);
+  List<LocalDate> stockCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
+                                  int numDays);
 
   /**
    * Determine if a symbol exists.
@@ -62,7 +62,7 @@ public interface IStockModel {
    * @param symbol The symbol.
    * @return If a symbol exists or not.
    */
-  boolean validSymbol(String symbol);
+  boolean isValidSymbol(String symbol);
 
   /**
    * Create a portfolio with a specified name. A portfolio is utilized to contain shares of one or
@@ -99,7 +99,7 @@ public interface IStockModel {
    * @param date          The date to examine.
    * @return The value of a portfolio on a specific date.
    */
-  double valueOfPortfolio(String portfolioName, LocalDate date);
+  double portfolioValue(String portfolioName, LocalDate date);
 
   /**
    * Determine if a portfolio exists.
@@ -109,7 +109,9 @@ public interface IStockModel {
    */
   boolean hasPortfolio(String portfolioName);
 
-  String compositionOfPortfolio(String name, LocalDate date);
+  BarGraph portfolioComposition(String name, LocalDate date);
 
-  String distributionOfPortfolio(String name, LocalDate date);
+  BarGraph portfolioDistribution(String name, LocalDate date);
+
+  BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int amount);
 }

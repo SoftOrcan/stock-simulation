@@ -10,9 +10,9 @@ import java.util.Objects;
  * file (via the 'getStockInformation()' method), to determine...
  * <li>Net profit/loss over a time range (via the 'calculateChange()' method).</li>
  * <li>The moving average over a previous time period (via the 'movingAverage()' method).</li>
- * <li>The crossovers overtime (via the method 'findCrossovers()').</li>
- * <li>The price of a Stock on a specified date (via the method 'getPriceOn()')</li>
- * <li>Determine if a stock symbol exists (via the method 'isValidSymbol()')</li>
+ * <li>The crossovers overtime (via the 'findCrossovers()' method).</li>
+ * <li>The price of a Stock on a specified date (via the 'getPriceOn()' method)</li>
+ * <li>Determine if a stock symbol exists (via the 'isValidSymbol()' method)</li>
  */
 class StockDatabase {
   // The AlphaVantage API to retrieve stock data from.
@@ -100,7 +100,11 @@ class StockDatabase {
    * @param symbol The symbol.
    * @return If a symbol exists or not.
    */
-  public boolean isValidSymbol(String symbol) {
+  boolean isValidSymbol(String symbol) {
     return api.isValidSymbol(symbol);
+  }
+
+  public BarGraph performance(String symbol, LocalDate start, LocalDate end, int amount) {
+    return new BarGraph("title");
   }
 }

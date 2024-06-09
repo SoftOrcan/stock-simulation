@@ -71,48 +71,43 @@ class Portfolio {
       // purchased.
       total += portfolio.get(symbol).getAmount() * stockDatabase.getPriceOn(symbol, date);
     }
+
     return total;
   }
 
-  String composition(LocalDate date) {
-    StringBuilder sb = new StringBuilder();
+  BarGraph composition(LocalDate date) {
+    BarGraph graph = new BarGraph("Composition:");
 
     if (portfolio.isEmpty()) {
-      return "Empty portfolio";
+      return graph;
     }
 
     for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
       StockPurchase purchase = entry.getValue();
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        sb.append(System.lineSeparator())
-                .append("- ")
-                .append(entry.getKey())
-                .append(": ")
-                .append(purchase.getAmount())
-                .append(" shares.");
+        graph.xAxis.add(entry.getKey());
+        graph.yAxis.add(purchase.getAmount() + " shares.");
       }
     }
-    return sb.toString();
+
+    return graph;
   }
 
-  String distribution(LocalDate date) {
-    StringBuilder sb = new StringBuilder();
+  BarGraph distribution(LocalDate date) {
+    BarGraph graph = new BarGraph("Distribution:");
 
     if (portfolio.isEmpty()) {
-      return "Empty portfolio";
+      return graph;
     }
 
     for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
       String stock = entry.getKey();
       StockPurchase purchase = entry.getValue();
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        sb.append(System.lineSeparator())
-                .append("- ")
-                .append(stock)
-                .append(": $")
-                .append(stockDatabase.getPriceOn(stock, date));
+        graph.xAxis.add(stock);
+        graph.yAxis.add("$" + stockDatabase.getPriceOn(stock, date));
       }
     }
-    return sb.toString();
+    return graph;
   }
 }

@@ -1,14 +1,9 @@
 package model;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * The StockModel class represents the "backend" of StocksStimulation. Such that, it contains
@@ -25,7 +20,6 @@ import java.util.logging.Logger;
  * stocks on a given date (via the 'valueOfPortfolio()' method).</li>
  */
 public class StockModel implements IStockModel {
-  private final Logger logger = Logger.getLogger(StockModel.class.getName());
   // Portfolios owned, represented as a HashMap<PortfolioName (String), Portfolio>.
   private final Map<String, Portfolio> portfolios;
   // The stock database to retrieve information relating to a stock from.
@@ -51,7 +45,7 @@ public class StockModel implements IStockModel {
    * @param endDate   The end date to examine.
    * @return The net profit/loss of a stock over a specified time range.
    */
-  public double calculateChange(String symbol, LocalDate startDate, LocalDate endDate) {
+  public double stockChange(String symbol, LocalDate startDate, LocalDate endDate) {
     return stockDatabase.calculateChange(symbol, startDate, endDate);
   }
 
@@ -64,7 +58,7 @@ public class StockModel implements IStockModel {
    * @param numDays The last x days to examine.
    * @return The moving average of a stock over a specified time period.
    */
-  public double movingAverage(String symbol, LocalDate date, int numDays) {
+  public double stockMovingAverage(String symbol, LocalDate date, int numDays) {
     return stockDatabase.movingAverage(symbol, date, numDays);
   }
 
@@ -78,8 +72,8 @@ public class StockModel implements IStockModel {
    * @param numDays   The x-days to examine.
    * @return The x-day crossovers of a stock over a specified time period.
    */
-  public List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
-                                        int numDays) {
+  public List<LocalDate> stockCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
+                                         int numDays) {
     return stockDatabase.findCrossovers(symbol, startDate, endDate, numDays);
   }
 
@@ -89,7 +83,7 @@ public class StockModel implements IStockModel {
    * @param symbol The symbol.
    * @return If a symbol exists or not.
    */
-  public boolean validSymbol(String symbol) {
+  public boolean isValidSymbol(String symbol) {
     return stockDatabase.isValidSymbol(symbol);
   }
 
@@ -139,7 +133,7 @@ public class StockModel implements IStockModel {
    * @param date          The date to examine.
    * @return The value of a portfolio on a specific date.
    */
-  public double valueOfPortfolio(String portfolioName, LocalDate date) {
+  public double portfolioValue(String portfolioName, LocalDate date) {
     return portfolios.get(portfolioName).value(date, stockDatabase);
   }
 
@@ -154,12 +148,17 @@ public class StockModel implements IStockModel {
   }
 
   @Override
-  public String compositionOfPortfolio(String name, LocalDate date) {
+  public BarGraph portfolioComposition(String name, LocalDate date) {
     return portfolios.get(name).composition(date);
   }
 
   @Override
-  public String distributionOfPortfolio(String name, LocalDate date) {
+  public BarGraph portfolioDistribution(String name, LocalDate date) {
     return portfolios.get(name).distribution(date);
+  }
+
+  @Override
+  public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int amount) {
+    return stockDatabase.performance(symbol, start, end, amount);
   }
 }
