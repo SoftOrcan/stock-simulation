@@ -105,7 +105,7 @@ public class TextualStockController implements IStockController {
           amount = sc.nextInt(); // Retrieve the quantity of stock purchased from the input.
           if (amount <= 0) {
             view.displayError("Must use positive amount.");
-            break;
+            view.displayMessage(menu());
           }
           verifyPortfolio(name, () -> verifySymbol(symbol, () -> {
             model.addStockToPortfolio(name, symbol, amount);
@@ -114,6 +114,7 @@ public class TextualStockController implements IStockController {
           }));
         } catch (InputMismatchException e) {
           view.displayError("Must use integer for amount.");
+          view.displayMessage(menu());
         }
         break;
       case "portfolio-remove": // Params: name, symbol
@@ -148,6 +149,7 @@ public class TextualStockController implements IStockController {
       macro.run();
     } else {
       view.displayError("Stock symbol " + symbol + " does not exist.");
+      view.displayMessage(menu());
     }
   }
 
@@ -163,6 +165,7 @@ public class TextualStockController implements IStockController {
       macro.run();
     } else {
       view.displayError("Portfolio " + name + " does not exist.");
+      view.displayMessage(menu());
     }
   }
 
