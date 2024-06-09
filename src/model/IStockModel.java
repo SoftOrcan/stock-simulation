@@ -110,4 +110,6 @@ public interface IStockModel {
   boolean hasPortfolio(String portfolioName);
 
   String compositionOfPortfolio(String name, LocalDate date);
+
+  String distributionOfPortfolio(String name, LocalDate date);
 }

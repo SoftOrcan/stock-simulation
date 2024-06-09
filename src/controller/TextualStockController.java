@@ -140,6 +140,12 @@ public class TextualStockController implements IStockController {
         verifyPortfolio(name, () -> view.displayMessage("Composition of portfolio '" + name + "':" +
                 " " + System.lineSeparator() + model.compositionOfPortfolio(name, date)));
         break;
+      case "portfolio-distribution":
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
+        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
+        verifyPortfolio(name, () -> view.displayMessage("Distribution of portfolio '" + name +
+                "': " + System.lineSeparator() + model.distributionOfPortfolio(name, date)));
+        break;
       case "portfolio-value": // Params: name, date
         name = sc.next(); // Retrieve the name of the portfolio from the input.
         date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
@@ -192,8 +198,7 @@ public class TextualStockController implements IStockController {
    */
   private String menu() {
     String ls = System.lineSeparator();
-    return "Dates must not have spaces and be parsable by LocalDate::parse (e.g. 2024-06-06)."
-            + ls + ls +
+    return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls + ls +
             "stock-examine-period [symbol] [start-date] [end-date]" + ls +
             "stock-examine-average [symbol] [date] [number of days]" + ls +
             "stock-examine-crossovers [symbol] [start-date] [end-date] [number of days]" + ls +
@@ -201,6 +206,7 @@ public class TextualStockController implements IStockController {
             "portfolio-add [name] [symbol] [amount] [date]" + ls +
             "portfolio-remove [name] [symbol] [amount] [date]" + ls +
             "portfolio-composition [name] [date]" + ls +
+            "portfolio-distribution [name] [date]" + ls +
             "portfolio-value [name] [date]" + ls +
             "q: quit the program" + ls + ls +
             "Enter instruction: ";

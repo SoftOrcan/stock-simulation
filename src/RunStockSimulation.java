@@ -21,9 +21,11 @@ public class RunStockSimulation {
    */
   public static void main(String[] args) {
     // If the "data" folder does not exist, create it.
-    if (!new File("./data").exists()) {
-      new File("./data").mkdirs();
+    File dataDirectory = new File("./data");
+    if (!dataDirectory.exists()) {
+      dataDirectory.mkdirs();
     }
+
     IStockModel model = new StockModel();
     IStockView view = new StockView();
     IStockController controller = new TextualStockController(model, view);

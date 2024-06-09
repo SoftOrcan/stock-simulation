@@ -13,6 +13,7 @@ import java.util.Map;
 class Portfolio {
   // A portfolio is a hashmap <Symbol, AmountPurchased>, represented as a <String, Integer>.
   private final Map<String, StockPurchase> portfolio;
+  private final StockDatabase stockDatabase;
 
   /**
    * Package-private initial state of a Portfolio, represented as an empty HashMap.
@@ -20,10 +21,7 @@ class Portfolio {
   Portfolio() {
     // The initial state of a Portfolio is an empty HashMap.
     this.portfolio = new HashMap<>();
-  }
-
-  public Portfolio(Map<String, StockPurchase> portfolio) {
-    this.portfolio = portfolio;
+    this.stockDatabase = new StockDatabase();
   }
 
   /**
@@ -92,6 +90,27 @@ class Portfolio {
                 .append(": ")
                 .append(purchase.getAmount())
                 .append(" shares.");
+      }
+    }
+    return sb.toString();
+  }
+
+  String distribution(LocalDate date) {
+    StringBuilder sb = new StringBuilder();
+
+    if (portfolio.isEmpty()) {
+      return "Empty portfolio";
+    }
+
+    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+      String stock = entry.getKey();
+      StockPurchase purchase = entry.getValue();
+      if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
+        sb.append(System.lineSeparator())
+                .append("- ")
+                .append(stock)
+                .append(": $")
+                .append(stockDatabase.getPriceOn(stock, date));
       }
     }
     return sb.toString();

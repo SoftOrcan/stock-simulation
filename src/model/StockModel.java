@@ -1,9 +1,14 @@
 package model;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * The StockModel class represents the "backend" of StocksStimulation. Such that, it contains
@@ -20,6 +25,7 @@ import java.util.Map;
  * stocks on a given date (via the 'valueOfPortfolio()' method).</li>
  */
 public class StockModel implements IStockModel {
+  private final Logger logger = Logger.getLogger(StockModel.class.getName());
   // Portfolios owned, represented as a HashMap<PortfolioName (String), Portfolio>.
   private final Map<String, Portfolio> portfolios;
   // The stock database to retrieve information relating to a stock from.
@@ -93,6 +99,12 @@ public class StockModel implements IStockModel {
    * @param portfolioName The name of the portfolio.
    */
   public void createPortfolio(String portfolioName) {
+  /*  File portfoliosDirectory = new File("./portfolios");
+    if (!portfoliosDirectory.exists()) {
+      portfoliosDirectory.mkdirs();
+    }*/ // TODO - files
+
+    // Add the portfolio to the map
     portfolios.put(portfolioName, new Portfolio());
   }
 
@@ -143,7 +155,11 @@ public class StockModel implements IStockModel {
 
   @Override
   public String compositionOfPortfolio(String name, LocalDate date) {
-    System.out.println(portfolios.get(name).composition(date));
     return portfolios.get(name).composition(date);
+  }
+
+  @Override
+  public String distributionOfPortfolio(String name, LocalDate date) {
+    return portfolios.get(name).distribution(date);
   }
 }
