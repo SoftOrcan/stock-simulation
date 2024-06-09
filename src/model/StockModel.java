@@ -104,8 +104,8 @@ public class StockModel implements IStockModel {
    * @param symbol        The stock to add.
    * @param amount        The quantity of the stock to add.
    */
-  public void addStockToPortfolio(String portfolioName, String symbol, int amount) {
-    portfolios.get(portfolioName).add(symbol, amount);
+  public void addStockToPortfolio(String portfolioName, String symbol, int amount, LocalDate date) {
+    portfolios.get(portfolioName).add(symbol, amount, date);
   }
 
   /**
@@ -114,8 +114,9 @@ public class StockModel implements IStockModel {
    * @param portfolioName The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  public void removeStockFromPortfolio(String portfolioName, String symbol) {
-    portfolios.get(portfolioName).remove(symbol);
+  public void removeStockFromPortfolio(String portfolioName, String symbol, int amount,
+                                       LocalDate date) {
+    portfolios.get(portfolioName).remove(symbol, amount, date);
   }
 
   /**
@@ -138,5 +139,11 @@ public class StockModel implements IStockModel {
    */
   public boolean hasPortfolio(String portfolioName) {
     return portfolios.containsKey(portfolioName);
+  }
+
+  @Override
+  public String compositionOfPortfolio(String name, LocalDate date) {
+    System.out.println(portfolios.get(name).composition(date));
+    return portfolios.get(name).composition(date);
   }
 }

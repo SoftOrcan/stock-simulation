@@ -107,10 +107,11 @@ public class TextualStockController implements IStockController {
             view.displayError("Must use positive amount.");
             view.displayMessage(menu());
           }
+          date = LocalDate.parse(sc.next());
           verifyPortfolio(name, () -> verifySymbol(symbol, () -> {
-            model.addStockToPortfolio(name, symbol, amount);
-            view.displayMessage("Added " + amount + " of " + symbol + " to portfolio "
-                    + name + ".");
+            model.addStockToPortfolio(name, symbol, amount, date);
+            view.displayMessage("On " + date + ": Added " + symbol + " (amt: " + amount + ") to "
+                    + "portfolio '" + name + "'.");
           }));
         } catch (InputMismatchException e) {
           view.displayError("Must use integer for amount.");
@@ -120,10 +121,24 @@ public class TextualStockController implements IStockController {
       case "portfolio-remove": // Params: name, symbol
         name = sc.next(); // Retrieve the name of the portfolio from the input.
         symbol = sc.next(); // Retrieve the stock name from the input.
-        verifyPortfolio(name, () -> {
-          model.removeStockFromPortfolio(name, symbol);
-          view.displayMessage("Removed " + symbol + " from portfolio " + name + ".");
-        });
+        try {
+          amount = sc.nextInt();
+          date = LocalDate.parse(sc.next());
+          verifyPortfolio(name, () -> {
+            model.removeStockFromPortfolio(name, symbol, amount, date);
+            view.displayMessage("On " + date + ": Removed " + symbol + " (amt: " + amount + ") "
+                    + "from " + "portfolio '" + name + "'.");
+          });
+        } catch (InputMismatchException e) {
+          view.displayError("Must use integer for amount.");
+          view.displayMessage(menu());
+        }
+        break;
+      case "portfolio-composition":
+        name = sc.next(); // Retrieve the name of the portfolio from the input.
+        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
+        verifyPortfolio(name, () -> view.displayMessage("Composition of portfolio '" + name + "':" +
+                " " + System.lineSeparator() + model.compositionOfPortfolio(name, date)));
         break;
       case "portfolio-value": // Params: name, date
         name = sc.next(); // Retrieve the name of the portfolio from the input.
@@ -177,13 +192,15 @@ public class TextualStockController implements IStockController {
    */
   private String menu() {
     String ls = System.lineSeparator();
-    return "Dates must not have spaces and be parsable by LocalDate::parse" + ls + ls +
+    return "Dates must not have spaces and be parsable by LocalDate::parse (e.g. 2024-06-06)."
+            + ls + ls +
             "stock-examine-period [symbol] [start-date] [end-date]" + ls +
             "stock-examine-average [symbol] [date] [number of days]" + ls +
             "stock-examine-crossovers [symbol] [start-date] [end-date] [number of days]" + ls +
             "portfolio-create [name]" + ls +
-            "portfolio-add [name] [symbol] [amount]" + ls +
-            "portfolio-remove [name] [symbol]" + ls +
+            "portfolio-add [name] [symbol] [amount] [date]" + ls +
+            "portfolio-remove [name] [symbol] [amount] [date]" + ls +
+            "portfolio-composition [name] [date]" + ls +
             "portfolio-value [name] [date]" + ls +
             "q: quit the program" + ls + ls +
             "Enter instruction: ";

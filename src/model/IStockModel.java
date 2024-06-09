@@ -80,7 +80,7 @@ public interface IStockModel {
    * @param symbol        The stock to add.
    * @param amount        The quantity of the stock to add.
    */
-  void addStockToPortfolio(String portfolioName, String symbol, int amount);
+  void addStockToPortfolio(String portfolioName, String symbol, int amount, LocalDate date);
 
   /**
    * Remove a stock (termed as 'symbol') from a portfolio.
@@ -88,7 +88,7 @@ public interface IStockModel {
    * @param portfolioName The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  void removeStockFromPortfolio(String portfolioName, String symbol);
+  void removeStockFromPortfolio(String portfolioName, String symbol, int amount, LocalDate date);
 
   /**
    * Calculate the value of a portfolio on a specific date. Calculate by identifying the value of
@@ -108,4 +108,6 @@ public interface IStockModel {
    * @return If a portfolio exists or not.
    */
   boolean hasPortfolio(String portfolioName);
+
+  String compositionOfPortfolio(String name, LocalDate date);
 }

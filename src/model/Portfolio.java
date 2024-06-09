@@ -12,7 +12,7 @@ import java.util.Map;
  */
 class Portfolio {
   // A portfolio is a hashmap <Symbol, AmountPurchased>, represented as a <String, Integer>.
-  private final Map<String, Integer> portfolio;
+  private final Map<String, StockPurchase> portfolio;
 
   /**
    * Package-private initial state of a Portfolio, represented as an empty HashMap.
@@ -22,14 +22,18 @@ class Portfolio {
     this.portfolio = new HashMap<>();
   }
 
+  public Portfolio(Map<String, StockPurchase> portfolio) {
+    this.portfolio = portfolio;
+  }
+
   /**
    * Package-private. Add a stock (termed as 'symbol') and the quantity of the stock to a Portfolio.
    *
    * @param symbol   The stock to add.
    * @param quantity The quantity of stocks purchased.
    */
-  void add(String symbol, int quantity) {
-    portfolio.put(symbol, quantity);
+  void add(String symbol, int quantity, LocalDate date) {
+    portfolio.put(symbol, new StockPurchase(quantity, date));
   }
 
   /**
@@ -37,7 +41,12 @@ class Portfolio {
    *
    * @param symbol The stock to remove.
    */
-  void remove(String symbol) {
+  void remove(String symbol, int amount, LocalDate date) {
+    int quantity = portfolio.get(symbol).getAmount() - amount;
+    // TODO - maybe remove?
+    if (quantity > 0) {
+      portfolio.put(symbol, new StockPurchase(quantity, date));
+    }
     portfolio.remove(symbol);
   }
 
@@ -52,12 +61,39 @@ class Portfolio {
    */
   double value(LocalDate date, StockDatabase stockDatabase) {
     double total = 0;
+
+    Map.Entry<String, StockPurchase> firstPurchase = portfolio.entrySet().iterator().next();
+    if (firstPurchase.getValue().getPurchaseDate().isAfter(date)) {
+      return total;
+    }
+
     // For every value in the HashMap...
     for (String symbol : portfolio.keySet()) {
       // Find the price of a stock on the given date and multiply it by the quantity of stock
       // purchased.
-      total += portfolio.get(symbol) * stockDatabase.getPriceOn(symbol, date);
+      total += portfolio.get(symbol).getAmount() * stockDatabase.getPriceOn(symbol, date);
     }
     return total;
+  }
+
+  String composition(LocalDate date) {
+    StringBuilder sb = new StringBuilder();
+
+    if (portfolio.isEmpty()) {
+      return "Empty portfolio";
+    }
+
+    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+      StockPurchase purchase = entry.getValue();
+      if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
+        sb.append(System.lineSeparator())
+                .append("- ")
+                .append(entry.getKey())
+                .append(": ")
+                .append(purchase.getAmount())
+                .append(" shares.");
+      }
+    }
+    return sb.toString();
   }
 }
