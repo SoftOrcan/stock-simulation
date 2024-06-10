@@ -14,7 +14,6 @@ import java.util.Set;
 class Portfolio {
   // A portfolio is a hashmap <Symbol, AmountPurchased>, represented as a <String, Integer>.
   private final Map<String, StockPurchase> portfolio;
-  private final StockDatabase stockDatabase;
 
   /**
    * Package-private initial state of a Portfolio, represented as an empty HashMap.
@@ -22,7 +21,7 @@ class Portfolio {
   Portfolio() {
     // The initial state of a Portfolio is an empty HashMap.
     this.portfolio = new HashMap<>();
-    this.stockDatabase = new StockDatabase();
+    StockDatabase stockDatabase = new StockDatabase();
   }
 
   /**

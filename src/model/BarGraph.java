@@ -131,9 +131,9 @@ public class BarGraph {
     }
 
     double range = max - min;
-    double size = range / prices.size();
-    if (size < 1) {
-      size = max / 50;
+    double size = max / 50;
+    while (size > 50) {
+      size = size / 50;
     }
 
     for (Double price : prices) {

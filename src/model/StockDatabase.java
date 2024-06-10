@@ -30,13 +30,13 @@ class StockDatabase {
     for (File f : Objects.requireNonNull(new File("./data").listFiles())) {
       if (f.getName().equals(symbol + ".csv")) {
         // File exists -> return the stock information.
-        return new StockInformation(symbol);
+        return new StockInformation(symbol, interval);
       }
     }
     // Retrieve the stock from the API.
     api.getData(symbol, interval);
     // File exists -> return the stock information.
-    return new StockInformation(symbol);
+    return new StockInformation(symbol, interval);
   }
 
   /**

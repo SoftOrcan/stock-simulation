@@ -95,61 +95,60 @@ public class StockModel implements IStockModel {
   /**
    * Create a portfolio with a specified name.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    */
-  public void createPortfolio(String portfolioName) {
+  public void createPortfolio(String name) {
   /*  File portfoliosDirectory = new File("./portfolios");
     if (!portfoliosDirectory.exists()) {
       portfoliosDirectory.mkdirs();
     }*/ // TODO - files
 
     // Add the portfolio to the map
-    portfolios.put(portfolioName, new Portfolio());
+    portfolios.put(name, new Portfolio());
   }
 
   /**
    * Add a quantity of stock (termed as 'symbol') to a portfolio, representative of purchasing a
    * share of a stock to a portfolio.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param symbol        The stock to add.
    * @param amount        The quantity of the stock to add.
    */
-  public void addStockToPortfolio(String portfolioName, String symbol, int amount, LocalDate date) {
-    portfolios.get(portfolioName).add(symbol, amount, date);
+  public void addStockToPortfolio(String name, String symbol, int amount, LocalDate date) {
+    portfolios.get(name).add(symbol, amount, date);
   }
 
   /**
    * Remove a stock (termed as 'symbol') from a portfolio.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  public void removeStockFromPortfolio(String portfolioName, String symbol, int amount,
-                                       LocalDate date) {
-    portfolios.get(portfolioName).remove(symbol, amount, date);
+  public void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date) {
+    portfolios.get(name).remove(symbol, amount, date);
   }
 
   /**
    * Calculate the value of a portfolio on a specific date by referencing the information of the
    * stock in stockDatabase.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param date          The date to examine.
    * @return The value of a portfolio on a specific date.
    */
-  public double portfolioValue(String portfolioName, LocalDate date) {
-    return portfolios.get(portfolioName).value(date, stockDatabase);
+  public double portfolioValue(String name, LocalDate date) {
+    return portfolios.get(name).value(date, stockDatabase);
   }
 
   /**
    * Determine if the portfolio exists.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @return Whether the portfolio exists or not.
    */
-  public boolean hasPortfolio(String portfolioName) {
-    return portfolios.containsKey(portfolioName);
+  public boolean hasPortfolio(String name) {
+    return portfolios.containsKey(name);
   }
 
   @Override

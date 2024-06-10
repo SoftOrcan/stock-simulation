@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +26,7 @@ class StockInformation {
   // Logger to record functionality or capture thrown exceptions.
   private final Logger logger = Logger.getLogger(StockInformation.class.getName());
   // HashMap that correlates a stock's opening and closing prices to a date.
-  private final Map<LocalDate, StockPrice> prices;
+  private final Map<String, StockPrice> prices;
 
   /**
    * Package-private constructor utilized to retrieve the historical data of a stock (termed as
@@ -32,10 +34,10 @@ class StockInformation {
    *
    * @param symbol The stock to examine.
    */
-  StockInformation(String symbol) {
+  StockInformation(String symbol, String interval) {
     this.prices = new HashMap<>();
     // Retrieve the historical data of a stock.
-    this.getHistoricalPrices(symbol);
+    this.getHistoricalPrices(symbol, interval);
   }
 
   /**
@@ -43,15 +45,16 @@ class StockInformation {
    *
    * @param symbol The stock to examine.
    */
-  private void getHistoricalPrices(String symbol) {
+  private void getHistoricalPrices(String symbol, String interval) {
     try (BufferedReader reader = // Attempt to read the .csv file, if it exists.
-                 new BufferedReader(new FileReader("./data/" + symbol + ".csv"))) {
+                 new BufferedReader(
+                     new FileReader("./data/" + interval + symbol + ".csv"))) {
       String line;
       reader.readLine(); // Skip header.
       // While there are entries...
       while ((line = reader.readLine()) != null) {
         String[] values = line.split(",");
-        LocalDate date = LocalDate.parse(values[0]); // Retrieve the data of the stock.
+        String date = values[0];
         double open = Double.parseDouble(values[1]); // Retrieve the opening price of the stock.
         double close = Double.parseDouble(values[4]); // Retrieve the closing price of the stock.
         prices.put(date, new StockPrice(open, close)); // Store the data in the Prices field.
@@ -121,18 +124,23 @@ class StockInformation {
   /**
    * Return the price of a stock on a specified date.
    *
-   * @param date The specified date to examine.
+   * @param time The specified date to examine.
    * @return The price of a stock on a specified date.
    */
-  double getPriceOn(String date) {
-    StockPrice price;
-    LocalDate dateLocal = LocalDate.parse(date);
-    // While there are no entries for the date...
-    while ((price = prices.get(dateLocal)) == null) {
-      // De-advance in time.
-      dateLocal = dateLocal.minusDays(1);
+  double getPriceOn(String time) {
+    StockPrice price = null;
+
+    if (time.contains(" ")) {
+      LocalDateTime dateLocalTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+      while ((price = prices.get(dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
+        dateLocalTime = dateLocalTime.minusHours(1);
+      }
+    } else {
+      LocalDate dateLocal = LocalDate.parse(time);
+      while ((price = prices.get(dateLocal.toString())) == null) {
+        dateLocal = dateLocal.minusDays(1);
+      }
     }
-    // Return the closing price of the stock for the found date.
     return price.closePrice;
   }
 }

@@ -53,7 +53,7 @@ class AlphaVantageAPI {
       InputStream in = url.openStream(); // Open an input stream to read data from the URL.
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       // Create a PrintWriter to write data to a file.
-      PrintWriter writer = new PrintWriter("./data/" + symbol + ".csv");
+      PrintWriter writer = new PrintWriter("./data/" + interval + symbol + ".csv");
 
       String line;
       // Read each line from the BufferedReader until no more lines are available.
