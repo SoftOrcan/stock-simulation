@@ -1,6 +1,5 @@
 package model;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,18 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.imageio.event.IIOWriteProgressListener;
-
-import controller.IStockController;
-import controller.TextualStockController;
-import view.IStockView;
-import view.StockView;
+import java.util.Set;
 
 public class BarGraph {
   private final String title;
-  final List<String> xAxis = new ArrayList<>(); // TODO
-  final List<String> yAxis = new ArrayList<>();
+  private final List<String> xAxis = new ArrayList<>();
+  private final List<String> yAxis = new ArrayList<>();
   private String xInterval = "";
   private String yScale = "";
   private final StockDatabase stockDatabase = new StockDatabase();
@@ -53,6 +46,22 @@ public class BarGraph {
     }
 
     return builder.toString();
+  }
+
+  void createEntries(LocalDate date, Set<Map.Entry<String, StockPurchase>> portfolio,
+                     boolean isComposition) {
+    for (Map.Entry<String, StockPurchase> entry : portfolio) {
+      String stock = entry.getKey();
+      StockPurchase purchase = entry.getValue();
+      if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
+        String xAxisValue = isComposition ? stock : entry.getKey();
+        String yAxisValue = isComposition ?
+                purchase.getAmount() + " shares." :
+                "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "");
+        xAxis.add(xAxisValue);
+        yAxis.add(yAxisValue);
+      }
+    }
   }
 
   void createXAxis(LocalDate start, LocalDate end, int xLabelCount) {

@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The Portfolio class represents a stock portfolio, containing stocks which the user has
@@ -78,27 +79,19 @@ class Portfolio {
 
   BarGraph composition(LocalDate date) {
     BarGraph graph = new BarGraph("Composition:");
-    return portfolio.isEmpty() ? graph : createEntries(date, graph, true);
+    if (portfolio.isEmpty()) {
+      return graph;
+    }
+    graph.createEntries(date, portfolio.entrySet(), true);
+    return graph;
   }
 
   BarGraph distribution(LocalDate date) {
     BarGraph graph = new BarGraph("Distribution:");
-    return portfolio.isEmpty() ? graph : createEntries(date, graph, false);
-  }
-
-  private BarGraph createEntries(LocalDate date, BarGraph graph, boolean isComposition) {
-    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
-      String stock = entry.getKey();
-      StockPurchase purchase = entry.getValue();
-      if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        String xAxisValue = isComposition ? stock : entry.getKey();
-        String yAxisValue = isComposition ?
-                purchase.getAmount() + " shares." :
-                "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "");
-        graph.xAxis.add(xAxisValue);
-        graph.yAxis.add(yAxisValue);
-      }
+    if (portfolio.isEmpty()) {
+      return graph;
     }
+    graph.createEntries(date, portfolio.entrySet(), false);
     return graph;
   }
 
