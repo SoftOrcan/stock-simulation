@@ -1,37 +1,136 @@
 package model;
 
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.imageio.event.IIOWriteProgressListener;
+
+import controller.IStockController;
+import controller.TextualStockController;
+import view.IStockView;
+import view.StockView;
 
 public class BarGraph {
-  final List<String> xAxis;
-  final List<String> yAxis;
-  final String title;
-  final int scale;
+  private final String title;
+  final List<String> xAxis = new ArrayList<>(); // TODO
+  final List<String> yAxis = new ArrayList<>();
+  private String xInterval = "";
+  private String yScale = "";
+  private final StockDatabase stockDatabase = new StockDatabase();
 
   BarGraph(String title) {
-    this.xAxis = new ArrayList<>();
-    this.yAxis = new ArrayList<>();
     this.title = title;
-    this.scale = 0;
   }
 
   public String interpret() {
     StringBuilder builder = new StringBuilder();
     builder.append(title);
-    builder.append(System.lineSeparator());
 
-    for (int i = 0; i < xAxis.size(); i++) {
-      builder.append(xAxis.get(i));
-      builder.append(": ");
-      builder.append(yAxis.get(i));
-      builder.append(System.lineSeparator());
+    for (int i = 0; i < xAxis.size(); i += 1) {
+      builder.append(System.lineSeparator())
+              .append(xAxis.get(i))
+              .append(": ")
+              .append(yAxis.get(i));
     }
 
-    if (scale != 0) {
-      builder.append(scale);
+    if (!xInterval.isEmpty()) {
+      builder.append(System.lineSeparator())
+              .append("X-Axis Scale: Every ")
+              .append(xInterval);
+    }
+
+    if (!yScale.isEmpty()) {
+      builder.append(System.lineSeparator())
+              .append("Y-Axis Scale: * = $")
+              .append(yScale);
     }
 
     return builder.toString();
+  }
+
+  void createXAxis(LocalDate start, LocalDate end, int xLabelCount) {
+    int range = (int) ChronoUnit.DAYS.between(start, end);
+
+    if (range < 5) {
+      createIntervals(start, range, xLabelCount, "yyyy-MM-dd HH:mm:ss", 24);
+    } else {
+      createIntervals(start, range, xLabelCount, "yyyy-MM-dd", 1);
+    }
+  }
+
+  private void createIntervals(LocalDate start, int range, int xLabelCount, String pattern,
+                               int increment) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    int units = range * increment / (xLabelCount - 1);
+
+    LocalDateTime curr = start.atStartOfDay();
+    for (int i = 0; i < xLabelCount; i += 1) {
+      xAxis.add(curr.format(formatter));
+      curr = pattern.equals("yyyy-MM-dd") ? curr.plusDays(units) : curr.plusHours(units);
+    }
+
+    xInterval = units + (pattern.equals("yyyy-MM-dd") ? " day(s)" : " hours");
+  }
+
+  void createStockYAxis(String name, LocalDate start, LocalDate end) {
+    List<Double> prices = getStockPrices(name, start, end);
+    createYAxis(prices);
+  }
+
+  void createPortfolioYAxis(HashMap<String, Integer> stocks, LocalDate start, LocalDate end) {
+    boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
+    String intervalType = isShortInterval ? "60min" : "";
+    List<Double> prices = new ArrayList<>();
+
+    for (String interval : xAxis) {
+      double total = 0;
+      for (Map.Entry<String, Integer> symbol : stocks.entrySet()) {
+        total += symbol.getValue()
+                * stockDatabase.getPriceOn(symbol.getKey(), interval, intervalType);
+      }
+      prices.add(total);
+    }
+
+    createYAxis(prices);
+  }
+
+  private List<Double> getStockPrices(String symbol, LocalDate start, LocalDate end) {
+    boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
+
+    List<Double> prices = new ArrayList<>();
+    for (String interval : xAxis) {
+      String intervalType = isShortInterval ? "60min" : "";
+      prices.add(stockDatabase.getPriceOn(symbol, interval, intervalType));
+    }
+
+    return prices;
+  }
+
+  private void createYAxis(List<Double> prices) {
+    double max = Double.MIN_VALUE;
+    double min = Double.MAX_VALUE;
+    for (Double number : prices) {
+      max = Math.max(max, number);
+      min = Math.min(min, number);
+    }
+
+    double range = max - min;
+    double size = range / prices.size();
+    if (size < 1) {
+      size = max / 50;
+    }
+
+    for (Double price : prices) {
+      yAxis.add("*".repeat((int) (price / size)));
+    }
+
+    yScale = String.valueOf(size);
   }
 }

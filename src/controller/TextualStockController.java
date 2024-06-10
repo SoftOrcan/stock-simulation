@@ -98,8 +98,9 @@ public class TextualStockController implements IStockController {
         start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
         end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
         amount = sc.nextInt();
-        verifySymbol(symbol, () -> view.displayMessage("Crossovers of " + symbol + ": " +
-                model.stockPerformance(symbol, start, end, amount) + "."));
+        verifySymbol(symbol, () ->
+                view.displayMessage(
+                        model.stockPerformance(symbol, start, end, amount).interpret()));
         break;
       case "portfolio-create": // Params: name
         name = sc.next(); // Retrieve the name of the portfolio from the input.
@@ -160,6 +161,14 @@ public class TextualStockController implements IStockController {
         verifyPortfolio(name, () -> view.displayMessage("Value of " + name + ": "
                 + model.portfolioValue(name, date) + "."));
         break;
+      case "portfolio-performance": // Params: name, date
+        name = sc.next(); // Retrieve the stock name from the input.
+        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
+        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
+        amount = sc.nextInt();
+        verifyPortfolio(name, () -> view.displayMessage(
+                model.portfolioPerformance(name, start, end, amount).interpret()));
+        break;
       default:
         view.displayMessage("Undefined instruction: " + userInstruction + ".");
         view.displayMessage(menu());
@@ -217,6 +226,7 @@ public class TextualStockController implements IStockController {
             "portfolio-composition [name] [date]" + ls +
             "portfolio-distribution [name] [date]" + ls +
             "portfolio-value [name] [date]" + ls +
+            "portfolio-performance [name] [start-date] [end-date] [x-label count]" + ls +
             "q: quit the program" + ls + ls +
             "Enter instruction: ";
   }

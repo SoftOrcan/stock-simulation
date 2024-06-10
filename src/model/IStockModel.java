@@ -113,5 +113,7 @@ public interface IStockModel {
 
   BarGraph portfolioDistribution(String name, LocalDate date);
 
-  BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int amount);
+  BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount);
+
+  BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end, int xLabelCount);
 }

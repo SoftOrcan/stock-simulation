@@ -87,6 +87,11 @@ public class StockModel implements IStockModel {
     return stockDatabase.isValidSymbol(symbol);
   }
 
+  @Override
+  public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
+    return stockDatabase.performance(symbol, start, end, xLabelCount);
+  }
+
   /**
    * Create a portfolio with a specified name.
    *
@@ -158,7 +163,8 @@ public class StockModel implements IStockModel {
   }
 
   @Override
-  public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int amount) {
-    return stockDatabase.performance(symbol, start, end, amount);
+  public BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end,
+                                       int xLabelCount) {
+    return portfolios.get(name).performance(name, start, end, xLabelCount);
   }
 }

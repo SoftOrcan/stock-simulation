@@ -25,7 +25,7 @@ class StockDatabase {
    * @param symbol The stock to retrieve.
    * @return A StockInformation containing the opening and closing prices of the stock.
    */
-  private StockInformation getStockInformation(String symbol) {
+  private StockInformation getStockInformation(String symbol, String interval) {
     // Check if file exists.
     for (File f : Objects.requireNonNull(new File("./data").listFiles())) {
       if (f.getName().equals(symbol + ".csv")) {
@@ -34,7 +34,7 @@ class StockDatabase {
       }
     }
     // Retrieve the stock from the API.
-    api.getData(symbol);
+    api.getData(symbol, interval);
     // File exists -> return the stock information.
     return new StockInformation(symbol);
   }
@@ -49,7 +49,7 @@ class StockDatabase {
    * @return The net profit/loss of a stock over a specified time range.
    */
   double calculateChange(String symbol, LocalDate startDate, LocalDate endDate) {
-    return getStockInformation(symbol).calculateChange(startDate, endDate);
+    return getStockInformation(symbol, "").calculateChange(startDate, endDate);
   }
 
   /**
@@ -63,7 +63,7 @@ class StockDatabase {
    * @return The moving average of a stock over a specified time period.
    */
   double movingAverage(String symbol, LocalDate date, int numDays) {
-    return getStockInformation(symbol).movingAverage(date, numDays);
+    return getStockInformation(symbol, "").movingAverage(date, numDays);
   }
 
   /**
@@ -80,7 +80,7 @@ class StockDatabase {
    */
   List<LocalDate> findCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
                                  int numDays) {
-    return getStockInformation(symbol).findCrossovers(startDate, endDate, numDays);
+    return getStockInformation(symbol, "").findCrossovers(startDate, endDate, numDays);
   }
 
   /**
@@ -90,8 +90,8 @@ class StockDatabase {
    * @param date   The specified date to examine.
    * @return The price of a stock on a specified date.
    */
-  double getPriceOn(String symbol, LocalDate date) {
-    return getStockInformation(symbol).getPriceOn(date);
+  double getPriceOn(String symbol, String date, String interval) {
+    return getStockInformation(symbol, interval).getPriceOn(date);
   }
 
   /**
@@ -104,7 +104,10 @@ class StockDatabase {
     return api.isValidSymbol(symbol);
   }
 
-  public BarGraph performance(String symbol, LocalDate start, LocalDate end, int amount) {
-    return new BarGraph("title");
+  BarGraph performance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
+    BarGraph graph = new BarGraph("Performance of '" + symbol + "':");
+    graph.createXAxis(start, end, xLabelCount);
+    graph.createStockYAxis(symbol, start, end);
+    return graph;
   }
 }

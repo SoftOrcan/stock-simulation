@@ -70,7 +70,7 @@ class StockInformation {
    * @return The net profit/loss of a stock over a specified time range.
    */
   double calculateChange(LocalDate startDate, LocalDate endDate) {
-    return getPriceOn(endDate) - getPriceOn(startDate);
+    return getPriceOn(String.valueOf(endDate)) - getPriceOn(String.valueOf(startDate));
   }
 
   /**
@@ -86,7 +86,7 @@ class StockInformation {
     double total = 0;
     for (int i = 0; i < numDays; i++) {
       // De-advance in time, and retrieve the price of the stock on previous days.
-      total += getPriceOn(date.minusDays(i));
+      total += getPriceOn(String.valueOf(date.minusDays(i)));
     }
     return total / numDays; // Calculate the average.
   }
@@ -108,7 +108,7 @@ class StockInformation {
     // While the end date has not been reached...
     while (!date.isEqual(endDate)) {
       // If the stock's price on the date is greater than the moving average...
-      if (getPriceOn(date) > movingAverage(date, numDays)) {
+      if (getPriceOn(String.valueOf(date)) > movingAverage(date, numDays)) {
         // ... add it to 'crossovers' array.
         crossovers.add(date);
       }
@@ -124,12 +124,13 @@ class StockInformation {
    * @param date The specified date to examine.
    * @return The price of a stock on a specified date.
    */
-  double getPriceOn(LocalDate date) {
+  double getPriceOn(String date) {
     StockPrice price;
+    LocalDate dateLocal = LocalDate.parse(date);
     // While there are no entries for the date...
-    while ((price = prices.get(date)) == null) {
+    while ((price = prices.get(dateLocal)) == null) {
       // De-advance in time.
-      date = date.minusDays(1);
+      dateLocal = dateLocal.minusDays(1);
     }
     // Return the closing price of the stock for the found date.
     return price.closePrice;

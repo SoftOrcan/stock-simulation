@@ -23,7 +23,7 @@ class AlphaVantageAPI {
    * Generated key to access data from the AlphaVantage API.
    */
   AlphaVantageAPI() {
-    this.apiKey = "RJ7QQ6OIQNL5BMJP";
+    this.apiKey = "XKQWZTAHCRNG4LG4";
   }
 
   /**
@@ -31,17 +31,25 @@ class AlphaVantageAPI {
    *
    * @param symbol The stock to examine.
    */
-  void getData(String symbol) {
+  void getData(String symbol, String interval) {
     URL url;
     try {
-      // Create the URL. This is the query to the web service. The query string includes the type
-      // of query (i.e. DAILY stock prices), stock symbol to be looked up, the API key and the
-      // format of the returned data (comma-separated values:csv).
-      url = new URL("https://www.alphavantage"
-              + ".co/query?function=TIME_SERIES_DAILY"
-              + "&outputsize=full"
-              + "&symbol"
-              + "=" + symbol + "&apikey=" + apiKey + "&datatype=csv");
+      if (interval.isEmpty()) {
+        // Create the URL. This is the query to the web service. The query string includes the type
+        // of query (i.e. DAILY stock prices), stock symbol to be looked up, the API key and the
+        // format of the returned data (comma-separated values:csv).
+        url = new URL("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY"
+                + "&outputsize=full"
+                + "&symbol=" + symbol
+                + "&apikey=" + apiKey + "&datatype=csv");
+      } else {
+        url = new URL("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY"
+                + "&symbol=" + symbol
+                + "&interval=" + interval
+                + "&apikey=" + apiKey + "&datatype=csv"
+        );
+      }
+
       InputStream in = url.openStream(); // Open an input stream to read data from the URL.
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       // Create a PrintWriter to write data to a file.
@@ -74,8 +82,7 @@ class AlphaVantageAPI {
     URL url;
     try {
       // Generate a URL to search for the symbol.
-      url = new URL("https://www.alphavantage"
-              + ".co/query?function=SYMBOL_SEARCH"
+      url = new URL("https://www.alphavantage.co/query?function=SYMBOL_SEARCH"
               + "&keywords=" + symbol + "&apikey=" + apiKey + "&datatype=csv");
       InputStream in = url.openStream(); // Open an input stream to read data from the URL.
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));

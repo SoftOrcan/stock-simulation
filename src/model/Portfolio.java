@@ -69,7 +69,8 @@ class Portfolio {
     for (String symbol : portfolio.keySet()) {
       // Find the price of a stock on the given date and multiply it by the quantity of stock
       // purchased.
-      total += portfolio.get(symbol).getAmount() * stockDatabase.getPriceOn(symbol, date);
+      total += portfolio.get(symbol).getAmount() *
+              stockDatabase.getPriceOn(symbol, String.valueOf(date), "");
     }
 
     return total;
@@ -77,37 +78,40 @@ class Portfolio {
 
   BarGraph composition(LocalDate date) {
     BarGraph graph = new BarGraph("Composition:");
-
-    if (portfolio.isEmpty()) {
-      return graph;
-    }
-
-    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
-      StockPurchase purchase = entry.getValue();
-      if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        graph.xAxis.add(entry.getKey());
-        graph.yAxis.add(purchase.getAmount() + " shares.");
-      }
-    }
-
-    return graph;
+    return portfolio.isEmpty() ? graph : createEntries(date, graph, true);
   }
 
   BarGraph distribution(LocalDate date) {
     BarGraph graph = new BarGraph("Distribution:");
+    return portfolio.isEmpty() ? graph : createEntries(date, graph, false);
+  }
 
-    if (portfolio.isEmpty()) {
-      return graph;
-    }
-
+  private BarGraph createEntries(LocalDate date, BarGraph graph, boolean isComposition) {
     for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
       String stock = entry.getKey();
       StockPurchase purchase = entry.getValue();
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        graph.xAxis.add(stock);
-        graph.yAxis.add("$" + stockDatabase.getPriceOn(stock, date));
+        String xAxisValue = isComposition ? stock : entry.getKey();
+        String yAxisValue = isComposition ?
+                purchase.getAmount() + " shares." :
+                "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "");
+        graph.xAxis.add(xAxisValue);
+        graph.yAxis.add(yAxisValue);
       }
     }
+    return graph;
+  }
+
+  BarGraph performance(String name, LocalDate start, LocalDate end, int xLabelCount) {
+    BarGraph graph = new BarGraph("Performance of '" + name + "':");
+    graph.createXAxis(start, end, xLabelCount);
+
+    HashMap<String, Integer> stocks = new HashMap<>();
+    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+      stocks.put(entry.getKey(), entry.getValue().getAmount());
+    }
+
+    graph.createPortfolioYAxis(stocks, start, end);
     return graph;
   }
 }
