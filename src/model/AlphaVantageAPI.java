@@ -32,42 +32,27 @@ class AlphaVantageAPI {
    * @param symbol The stock to examine.
    */
   void getData(String symbol, String interval) {
-    URL url;
     try {
-      if (interval.isEmpty()) {
-        // Create the URL. This is the query to the web service. The query string includes the type
-        // of query (i.e. DAILY stock prices), stock symbol to be looked up, the API key and the
-        // format of the returned data (comma-separated values:csv).
-        url = new URL("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY"
-                + "&outputsize=full"
-                + "&symbol=" + symbol
-                + "&apikey=" + apiKey + "&datatype=csv");
-      } else {
-        url = new URL("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY"
-                + "&symbol=" + symbol
-                + "&interval=" + interval
-                + "&apikey=" + apiKey + "&datatype=csv"
-        );
-      }
+      String baseURL = "https://www.alphavantage.co/query?function=";
+      String apiURL = baseURL
+          + (interval.isEmpty() ?
+          "TIME_SERIES_DAILY&outputsize=full" :
+          "TIME_SERIES_INTRADAY&interval=" + interval)
+          + "&symbol=" + symbol + "&apikey=" + apiKey + "&datatype=csv";
 
-      InputStream in = url.openStream(); // Open an input stream to read data from the URL.
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-      // Create a PrintWriter to write data to a file.
+      URL url = new URL(apiURL);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
       PrintWriter writer = new PrintWriter("./data/" + interval + symbol + ".csv");
 
       String line;
-      // Read each line from the BufferedReader until no more lines are available.
       while ((line = reader.readLine()) != null) {
-        // Write each line to the PrintWriter with a newline character.
         writer.write(line + "\n");
       }
       reader.close();
       writer.close();
     } catch (MalformedURLException e) {
-      // Log a severe message with the exception message.
       logger.severe("Malformed URL: " + e.getMessage());
     } catch (IOException e) {
-      // Log a severe message with the exception message.
       logger.severe("IO Exception: " + e.getMessage());
     }
   }

@@ -131,8 +131,10 @@ class StockInformation {
     StockPrice price = null;
 
     if (time.contains(" ")) {
-      LocalDateTime dateLocalTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-      while ((price = prices.get(dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
+      LocalDateTime dateLocalTime =
+          LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+      while ((price = prices.get(
+          dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd " + "HH:mm:ss")))) == null) {
         dateLocalTime = dateLocalTime.minusHours(1);
       }
     } else {
