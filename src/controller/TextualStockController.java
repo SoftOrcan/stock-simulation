@@ -178,16 +178,13 @@ public class TextualStockController implements IStockController {
 
   private String validateName(Scanner sc) {
     String prompt = "Enter portfolio name:";
-
     view.displayMessage(prompt);
 
     return sc.next();
   }
 
   private String validatePortfolio(Scanner sc) {
-    String prompt = "Enter portfolio name to modify/view:" + ls
-        + "b: return to menu" + ls
-        + "q: quit the program";
+    String prompt = "Enter portfolio name to modify/view:";
     view.displayMessage(prompt);
 
     String name = sc.next();
@@ -202,19 +199,15 @@ public class TextualStockController implements IStockController {
   }
 
   private String validateSymbol(Scanner sc) {
-    String prompt = "Enter stock symbol (e.g. 'AAPL' for Apple or 'KO' for Cola-Cola Company):" + ls
-        + "b: return to menu" + ls
-        + "q: quit the program";
+    String prompt = "Enter stock symbol (e.g. 'AAPL' for Apple or 'KO' for Cola-Cola Company):";
     view.displayMessage(prompt);
 
     String symbol = sc.next();
-    // here
 
     while (!model.isValidSymbol(symbol)) {
       view.displayError("Stock symbol '" + symbol + "' does not exist.");
       view.displayMessage(prompt);
       symbol = sc.next();
-      // here
     }
 
     return symbol;
@@ -275,6 +268,7 @@ public class TextualStockController implements IStockController {
     view.displayMessage(prompt);
 
     String value = sc.next();
+
     while (!isValidDate(value, dateComponent)) {
       view.displayError("The " + dateComponent + " is invalid.");
       view.displayMessage(prompt);
@@ -345,8 +339,7 @@ public class TextualStockController implements IStockController {
         "10) portfolio-value" + ls +
         "11) portfolio-rebalance" + ls +
         "12) portfolio-performance" + ls +
-        "13) m: return to menu" + ls +
-        "14) q: quit the program" + ls +
+        "13) q: quit the program" + ls + ls +
         "Enter numerical option (e.g. Enter '1' for stock-period): ";
   }
 }
