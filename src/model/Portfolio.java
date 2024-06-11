@@ -1,9 +1,10 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The Portfolio class represents a stock portfolio, containing stocks which the user has
@@ -21,7 +22,6 @@ class Portfolio {
   Portfolio() {
     // The initial state of a Portfolio is an empty HashMap.
     this.portfolio = new HashMap<>();
-    StockDatabase stockDatabase = new StockDatabase();
   }
 
   /**
@@ -104,6 +104,18 @@ class Portfolio {
     }
 
     graph.createPortfolioYAxis(stocks, start, end);
+    return graph;
+  }
+
+  BarGraph rebalance(String name, List<Integer> split, LocalDate date) {
+    BarGraph graph = new BarGraph("On " + date + ": Rebalanced '" + name + "':");
+
+    List<String> symbols = new ArrayList<>();
+    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+      symbols.add(entry.getKey());
+    }
+
+    graph.rebalance(symbols, split, date, value(date, new StockDatabase()));
     return graph;
   }
 }

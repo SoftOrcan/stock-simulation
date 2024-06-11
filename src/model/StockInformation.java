@@ -128,7 +128,7 @@ class StockInformation {
    * @return The price of a stock on a specified date.
    */
   double getPriceOn(String time) {
-    StockPrice price = null;
+    StockPrice price;
 
     if (time.contains(" ")) {
       LocalDateTime dateLocalTime =

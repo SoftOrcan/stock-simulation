@@ -151,19 +151,20 @@ public class StockModel implements IStockModel {
     return portfolios.containsKey(name);
   }
 
-  @Override
   public BarGraph portfolioComposition(String name, LocalDate date) {
     return portfolios.get(name).composition(date);
   }
 
-  @Override
   public BarGraph portfolioDistribution(String name, LocalDate date) {
     return portfolios.get(name).distribution(date);
   }
 
-  @Override
   public BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end,
                                        int xLabelCount) {
     return portfolios.get(name).performance(name, start, end, xLabelCount);
+  }
+
+  public BarGraph portfolioRebalance(String name, List<Integer> split, LocalDate date) {
+    return portfolios.get(name).rebalance(name, split, date);
   }
 }

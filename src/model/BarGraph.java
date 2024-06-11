@@ -124,13 +124,10 @@ public class BarGraph {
 
   private void createYAxis(List<Double> prices) {
     double max = Double.MIN_VALUE;
-    double min = Double.MAX_VALUE;
     for (Double number : prices) {
       max = Math.max(max, number);
-      min = Math.min(min, number);
     }
 
-    double range = max - min;
     double size = max / 50;
     while (size > 50) {
       size = size / 50;
@@ -141,5 +138,22 @@ public class BarGraph {
     }
 
     yScale = String.valueOf(size);
+  }
+
+  void rebalance(List<String> symbols, List<Integer> split, LocalDate date, double value) {
+    double rebalancedPrice;
+    double rebalancedShares;
+    String stock;
+    double stockPrice;
+
+    for (int i = 0; i < split.size(); i += 1) {
+      rebalancedPrice = value * split.get(i) * 0.01;
+      stock = symbols.get(i);
+      stockPrice = stockDatabase.getPriceOn(stock, String.valueOf(date), "");
+      rebalancedShares = stockPrice / rebalancedPrice;
+
+      xAxis.add("- " + stock);
+      yAxis.add(rebalancedShares + " shares, $" + rebalancedPrice);
+    }
   }
 }

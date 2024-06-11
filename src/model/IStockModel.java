@@ -68,46 +68,46 @@ public interface IStockModel {
    * Create a portfolio with a specified name. A portfolio is utilized to contain shares of one or
    * more stock.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    */
-  void createPortfolio(String portfolioName);
+  void createPortfolio(String name);
 
   /**
    * Add a stock (termed as 'symbol') to a portfolio, representative of purchasing a share of a
    * stock to a portfolio.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param symbol        The stock to add.
    * @param amount        The quantity of the stock to add.
    */
-  void addStockToPortfolio(String portfolioName, String symbol, int amount, LocalDate date);
+  void addStockToPortfolio(String name, String symbol, int amount, LocalDate date);
 
   /**
    * Remove a stock (termed as 'symbol') from a portfolio.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  void removeStockFromPortfolio(String portfolioName, String symbol, int amount, LocalDate date);
+  void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date);
 
   /**
    * Calculate the value of a portfolio on a specific date. Calculate by identifying the value of
    * each stock in the portfolio on the specified date multiplied by the quantity of the respective
    * stock.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @param date          The date to examine.
    * @return The value of a portfolio on a specific date.
    */
-  double portfolioValue(String portfolioName, LocalDate date);
+  double portfolioValue(String name, LocalDate date);
 
   /**
    * Determine if a portfolio exists.
    *
-   * @param portfolioName The name of the portfolio.
+   * @param name The name of the portfolio.
    * @return If a portfolio exists or not.
    */
-  boolean hasPortfolio(String portfolioName);
+  boolean hasPortfolio(String name);
 
   BarGraph portfolioComposition(String name, LocalDate date);
 
@@ -116,4 +116,6 @@ public interface IStockModel {
   BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount);
 
   BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end, int xLabelCount);
+
+  BarGraph portfolioRebalance(String name, List<Integer> split, LocalDate date);
 }
