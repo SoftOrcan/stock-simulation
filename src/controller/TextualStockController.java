@@ -3,51 +3,30 @@ package controller;
 import model.IStockModel;
 import view.IStockView;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.InputMismatchException;
+import java.time.Month;
+import java.time.Year;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-/**
- * A TextualStocksController receives and "parses" inputs by calling the appropriate, corresponding
- * method(s) in IStockModel (via the 'control()' and 'processCommand()' methods). In addition, the
- * controller interacts with IStockView by displaying the output textually, and contains the method
- * 'menu()' to display the available features of the program.
- */
 public class TextualStockController implements IStockController {
-  // The model, or "backend", which contains methods to "parse" the user input (i.e. compute the
-  // result).
+  private final String ls = System.lineSeparator();
   private final IStockModel model;
-  // The view, or "frontend", which displays the output textually to the user.
   private final IStockView view;
 
-  /**
-   * A TextualStocksController receives and "parses" inputs by calling the appropriate,
-   * corresponding method(s) in IStockModel (via the 'control()' and 'processCommand()' methods). In
-   * addition, the controller interacts with IStockView by displaying the output textually. This
-   * constructor is public as it is called by tests beyond the package's scope.
-   *
-   * @param model The model, which contains methods to compute the user input.
-   * @param view  The view to display the output textually to the user.
-   */
   public TextualStockController(IStockModel model, IStockView view) {
     this.model = model;
     this.view = view;
   }
 
-  /**
-   * Display the menu to the user, and process user inputs by either calling methods in
-   * IStockController or halt the program at the keystroke 'q'.
-   */
   public void control() {
     Scanner sc = new Scanner(System.in);
-    // Print the welcome message.
     view.displayMessage(menu());
 
-    while (sc.hasNext()) { // Continue until the user quits.
-      String userInstruction = sc.next(); // Take an instruction name.
+    while (sc.hasNext()) {
+      String userInstruction = sc.next();
       if (userInstruction.equals("q")) {
         break;
       } else {
@@ -56,141 +35,140 @@ public class TextualStockController implements IStockController {
     }
   }
 
-  /**
-   * Process the user input by parsing and calling the corresponding method in IStockModel and
-   * displaying the result via IStockView.
-   *
-   * @param userInstruction The user input to parse.
-   * @param sc              The scanner to parse the user input.
-   * @param model           The IStockModel to compute based on the command provided.
-   */
   private void processCommand(String userInstruction, Scanner sc, IStockModel model) {
-    String symbol; // The stock symbol to examine.
-    LocalDate date; // The date to examine.
-    LocalDate start; // The start date to examine.
-    LocalDate end; // The end date to examine.
-    String split;
-    int numDays; // The range of days to de-advance.
-    int amount; // The amount of stocks to purchase.
+    String name;
+    String symbol;
+    LocalDate date;
+    LocalDate start;
+    LocalDate end;
+    List<Integer> split;
+    int numDays;
+    int amount;
 
     switch (userInstruction) {
-      case "stock-period": // Params: symbol, start, end
-        view.displayMessage(promptSymbol());
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
-        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
-        verifySymbol(symbol, () -> view.displayMessage("Gain/Loss of " + symbol + ": " +
-            model.stockChange(symbol, start, end) + "."));
+      case "1":
+        symbol = validateSymbol(sc);
+        start = LocalDate.parse(
+            validateDate(sc, "year", 1) + "-"
+                + validateDate(sc, "month", 1) + "-"
+                + validateDate(sc, "day", 1));
+        end = LocalDate.parse(
+            validateDate(sc, "year", 2) + "-"
+                + validateDate(sc, "month", 2) + "-"
+                + validateDate(sc, "day", 2));
+        view.displayMessage("Gain/Loss of '" + symbol + "': "
+            + model.stockChange(symbol, start, end) + ".");
         break;
-      case "stock-average": // Params: symbol, date, x
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
-        numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
-        verifySymbol(symbol, () -> view.displayMessage("Moving average of " + symbol + ": " +
-            model.stockMovingAverage(symbol, date, numDays) + "."));
+      case "2":
+        symbol = validateSymbol(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        numDays = validateNatural(sc);
+        view.displayMessage("Moving average of '" + symbol + "': "
+            + model.stockMovingAverage(symbol, date, numDays) + ".");
         break;
-      case "stock-crossovers": // Params: symbol, start, end, x
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
-        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
-        numDays = sc.nextInt(); // Retrieve the x-day quantity from the input.
-        verifySymbol(symbol, () -> view.displayMessage("Crossovers of " + symbol + ": " +
-            model.stockCrossovers(symbol, start, end, numDays) + "."));
+      case "3":
+        symbol = validateSymbol(sc);
+        start = LocalDate.parse(
+            validateDate(sc, "year", 1) + "-"
+                + validateDate(sc, "month", 1) + "-"
+                + validateDate(sc, "day", 1));
+        end = LocalDate.parse(
+            validateDate(sc, "year", 2) + "-"
+                + validateDate(sc, "month", 2) + "-"
+                + validateDate(sc, "day", 2));
+        numDays = validateNatural(sc);
+        view.displayMessage("Crossovers of '" + symbol + "': "
+            + model.stockCrossovers(symbol, start, end, numDays) + ".");
         break;
-      case "stock-performance":
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
-        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
-        amount = sc.nextInt();
-        verifySymbol(symbol, () ->
-            view.displayMessage(
-                model.stockPerformance(symbol, start, end, amount).interpret()));
+      case "4":
+        symbol = validateSymbol(sc);
+        start = LocalDate.parse(
+            validateDate(sc, "year", 1) + "-"
+                + validateDate(sc, "month", 1) + "-"
+                + validateDate(sc, "day", 1));
+        end = LocalDate.parse(
+            validateDate(sc, "year", 2) + "-"
+                + validateDate(sc, "month", 2) + "-"
+                + validateDate(sc, "day", 2));
+        amount = validateNatural(sc);
+        view.displayMessage(model.stockPerformance(symbol, start, end, amount).interpret());
         break;
-      case "portfolio-create": // Params: name
-        final String portfolioNameCreate = sc.next(); // Retrieve the name of the portfolio from the input.
-        model.createPortfolio(portfolioNameCreate);
-        view.displayMessage("Created portfolio " + portfolioNameCreate + ".");
+      case "5":
+        name = validateName(sc);
+        model.createPortfolio(name);
+        view.displayMessage("Created portfolio '" + name + "'.");
         break;
-      case "portfolio-add": // Params: name, symbol, amount
-        final String nameAdd = sc.next(); // Retrieve the name of the portfolio from the input.
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        try {
-          amount = sc.nextInt(); // Retrieve the quantity of stock purchased from the input.
-          if (amount <= 0) {
-            view.displayError("Must use positive amount.");
-            view.displayMessage(menu());
-          }
-          date = LocalDate.parse(sc.next());
-          verifyPortfolio(nameAdd, () -> verifySymbol(symbol, () -> {
-            model.addStockToPortfolio(nameAdd, symbol, amount, date);
-            view.displayMessage("On " + date + ": Added " + symbol + " (amt: " + amount + ") to "
-                + "portfolio '" + nameAdd + "'.");
-          }));
-        } catch (InputMismatchException e) {
-          view.displayError("Must use integer for amount.");
-          view.displayMessage(menu());
-        }
+      case "6":
+        name = validatePortfolio(sc);
+        symbol = validateSymbol(sc);
+        amount = validateNatural(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        model.addStockToPortfolio(name, symbol, amount, date);
+        view.displayMessage("On " + date + ": Added '" + symbol + "' (quantity: " + amount + ") to "
+            + "portfolio '" + name + "'.");
         break;
-      case "portfolio-remove": // Params: name, symbol
-        // Retrieve the name of the portfolio from the input.
-        final String nameRemove = sc.next();
-        symbol = sc.next(); // Retrieve the stock name from the input.
-        try {
-          amount = sc.nextInt();
-          date = LocalDate.parse(sc.next());
-          verifyPortfolio(nameRemove, () -> {
-            model.removeStockFromPortfolio(nameRemove, symbol, amount, date);
-            view.displayMessage("On " + date + ": Removed " + symbol + " (amt: " + amount + ") "
-                + "from " + "portfolio '" + nameRemove + "'.");
-          });
-        } catch (InputMismatchException e) {
-          view.displayError("Must use integer for amount.");
-          view.displayMessage(menu());
-        }
+      case "7":
+        name = validatePortfolio(sc);
+        symbol = validateSymbol(sc);
+        amount = validateNatural(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        model.removeStockFromPortfolio(name, symbol, amount, date);
+        view.displayMessage("On " + date + ": Removed '" + symbol + "' (quantity: " + amount + ") "
+            + "from portfolio '" + name + "'.");
         break;
-      case "portfolio-composition":
-        // Retrieve the name of the portfolio from the input.
-        final String nameComposition = sc.next();
-        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
-        verifyPortfolio(nameComposition, () ->
-            view.displayMessage(model.portfolioComposition(nameComposition, date).interpret()));
+      case "8":
+        name = validatePortfolio(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        view.displayMessage(model.portfolioComposition(name, date).interpret());
         break;
-      case "portfolio-distribution":
-        // Retrieve the name of the portfolio from the input.
-        final String nameDistribution = sc.next();
-        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
-        verifyPortfolio(nameDistribution,
-            () -> view.displayMessage(
-                model.portfolioDistribution(nameDistribution, date).interpret()));
+      case "9":
+        name = validatePortfolio(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        view.displayMessage(model.portfolioDistribution(name, date).interpret());
         break;
-      case "portfolio-value": // Params: name, date
-        // Retrieve the name of the portfolio from the input.
-        final String nameValue = sc.next();
-        date = LocalDate.parse(sc.next()); // Retrieve the date from the input.
-        verifyPortfolio(nameValue, () ->
-            view.displayMessage("Value of " + nameValue + ": " +
-                model.portfolioValue(nameValue, date) + "."));
+      case "10":
+        name = validatePortfolio(sc);
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        view.displayMessage("Value of " + name + ": " + model.portfolioValue(name, date) + ".");
         break;
-      case "portfolio-rebalance":
-        final String nameRebalance = sc.next();
-        split = sc.next();
-        // TODO - verify split
-        List<Integer> numericalSplit =
-            Arrays.stream(split.split("-"))
-                .map(Integer::valueOf)
-                .collect(Collectors.toList());
-        date = LocalDate.parse(sc.next());
-        verifyPortfolio(nameRebalance,
-            () -> view.displayMessage(
-                model.portfolioRebalance(nameRebalance, numericalSplit, date).interpret()));
-      case "portfolio-performance": // Params: name, date
-        // Retrieve the stock name from the input.
-        final String namePerformance = sc.next();
-        start = LocalDate.parse(sc.next()); // Retrieve the starting date from the input.
-        end = LocalDate.parse(sc.next()); // Retrieve the ending date from the input.
-        amount = sc.nextInt();
-        verifyPortfolio(namePerformance, () -> view.displayMessage(
-            model.portfolioPerformance(namePerformance, start, end, amount).interpret()));
+      case "11":
+        name = validatePortfolio(sc);
+        split = validateSplit(name, sc).stream().map(Integer::valueOf).collect(Collectors.toList());
+        date = LocalDate.parse(
+            validateDate(sc, "year", 3) + "-"
+                + validateDate(sc, "month", 3) + "-"
+                + validateDate(sc, "day", 3));
+        view.displayMessage(model.portfolioRebalance(name, split, date).interpret());
+      case "12":
+        name = validatePortfolio(sc);
+        start = LocalDate.parse(
+            validateDate(sc, "year", 1) + "-"
+                + validateDate(sc, "month", 1) + "-"
+                + validateDate(sc, "day", 1));
+        end = LocalDate.parse(
+            validateDate(sc, "year", 2) + "-"
+                + validateDate(sc, "month", 2) + "-"
+                + validateDate(sc, "day", 2));
+        amount = validateNatural(sc);
+        view.displayMessage(model.portfolioPerformance(name, start, end, amount).interpret());
         break;
       default:
         view.displayMessage("Undefined instruction: " + userInstruction + ".");
@@ -198,69 +176,177 @@ public class TextualStockController implements IStockController {
     }
   }
 
-  /**
-   * Validate a stock is an available symbol through the AlphaVantage API. If the symbol exists,
-   * call a command, specified by the user instruction.
-   *
-   * @param symbol The stock symbol to validate.
-   * @param macro  The command to execute.
-   */
-  private void verifySymbol(String symbol, Runnable macro) {
-    if (model.isValidSymbol(symbol)) {
-      macro.run();
-    } else {
-      view.displayError("Stock symbol " + symbol + " does not exist.");
-      view.displayMessage(menu());
-    }
+  private String validateName(Scanner sc) {
+    String prompt = "Enter portfolio name:";
+
+    view.displayMessage(prompt);
+
+    return sc.next();
   }
 
-  /**
-   * Validate a portfolio exists based on its name. If the portfolio exists, call a command,
-   * specified by the user instruction.
-   *
-   * @param name  The portfolio name to validate.
-   * @param macro The command to execute.
-   */
-  private void verifyPortfolio(String name, Runnable macro) {
-    if (model.hasPortfolio(name)) {
-      macro.run();
-    } else {
+  private String validatePortfolio(Scanner sc) {
+    String prompt = "Enter portfolio name to modify/view:" + ls
+        + "b: return to menu" + ls
+        + "q: quit the program";
+    view.displayMessage(prompt);
+
+    String name = sc.next();
+
+    while (!model.hasPortfolio(name)) {
       view.displayError("Portfolio " + name + " does not exist.");
-      view.displayMessage(menu());
+      view.displayMessage(prompt);
+      name = sc.next();
+    }
+
+    return name;
+  }
+
+  private String validateSymbol(Scanner sc) {
+    String prompt = "Enter stock symbol (e.g. 'AAPL' for Apple or 'KO' for Cola-Cola Company):" + ls
+        + "b: return to menu" + ls
+        + "q: quit the program";
+    view.displayMessage(prompt);
+
+    String symbol = sc.next();
+    // here
+
+    while (!model.isValidSymbol(symbol)) {
+      view.displayError("Stock symbol '" + symbol + "' does not exist.");
+      view.displayMessage(prompt);
+      symbol = sc.next();
+      // here
+    }
+
+    return symbol;
+  }
+
+  private int validateNatural(Scanner sc) {
+    String prompt = "Enter a numerical value:";
+    view.displayMessage(prompt);
+
+    String value = sc.next();
+
+    while (!isValidInteger(value)) {
+      view.displayError("The numerical value " + value + " is invalid.");
+      view.displayMessage(prompt);
+      value = sc.next();
+    }
+
+    return Integer.parseInt(value);
+  }
+
+  private boolean isValidInteger(String number) {
+    try {
+      int value = Integer.parseInt(String.valueOf(number));
+      return value >= 0;
+    } catch (NumberFormatException e) {
+      return false;
     }
   }
 
-  private String promptSymbol() {
-    return "Enter a VALID stock symbol (e.g. 'AAPL' for Apple or 'KO' for Cola-Cola Company): ";
+  private String validateDate(Scanner sc, String dateComponent, int dateType) {
+    String prompt = "";
+    String type = "";
+
+    switch (dateType) {
+      case 1:
+        type = "START ";
+        break;
+      case 2:
+        type = "END ";
+        break;
+      case 3:
+        type = "";
+        break;
+    }
+
+    switch (dateComponent) {
+      case "year":
+        prompt = "Enter " + type + "year (e.g. '2024' or '2000'):";
+        break;
+      case "month":
+        prompt = "Enter " + type + "month (i.e. from '01' to '12'):";
+        break;
+      case "day":
+        prompt = "Enter " + type + "day (e.g. '04', '01', or '19'):";
+        break;
+    }
+
+    view.displayMessage(prompt);
+
+    String value = sc.next();
+    while (!isValidDate(value, dateComponent)) {
+      view.displayError("The " + dateComponent + " is invalid.");
+      view.displayMessage(prompt);
+      value = sc.next();
+    }
+
+    return value;
   }
 
-  private String promptYear() {
-    return "Enter a VALID year (e.g. '2024' or '2017'): ";
+  private boolean isValidDate(String value, String dateComponent) {
+    try {
+      switch (dateComponent) {
+        case "year":
+          if (value.length() != 4) {
+            return false;
+          }
+          Year.of(Integer.parseInt(value));
+          break;
+        case "month":
+          if (value.length() != 2) {
+            return false;
+          }
+          Month.of(Integer.parseInt(value));
+          break;
+        case "day":
+          if (value.length() != 2) {
+            return false;
+          }
+          int day = Integer.parseInt(value);
+          if (day < 1 || day > 31) {
+            return false;
+          }
+          break;
+        default:
+          return false; // Invalid date component
+      }
+      return true;
+    } catch (DateTimeException | NumberFormatException e) {
+      return false;
+    }
   }
 
-  /**
-   * Provide the available features of the program and the parameters which the methods require to
-   * compute the result.
-   *
-   * @return A String displaying the available features of the program.
-   */
+  private List<String> validateSplit(String name, Scanner sc) {
+    String prompt = "Enter split for each of the stock (e.g. '50-50' or '30-40-30'):";
+    List<String> split = List.of(sc.next().split("-"));
+
+    while (!model.isValidSplit(name, split)) {
+      view.displayError("The split " + split + " contains non-numeric values or do not contain "
+          + "the split for every stock in portfolio '" + name + "'.");
+      view.displayMessage(prompt);
+      split = List.of(sc.next().split("-"));
+    }
+
+    return split;
+  }
+
   private String menu() {
-    String ls = System.lineSeparator();
-    return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls + ls +
-        "1) stock-period [symbol] [start-date] [end-date]" + ls +
-        "2) stock-average [symbol] [date] [number of days]" + ls +
-        "3) stock-crossovers [symbol] [start-date] [end-date] [number of days]" + ls +
-        "4) stock-performance [symbol] [start-date] [end-date] [x-label count]" + ls +
-        "5) portfolio-create [name]" + ls +
-        "6) portfolio-add [name] [symbol] [amount] [date]" + ls +
-        "7) portfolio-remove [name] [symbol] [amount] [date]" + ls +
-        "8) portfolio-composition [name] [date]" + ls +
-        "9) portfolio-distribution [name] [date]" + ls +
-        "10) portfolio-value [name] [date]" + ls +
-        "11) portfolio-rebalance [name] [split] [date]" + ls +
-        "12) portfolio-performance [name] [start-date] [end-date] [x-label count]" + ls +
-        "13) b: return to previous page" + ls +
-        "14) q: quit the program" + ls + ls +
+    return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls +
+        "1) stock-period" + ls +
+        "2) stock-average" + ls +
+        "3) stock-crossovers" + ls +
+        "4) stock-performance" + ls +
+        "5) portfolio-create" + ls +
+        "6) portfolio-add" + ls +
+        "7) portfolio-remove" + ls +
+        "8) portfolio-composition" + ls +
+        "9) portfolio-distribution" + ls +
+        "10) portfolio-value" + ls +
+        "11) portfolio-rebalance" + ls +
+        "12) portfolio-performance" + ls +
+        "13) m: return to menu" + ls +
+        "14) q: quit the program" + ls +
         "Enter numerical option (e.g. Enter '1' for stock-period): ";
   }
 }

@@ -118,4 +118,19 @@ class Portfolio {
     graph.rebalance(symbols, split, date, value(date, new StockDatabase()));
     return graph;
   }
+
+  boolean isValidSplit(List<String> split) {
+    if (split.size() != portfolio.size()) {
+      return false;
+    }
+
+    try {
+      for (String value : split) {
+        Integer.parseInt(value);
+      }
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
 }

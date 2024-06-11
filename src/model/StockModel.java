@@ -92,16 +92,14 @@ public class StockModel implements IStockModel {
     return stockDatabase.performance(symbol, start, end, xLabelCount);
   }
 
+
   /**
    * Create a portfolio with a specified name.
    *
    * @param name The name of the portfolio.
    */
   public void createPortfolio(String name) {
-  /*  File portfoliosDirectory = new File("./portfolios");
-    if (!portfoliosDirectory.exists()) {
-      portfoliosDirectory.mkdirs();
-    }*/ // TODO - files
+    // TODO - files
 
     // Add the portfolio to the map
     portfolios.put(name, new Portfolio());
@@ -166,5 +164,10 @@ public class StockModel implements IStockModel {
 
   public BarGraph portfolioRebalance(String name, List<Integer> split, LocalDate date) {
     return portfolios.get(name).rebalance(name, split, date);
+  }
+
+  @Override
+  public boolean isValidSplit(String name, List<String> split) {
+    return portfolios.get(name).isValidSplit(split);
   }
 }

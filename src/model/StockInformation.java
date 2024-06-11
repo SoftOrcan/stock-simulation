@@ -47,8 +47,8 @@ class StockInformation {
    */
   private void getHistoricalPrices(String symbol, String interval) {
     try (BufferedReader reader = // Attempt to read the .csv file, if it exists.
-                 new BufferedReader(
-                     new FileReader("./data/" + interval + symbol + ".csv"))) {
+             new BufferedReader(
+                 new FileReader("./data/" + interval + symbol + ".csv"))) {
       String line;
       reader.readLine(); // Skip header.
       // While there are entries...
@@ -96,9 +96,9 @@ class StockInformation {
 
   /**
    * Calculate the x-day crossovers of a stock over a specified time period. An x-day crossover
-   * happens when the closing price for a day is greater than the x-day moving average for that
-   * day. A crossover signals a "buy" opportunity. A crossover can be defined over any period of
-   * time, although the 30-day period (i.e. the 30-day crossover) is usually popular.
+   * happens when the closing price for a day is greater than the x-day moving average for that day.
+   * A crossover signals a "buy" opportunity. A crossover can be defined over any period of time,
+   * although the 30-day period (i.e. the 30-day crossover) is usually popular.
    *
    * @param startDate The start date to examine.
    * @param endDate   The last date to examine.
