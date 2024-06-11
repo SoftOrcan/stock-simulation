@@ -238,32 +238,13 @@ public class TextualStockController implements IStockController {
   }
 
   private String validateDate(Scanner sc, String dateComponent, int dateType) {
-    String prompt = "";
-    String type = "";
-
-    switch (dateType) {
-      case 1:
-        type = "START ";
-        break;
-      case 2:
-        type = "END ";
-        break;
-      case 3:
-        type = "";
-        break;
-    }
-
-    switch (dateComponent) {
-      case "year":
-        prompt = "Enter " + type + "year (e.g. '2024' or '2000'):";
-        break;
-      case "month":
-        prompt = "Enter " + type + "month (i.e. from '01' to '12'):";
-        break;
-      case "day":
-        prompt = "Enter " + type + "day (e.g. '04', '01', or '19'):";
-        break;
-    }
+    String type = (dateType == 1) ? "START " : (dateType == 2) ? "END " : "";
+    String component =
+        dateComponent.equals("year") ? "year (e.g. '2024' or '2000'):" :
+            (dateComponent.equals("month") ?
+                "month (i.e. from '01' to '12'):" :
+                "day (e.g. '04', '01', or '19'):");
+    String prompt = "Enter " + type + component;
 
     view.displayMessage(prompt);
 
