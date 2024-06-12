@@ -20,7 +20,6 @@ public class TextualStockBetterController extends TextualStockController impleme
     this.model = model;
   }
 
-  // TODO - abstraction
   public void control() {
     Scanner sc = new Scanner(System.in);
     view.displayMessage(menu());
