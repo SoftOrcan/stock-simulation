@@ -53,6 +53,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
       logger.severe("IO Exception: " + e.getMessage());
     }
 
+    portfolios.put(name, new BetterPortfolio());
     retrieveFiles();
   }
 
