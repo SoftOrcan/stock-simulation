@@ -244,7 +244,7 @@ public class TextualStockController implements IStockController {
   }
 
   String returnToMenu() {
-    return "m: return to menu";
+    return "m: return to menu" + ls + "q: quit the program";
   }
 
   protected String menu() {
