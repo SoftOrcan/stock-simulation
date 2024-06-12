@@ -3,8 +3,8 @@ package model;
 import java.time.LocalDate;
 
 class StockPurchase {
-  final double amount;
-  final LocalDate purchaseDate;
+  private final double amount;
+  private final LocalDate purchaseDate;
 
   StockPurchase(double amount, LocalDate purchaseDate) {
     this.amount = amount;

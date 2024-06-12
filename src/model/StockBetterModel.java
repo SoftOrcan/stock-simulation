@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 public class StockBetterModel extends StockModel implements IStockBetterModel {
   private final Logger logger = Logger.getLogger(StockBetterModel.class.getName());
   // Portfolios owned, represented as a HashMap<PortfolioName (String), Portfolio>.
-  private final Map<String, Portfolio> portfolios;
+  private final Map<String, BetterPortfolio> portfolios;
   // The stock database to retrieve information relating to a stock from.
   private final StockDatabase stockDatabase;
 
@@ -29,7 +29,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
       for (File file : files) {
         if (file.isFile()) {
           String name = file.getName().replaceFirst("[.][^.]+$", "");
-          portfolios.put(name, new Portfolio());
+          portfolios.put(name, new BetterPortfolio());
           portfolios.get(name).retrieveData(name);
         }
       }
@@ -57,11 +57,11 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
   }
 
   public void addStockToPortfolio(String name, String symbol, int quantity, LocalDate date) {
-    portfolios.get(name).addToFile(name, symbol, quantity, date);
+    portfolios.get(name).addStockToFile(name, symbol, quantity, date);
   }
 
   public void removeStockFromPortfolio(String name, String symbol, int quantity, LocalDate date) {
-    portfolios.get(name).removeFromFile(name, symbol, quantity, date);
+    portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
   public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
@@ -69,11 +69,11 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
   }
 
   public BarGraph portfolioComposition(String name, LocalDate date) {
-    return portfolios.get(name).composition(name, date);
+    return portfolios.get(name).composition(date);
   }
 
   public BarGraph portfolioDistribution(String name, LocalDate date) {
-    return portfolios.get(name).distribution(name, date);
+    return portfolios.get(name).distribution(date);
   }
 
   public BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end,
