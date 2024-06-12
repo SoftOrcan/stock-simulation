@@ -12,7 +12,6 @@ import java.util.logging.Logger;
  * stocks on a given date (via the 'value()' method).
  */
 class Portfolio {
-  private final Logger logger = Logger.getLogger(Portfolio.class.getName());
   private final Map<String, Double> portfolio;
 
   /**
@@ -23,7 +22,8 @@ class Portfolio {
   }
 
   void add(String symbol, Double quantity) {
-    portfolio.put(symbol, quantity);
+    double currAmount = this.portfolio.get(symbol);
+    portfolio.put(symbol, quantity + currAmount);
   }
 
   void remove(String symbol, int amount) {
