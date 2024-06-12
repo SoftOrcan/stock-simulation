@@ -78,9 +78,9 @@ public interface IStockModel {
    *
    * @param name The name of the portfolio.
    * @param symbol        The stock to add.
-   * @param amount        The quantity of the stock to add.
+   * @param quantity        The quantity of the stock to add.
    */
-  void addStockToPortfolio(String name, String symbol, int amount, LocalDate date);
+  void addStockToPortfolio(String name, String symbol, double quantity);
 
   /**
    * Remove a stock (termed as 'symbol') from a portfolio.
@@ -88,7 +88,7 @@ public interface IStockModel {
    * @param name The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date);
+  void removeStockFromPortfolio(String name, String symbol, int quantity);
 
   /**
    * Calculate the value of a portfolio on a specific date. Calculate by identifying the value of
@@ -108,16 +108,4 @@ public interface IStockModel {
    * @return If a portfolio exists or not.
    */
   boolean hasPortfolio(String name);
-
-  BarGraph portfolioComposition(String name, LocalDate date);
-
-  BarGraph portfolioDistribution(String name, LocalDate date);
-
-  BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount);
-
-  BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end, int xLabelCount);
-
-  void portfolioRebalance(String name, List<Integer> split, LocalDate date);
-
-  boolean isValidSplit(String name, List<String> split);
 }

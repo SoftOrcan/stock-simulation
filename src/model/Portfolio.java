@@ -12,15 +12,15 @@ import java.util.Map;
  * prices of the stocks on a given date (via the 'value()' method).
  */
 class Portfolio {
-  // A portfolio is a hashmap <Symbol, AmountPurchased>, represented as a <String, Integer>.
-  private final Map<String, StockPurchase> portfolio;
+  private final Map<String, Double> portfolio;
+  private final Map<String, StockPurchase> portfolioOnDate;
 
   /**
    * Package-private initial state of a Portfolio, represented as an empty HashMap.
    */
   Portfolio() {
-    // The initial state of a Portfolio is an empty HashMap.
     this.portfolio = new HashMap<>();
+    this.portfolioOnDate = new HashMap<>();
   }
 
   /**
@@ -29,8 +29,21 @@ class Portfolio {
    * @param symbol   The stock to add.
    * @param quantity The quantity of stocks purchased.
    */
-  void add(String symbol, int quantity, LocalDate date) {
-    portfolio.put(symbol, new StockPurchase(quantity, date));
+  void add(String symbol, Double quantity) {
+    portfolio.put(symbol, quantity);
+  }
+
+
+  void addOnDate(String symbol, int quantity, LocalDate date) {
+    portfolioOnDate.put(symbol, new StockPurchase(quantity, date));
+  }
+
+  void remove(String symbol, int amount) {
+    double quantity = portfolio.get(symbol) - amount;
+    if (quantity > 0) {
+      portfolio.put(symbol, quantity);
+    }
+    portfolio.remove(symbol);
   }
 
   /**
@@ -38,13 +51,12 @@ class Portfolio {
    *
    * @param symbol The stock to remove.
    */
-  void remove(String symbol, int amount, LocalDate date) {
-    double quantity = portfolio.get(symbol).getAmount() - amount;
-    // TODO - maybe remove?
+  void removeOnDate(String symbol, int amount, LocalDate date) {
+    double quantity = portfolioOnDate.get(symbol).getAmount() - amount;
     if (quantity > 0) {
-      portfolio.put(symbol, new StockPurchase(quantity, date));
+      portfolioOnDate.put(symbol, new StockPurchase(quantity, date));
     }
-    portfolio.remove(symbol);
+    portfolioOnDate.remove(symbol);
   }
 
   /**
@@ -59,16 +71,16 @@ class Portfolio {
   double value(LocalDate date, StockDatabase stockDatabase) {
     double total = 0;
 
-    Map.Entry<String, StockPurchase> firstPurchase = portfolio.entrySet().iterator().next();
+    Map.Entry<String, StockPurchase> firstPurchase = portfolioOnDate.entrySet().iterator().next();
     if (firstPurchase.getValue().getPurchaseDate().isAfter(date)) {
       return total;
     }
 
     // For every value in the HashMap...
-    for (String symbol : portfolio.keySet()) {
+    for (String symbol : portfolioOnDate.keySet()) {
       // Find the price of a stock on the given date and multiply it by the quantity of stock
       // purchased.
-      total += portfolio.get(symbol).getAmount() *
+      total += portfolioOnDate.get(symbol).getAmount() *
               stockDatabase.getPriceOn(symbol, String.valueOf(date), "");
     }
 
@@ -77,19 +89,19 @@ class Portfolio {
 
   BarGraph composition(LocalDate date) {
     BarGraph graph = new BarGraph("Composition:");
-    if (portfolio.isEmpty()) {
+    if (portfolioOnDate.isEmpty()) {
       return graph;
     }
-    graph.createEntries(date, portfolio.entrySet(), true);
+    graph.createEntries(date, portfolioOnDate.entrySet(), true);
     return graph;
   }
 
   BarGraph distribution(LocalDate date) {
     BarGraph graph = new BarGraph("Distribution:");
-    if (portfolio.isEmpty()) {
+    if (portfolioOnDate.isEmpty()) {
       return graph;
     }
-    graph.createEntries(date, portfolio.entrySet(), false);
+    graph.createEntries(date, portfolioOnDate.entrySet(), false);
     return graph;
   }
 
@@ -98,7 +110,7 @@ class Portfolio {
     graph.createXAxis(start, end, xLabelCount);
 
     HashMap<String, Double> stocks = new HashMap<>();
-    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+    for (Map.Entry<String, StockPurchase> entry : portfolioOnDate.entrySet()) {
       stocks.put(entry.getKey(), entry.getValue().getAmount());
     }
 
@@ -114,19 +126,19 @@ class Portfolio {
     String stock;
     double stockPrice;
 
-    for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
+    for (Map.Entry<String, StockPurchase> entry : portfolioOnDate.entrySet()) {
       rebalancedPrice = portfolioValue * split.get(index) * 0.01;
       stock = entry.getKey();
       stockPrice = stockDatabase.getPriceOn(stock, String.valueOf(date), "");
       rebalancedShares = rebalancedPrice / stockPrice;
 
-      portfolio.put(stock, new StockPurchase(rebalancedShares, entry.getValue().purchaseDate));
+      portfolioOnDate.put(stock, new StockPurchase(rebalancedShares, entry.getValue().purchaseDate));
       index += 1;
     }
   }
 
   boolean isValidSplit(List<String> split) {
-    if (split.size() != portfolio.size()) {
+    if (split.size() != portfolioOnDate.size()) {
       return false;
     }
 

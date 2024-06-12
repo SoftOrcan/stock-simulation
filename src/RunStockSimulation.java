@@ -2,8 +2,8 @@ import java.io.File;
 
 import controller.IStockController;
 import controller.TextualStockController;
-import model.IStockModel;
-import model.StockModel;
+import model.IStockBetterModel;
+import model.StockBetterModel;
 import view.IStockView;
 import view.StockView;
 
@@ -26,7 +26,7 @@ public class RunStockSimulation {
       dataDirectory.mkdirs();
     }
 
-    IStockModel model = new StockModel();
+    IStockBetterModel model = new StockBetterModel();
     IStockView view = new StockView();
     IStockController controller = new TextualStockController(model, view);
     controller.control();

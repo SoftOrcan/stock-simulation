@@ -87,21 +87,13 @@ public class StockModel implements IStockModel {
     return stockDatabase.isValidSymbol(symbol);
   }
 
-  @Override
-  public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
-    return stockDatabase.performance(symbol, start, end, xLabelCount);
-  }
-
-
   /**
    * Create a portfolio with a specified name.
    *
    * @param name The name of the portfolio.
    */
   public void createPortfolio(String name) {
-    // TODO - files
-
-    // Add the portfolio to the map
+    // Add the new portfolio to the map.
     portfolios.put(name, new Portfolio());
   }
 
@@ -111,10 +103,10 @@ public class StockModel implements IStockModel {
    *
    * @param name The name of the portfolio.
    * @param symbol        The stock to add.
-   * @param amount        The quantity of the stock to add.
+   * @param quantity        The quantity of the stock to add.
    */
-  public void addStockToPortfolio(String name, String symbol, int amount, LocalDate date) {
-    portfolios.get(name).add(symbol, amount, date);
+  public void addStockToPortfolio(String name, String symbol, double quantity) {
+    portfolios.get(name).add(symbol, quantity);
   }
 
   /**
@@ -123,8 +115,8 @@ public class StockModel implements IStockModel {
    * @param name The name of the portfolio.
    * @param symbol        The stock to remove.
    */
-  public void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date) {
-    portfolios.get(name).remove(symbol, amount, date);
+  public void removeStockFromPortfolio(String name, String symbol, int quantity) {
+    portfolios.get(name).remove(symbol, quantity);
   }
 
   /**
@@ -147,26 +139,5 @@ public class StockModel implements IStockModel {
    */
   public boolean hasPortfolio(String name) {
     return portfolios.containsKey(name);
-  }
-
-  public BarGraph portfolioComposition(String name, LocalDate date) {
-    return portfolios.get(name).composition(date);
-  }
-
-  public BarGraph portfolioDistribution(String name, LocalDate date) {
-    return portfolios.get(name).distribution(date);
-  }
-
-  public BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end,
-                                       int xLabelCount) {
-    return portfolios.get(name).performance(name, start, end, xLabelCount);
-  }
-
-  public void portfolioRebalance(String name, List<Integer> split, LocalDate date) {
-    portfolios.get(name).rebalance(split, date, new StockDatabase());
-  }
-
-  public boolean isValidSplit(String name, List<String> split) {
-    return portfolios.get(name).isValidSplit(split);
   }
 }
