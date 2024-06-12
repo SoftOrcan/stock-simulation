@@ -10,9 +10,9 @@ import java.net.URL;
 import java.util.logging.Logger;
 
 /**
- * The AlphaVantageAPI class retrieves data from the AlphaVantage API by directly accessing the
- * data from the URL (varies depending on the stock, or 'symbol', name), and saves the stock's
- * historical data locally as a .csv file (via the 'getData()' method).
+ * The AlphaVantageAPI class retrieves data from the AlphaVantage API by directly accessing the data
+ * from the URL (varies depending on the stock, or 'symbol', name), and saves the stock's historical
+ * data locally as a .csv file (via the 'getData()' method).
  */
 class AlphaVantageAPI {
   // Logger to record functionality or capture thrown exceptions.
@@ -33,15 +33,7 @@ class AlphaVantageAPI {
    */
   void getData(String symbol, String interval) {
     try {
-      String baseURL = "https://www.alphavantage.co/query?function=";
-      String apiURL = baseURL
-          + (interval.isEmpty() ?
-          "TIME_SERIES_DAILY&outputsize=full" :
-          "TIME_SERIES_INTRADAY&interval=" + interval)
-          + "&symbol=" + symbol + "&apikey=" + apiKey + "&datatype=csv";
-
-      URL url = new URL(apiURL);
-      BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
+      BufferedReader reader = getBufferedReader(symbol, interval);
       PrintWriter writer = new PrintWriter("./data/" + interval + symbol + ".csv");
 
       String line;
@@ -57,6 +49,20 @@ class AlphaVantageAPI {
     }
   }
 
+  private BufferedReader getBufferedReader(String symbol, String interval) throws IOException {
+    String baseURL = "https://www.alphavantage.co/query?function=";
+    String apiURL = interval.isEmpty() ?
+        String.format("%sTIME_SERIES_DAILY&symbol=%s&outputsize=full&apikey=%s&datatype" +
+            "=csv", baseURL, symbol, apiKey) :
+        String.format("%sTIME_SERIES_INTRADAY" +
+            "&symbol=%s&interval=%s&apikey=%s&datatype=csv", baseURL, symbol, interval, apiKey);
+
+
+    URL url = new URL(apiURL);
+    return new BufferedReader(new InputStreamReader(url.openStream()));
+  }
+
+
   /**
    * Determine if a stock symbol exists.
    *
@@ -68,7 +74,7 @@ class AlphaVantageAPI {
     try {
       // Generate a URL to search for the symbol.
       url = new URL("https://www.alphavantage.co/query?function=SYMBOL_SEARCH"
-              + "&keywords=" + symbol + "&apikey=" + apiKey + "&datatype=csv");
+          + "&keywords=" + symbol + "&apikey=" + apiKey + "&datatype=csv");
       InputStream in = url.openStream(); // Open an input stream to read data from the URL.
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 

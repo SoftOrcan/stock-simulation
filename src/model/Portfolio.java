@@ -1,7 +1,6 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,7 @@ class Portfolio {
    * @param symbol The stock to remove.
    */
   void remove(String symbol, int amount, LocalDate date) {
-    int quantity = portfolio.get(symbol).getAmount() - amount;
+    double quantity = portfolio.get(symbol).getAmount() - amount;
     // TODO - maybe remove?
     if (quantity > 0) {
       portfolio.put(symbol, new StockPurchase(quantity, date));
@@ -98,7 +97,7 @@ class Portfolio {
     BarGraph graph = new BarGraph("Performance of '" + name + "':");
     graph.createXAxis(start, end, xLabelCount);
 
-    HashMap<String, Integer> stocks = new HashMap<>();
+    HashMap<String, Double> stocks = new HashMap<>();
     for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
       stocks.put(entry.getKey(), entry.getValue().getAmount());
     }
@@ -107,16 +106,23 @@ class Portfolio {
     return graph;
   }
 
-  BarGraph rebalance(String name, List<Integer> split, LocalDate date) {
-    BarGraph graph = new BarGraph("On " + date + ": Rebalanced '" + name + "':");
+  void rebalance(List<Integer> split, LocalDate date, StockDatabase stockDatabase) {
+    double portfolioValue = value(date, stockDatabase);
+    int index = 0;
+    double rebalancedPrice;
+    double rebalancedShares;
+    String stock;
+    double stockPrice;
 
-    List<String> symbols = new ArrayList<>();
     for (Map.Entry<String, StockPurchase> entry : portfolio.entrySet()) {
-      symbols.add(entry.getKey());
-    }
+      rebalancedPrice = portfolioValue * split.get(index) * 0.01;
+      stock = entry.getKey();
+      stockPrice = stockDatabase.getPriceOn(stock, String.valueOf(date), "");
+      rebalancedShares = rebalancedPrice / stockPrice;
 
-    graph.rebalance(symbols, split, date, value(date, new StockDatabase()));
-    return graph;
+      portfolio.put(stock, new StockPurchase(rebalancedShares, entry.getValue().purchaseDate));
+      index += 1;
+    }
   }
 
   boolean isValidSplit(List<String> split) {

@@ -28,21 +28,21 @@ public class BarGraph {
 
     for (int i = 0; i < xAxis.size(); i += 1) {
       builder.append(System.lineSeparator())
-              .append(xAxis.get(i))
-              .append(": ")
-              .append(yAxis.get(i));
+          .append(xAxis.get(i))
+          .append(": ")
+          .append(yAxis.get(i));
     }
 
     if (!xInterval.isEmpty()) {
       builder.append(System.lineSeparator())
-              .append("X-Axis Scale: Every ")
-              .append(xInterval);
+          .append("X-Axis Scale: Every ")
+          .append(xInterval);
     }
 
     if (!yScale.isEmpty()) {
       builder.append(System.lineSeparator())
-              .append("Y-Axis Scale: * = $")
-              .append(yScale);
+          .append("Y-Axis Scale: * = $")
+          .append(yScale);
     }
 
     return builder.toString();
@@ -56,8 +56,8 @@ public class BarGraph {
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
         String xAxisValue = isComposition ? stock : entry.getKey();
         String yAxisValue = isComposition ?
-                purchase.getAmount() + " shares." :
-                "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "");
+            purchase.getAmount() + " shares." :
+            "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "") * purchase.getAmount();
         xAxis.add(xAxisValue);
         yAxis.add(yAxisValue);
       }
@@ -93,16 +93,16 @@ public class BarGraph {
     createYAxis(prices);
   }
 
-  void createPortfolioYAxis(HashMap<String, Integer> stocks, LocalDate start, LocalDate end) {
+  void createPortfolioYAxis(HashMap<String, Double> stocks, LocalDate start, LocalDate end) {
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
     String intervalType = isShortInterval ? "60min" : "";
     List<Double> prices = new ArrayList<>();
 
     for (String interval : xAxis) {
       double total = 0;
-      for (Map.Entry<String, Integer> symbol : stocks.entrySet()) {
+      for (Map.Entry<String, Double> symbol : stocks.entrySet()) {
         total += symbol.getValue()
-                * stockDatabase.getPriceOn(symbol.getKey(), interval, intervalType);
+            * stockDatabase.getPriceOn(symbol.getKey(), interval, intervalType);
       }
       prices.add(total);
     }
@@ -112,10 +112,10 @@ public class BarGraph {
 
   private List<Double> getStockPrices(String symbol, LocalDate start, LocalDate end) {
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
+    String intervalType = isShortInterval ? "60min" : "";
 
     List<Double> prices = new ArrayList<>();
     for (String interval : xAxis) {
-      String intervalType = isShortInterval ? "60min" : "";
       prices.add(stockDatabase.getPriceOn(symbol, interval, intervalType));
     }
 
@@ -138,22 +138,5 @@ public class BarGraph {
     }
 
     yScale = String.valueOf(size);
-  }
-
-  void rebalance(List<String> symbols, List<Integer> split, LocalDate date, double value) {
-    double rebalancedPrice;
-    double rebalancedShares;
-    String stock;
-    double stockPrice;
-
-    for (int i = 0; i < split.size(); i += 1) {
-      rebalancedPrice = value * split.get(i) * 0.01;
-      stock = symbols.get(i);
-      stockPrice = stockDatabase.getPriceOn(stock, String.valueOf(date), "");
-      rebalancedShares = stockPrice / rebalancedPrice;
-
-      xAxis.add("- " + stock);
-      yAxis.add(rebalancedShares + " shares, $" + rebalancedPrice);
-    }
   }
 }

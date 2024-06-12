@@ -162,11 +162,10 @@ public class StockModel implements IStockModel {
     return portfolios.get(name).performance(name, start, end, xLabelCount);
   }
 
-  public BarGraph portfolioRebalance(String name, List<Integer> split, LocalDate date) {
-    return portfolios.get(name).rebalance(name, split, date);
+  public void portfolioRebalance(String name, List<Integer> split, LocalDate date) {
+    portfolios.get(name).rebalance(split, date, new StockDatabase());
   }
 
-  @Override
   public boolean isValidSplit(String name, List<String> split) {
     return portfolios.get(name).isValidSplit(split);
   }

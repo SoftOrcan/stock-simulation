@@ -16,11 +16,11 @@ import java.util.logging.Logger;
  * The StockInformation class performs calculations relating to a stock's...
  * <li>Net profit/loss over a time range (via the 'calculateChange()' method).</li>
  * <li>The moving average over a previous time period (via the 'movingAverage()' method).</li>
- * <li>The crossovers overtime (via the method 'findCrossovers()').</li>
- * <li>The price of a Stock on a specified date (via the method 'getPriceOn()')</li>
+ * <li>The crossovers overtime (via the 'findCrossovers()' method).</li>
+ * <li>The price of a Stock on a specified date (via the 'getPriceOn()' method)</li>
  *
  * <p>In addition, the StockInformation class contains a private method that retrieves the
- * opening and closing prices of a Stock (via the method 'getHistoricalPrices()').</p>
+ * opening and closing prices of a Stock (via the 'getHistoricalPrices()' method).</p>
  */
 class StockInformation {
   // Logger to record functionality or capture thrown exceptions.
@@ -134,7 +134,7 @@ class StockInformation {
       LocalDateTime dateLocalTime =
           LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
       while ((price = prices.get(
-          dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd " + "HH:mm:ss")))) == null) {
+          dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
         dateLocalTime = dateLocalTime.minusHours(1);
       }
     } else {

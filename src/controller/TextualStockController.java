@@ -29,7 +29,10 @@ public class TextualStockController implements IStockController {
       String userInstruction = sc.next();
       if (userInstruction.equals("q")) {
         break;
-      } else {
+      } else if (userInstruction.equals("m")) {
+        view.displayMessage(menu());
+      }
+      else {
         processCommand(userInstruction, sc, model);
       }
     }
@@ -58,6 +61,7 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "day", 2));
         view.displayMessage("Gain/Loss of '" + symbol + "': "
             + model.stockChange(symbol, start, end) + ".");
+        view.displayMessage(returnToMenu());
         break;
       case "2":
         symbol = validateSymbol(sc);
@@ -68,6 +72,7 @@ public class TextualStockController implements IStockController {
         numDays = validateNatural(sc);
         view.displayMessage("Moving average of '" + symbol + "': "
             + model.stockMovingAverage(symbol, date, numDays) + ".");
+        view.displayMessage(returnToMenu());
         break;
       case "3":
         symbol = validateSymbol(sc);
@@ -82,6 +87,7 @@ public class TextualStockController implements IStockController {
         numDays = validateNatural(sc);
         view.displayMessage("Crossovers of '" + symbol + "': "
             + model.stockCrossovers(symbol, start, end, numDays) + ".");
+        view.displayMessage(returnToMenu());
         break;
       case "4":
         symbol = validateSymbol(sc);
@@ -95,11 +101,13 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "day", 2));
         amount = validateNatural(sc);
         view.displayMessage(model.stockPerformance(symbol, start, end, amount).interpret());
+        view.displayMessage(returnToMenu());
         break;
       case "5":
         name = validateName(sc);
         model.createPortfolio(name);
         view.displayMessage("Created portfolio '" + name + "'.");
+        view.displayMessage(returnToMenu());
         break;
       case "6":
         name = validatePortfolio(sc);
@@ -112,6 +120,7 @@ public class TextualStockController implements IStockController {
         model.addStockToPortfolio(name, symbol, amount, date);
         view.displayMessage("On " + date + ": Added '" + symbol + "' (quantity: " + amount + ") to "
             + "portfolio '" + name + "'.");
+        view.displayMessage(returnToMenu());
         break;
       case "7":
         name = validatePortfolio(sc);
@@ -124,6 +133,7 @@ public class TextualStockController implements IStockController {
         model.removeStockFromPortfolio(name, symbol, amount, date);
         view.displayMessage("On " + date + ": Removed '" + symbol + "' (quantity: " + amount + ") "
             + "from portfolio '" + name + "'.");
+        view.displayMessage(returnToMenu());
         break;
       case "8":
         name = validatePortfolio(sc);
@@ -132,6 +142,7 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
         view.displayMessage(model.portfolioComposition(name, date).interpret());
+        view.displayMessage(returnToMenu());
         break;
       case "9":
         name = validatePortfolio(sc);
@@ -140,6 +151,7 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
         view.displayMessage(model.portfolioDistribution(name, date).interpret());
+        view.displayMessage(returnToMenu());
         break;
       case "10":
         name = validatePortfolio(sc);
@@ -148,6 +160,7 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
         view.displayMessage("Value of " + name + ": " + model.portfolioValue(name, date) + ".");
+        view.displayMessage(returnToMenu());
         break;
       case "11":
         name = validatePortfolio(sc);
@@ -156,7 +169,10 @@ public class TextualStockController implements IStockController {
             validateDate(sc, "year", 3) + "-"
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
-        view.displayMessage(model.portfolioRebalance(name, split, date).interpret());
+        model.portfolioRebalance(name, split, date);
+        view.displayMessage("Rebalanced portfolio '" + name + "'.");
+        view.displayMessage(returnToMenu());
+        break;
       case "12":
         name = validatePortfolio(sc);
         start = LocalDate.parse(
@@ -169,6 +185,7 @@ public class TextualStockController implements IStockController {
                 + validateDate(sc, "day", 2));
         amount = validateNatural(sc);
         view.displayMessage(model.portfolioPerformance(name, start, end, amount).interpret());
+        view.displayMessage(returnToMenu());
         break;
       default:
         view.displayMessage("Undefined instruction: " + userInstruction + ".");
@@ -214,7 +231,7 @@ public class TextualStockController implements IStockController {
   }
 
   private int validateNatural(Scanner sc) {
-    String prompt = "Enter a numerical value:";
+    String prompt = "Enter a POSITIVE numerical value:";
     view.displayMessage(prompt);
 
     String value = sc.next();
@@ -294,6 +311,8 @@ public class TextualStockController implements IStockController {
 
   private List<String> validateSplit(String name, Scanner sc) {
     String prompt = "Enter split for each of the stock (e.g. '50-50' or '30-40-30'):";
+    view.displayMessage(prompt);
+
     List<String> split = List.of(sc.next().split("-"));
 
     while (!model.isValidSplit(name, split)) {
@@ -304,6 +323,10 @@ public class TextualStockController implements IStockController {
     }
 
     return split;
+  }
+
+  private String returnToMenu() {
+    return "m: return to menu";
   }
 
   private String menu() {
@@ -321,6 +344,6 @@ public class TextualStockController implements IStockController {
         "11) portfolio-rebalance" + ls +
         "12) portfolio-performance" + ls +
         "13) q: quit the program" + ls + ls +
-        "Enter numerical option (e.g. Enter '1' for stock-period): ";
+        "Enter numerical option (e.g. Enter '1' for stock-period):";
   }
 }

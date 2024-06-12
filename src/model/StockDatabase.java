@@ -28,7 +28,7 @@ class StockDatabase {
   private StockInformation getStockInformation(String symbol, String interval) {
     // Check if file exists.
     for (File f : Objects.requireNonNull(new File("./data").listFiles())) {
-      if (f.getName().equals(symbol + ".csv")) {
+      if (f.getName().equals(interval + symbol + ".csv")) {
         // File exists -> return the stock information.
         return new StockInformation(symbol, interval);
       }
@@ -88,6 +88,7 @@ class StockDatabase {
    *
    * @param symbol The stock to examine.
    * @param date   The specified date to examine.
+   * @param interval The interval to examine.
    * @return The price of a stock on a specified date.
    */
   double getPriceOn(String symbol, String date, String interval) {

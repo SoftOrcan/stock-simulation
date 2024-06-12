@@ -117,7 +117,7 @@ public interface IStockModel {
 
   BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end, int xLabelCount);
 
-  BarGraph portfolioRebalance(String name, List<Integer> split, LocalDate date);
+  void portfolioRebalance(String name, List<Integer> split, LocalDate date);
 
   boolean isValidSplit(String name, List<String> split);
 }

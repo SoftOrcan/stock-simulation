@@ -3,15 +3,15 @@ package model;
 import java.time.LocalDate;
 
 class StockPurchase {
-  final int amount;
+  final double amount;
   final LocalDate purchaseDate;
 
-  StockPurchase(int amount, LocalDate purchaseDate) {
+  StockPurchase(double amount, LocalDate purchaseDate) {
     this.amount = amount;
     this.purchaseDate = purchaseDate;
   }
 
-  int getAmount() {
+  double getAmount() {
     return amount;
   }
 
