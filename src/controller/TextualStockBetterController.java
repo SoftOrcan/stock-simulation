@@ -8,7 +8,8 @@ import java.util.stream.Collectors;
 import model.IStockBetterModel;
 import view.IStockView;
 
-public class TextualStockBetterController extends TextualStockController implements IStockBetterController {
+public class TextualStockBetterController extends TextualStockController implements
+    IStockBetterController {
   private final String ls = System.lineSeparator();
   private final IStockView view;
   private final IStockBetterModel model;
@@ -17,6 +18,23 @@ public class TextualStockBetterController extends TextualStockController impleme
     super(model, view);
     this.view = view;
     this.model = model;
+  }
+
+  // TODO - abstraction
+  public void control() {
+    Scanner sc = new Scanner(System.in);
+    view.displayMessage(menu());
+
+    while (sc.hasNext()) {
+      String userInstruction = sc.next();
+      if (userInstruction.equals("q")) {
+        break;
+      } else if (userInstruction.equals("m")) {
+        view.displayMessage(menu());
+      } else {
+        processCommand(userInstruction, sc, model);
+      }
+    }
   }
 
   private void processCommand(String userInstruction, Scanner sc, IStockBetterModel model) {

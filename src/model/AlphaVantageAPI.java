@@ -62,7 +62,6 @@ class AlphaVantageAPI {
     return new BufferedReader(new InputStreamReader(url.openStream()));
   }
 
-
   /**
    * Determine if a stock symbol exists.
    *

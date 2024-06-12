@@ -1,7 +1,7 @@
 import java.io.File;
 
-import controller.IStockController;
-import controller.TextualStockController;
+import controller.IStockBetterController;
+import controller.TextualStockBetterController;
 import model.IStockBetterModel;
 import model.StockBetterModel;
 import view.IStockView;
@@ -28,7 +28,7 @@ public class RunStockSimulation {
 
     IStockBetterModel model = new StockBetterModel();
     IStockView view = new StockView();
-    IStockController controller = new TextualStockController(model, view);
+    IStockBetterController controller = new TextualStockBetterController(model, view);
     controller.control();
   }
 }

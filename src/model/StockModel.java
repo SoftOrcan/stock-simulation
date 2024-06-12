@@ -36,6 +36,16 @@ public class StockModel implements IStockModel {
   }
 
   /**
+   * Determine if the portfolio exists.
+   *
+   * @param name The name of the portfolio.
+   * @return Whether the portfolio exists or not.
+   */
+  public boolean hasPortfolio(String name) {
+    return portfolios.containsKey(name);
+  }
+
+  /**
    * Calculate the net profit/loss of a stock (termed as 'symbol') from and to a specified date
    * range by referencing stockDatabase. The net profit/loss is:
    * endDate.closingPrice - startDate.closingPrice.
@@ -129,15 +139,5 @@ public class StockModel implements IStockModel {
    */
   public double portfolioValue(String name, LocalDate date) {
     return portfolios.get(name).value(date, stockDatabase);
-  }
-
-  /**
-   * Determine if the portfolio exists.
-   *
-   * @param name The name of the portfolio.
-   * @return Whether the portfolio exists or not.
-   */
-  public boolean hasPortfolio(String name) {
-    return portfolios.containsKey(name);
   }
 }

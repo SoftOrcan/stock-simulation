@@ -141,7 +141,7 @@ public class TextualStockController implements IStockController {
     String name = sc.next();
 
     while (!model.hasPortfolio(name)) {
-      view.displayError("Portfolio " + name + " does not exist.");
+      view.displayError("Portfolio '" + name + "' does not exist.");
       view.displayMessage(prompt);
       name = sc.next();
     }
