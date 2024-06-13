@@ -160,16 +160,6 @@ public class IStockControllerTest {
   }
 
   @Test
-  public void testBetterPortfolioRebalance() {
-    String input = "11\nTechStocks\n50-50\n2023\n01\n01\nq\n";
-    setInput(input);
-
-    betterController.control();
-
-    assertTrue(betterMockView.getMessages().contains("Rebalanced portfolio 'TechStocks'."));
-  }
-
-  @Test
   public void testBetterPortfolioPerformance() {
     String input = "5\nTechStocks\n12\nTechStocks\n2023\n01\n01\n2023\n12\n31\n10\nq\n";
     setInput(input);

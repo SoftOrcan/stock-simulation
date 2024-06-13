@@ -23,21 +23,21 @@ public class BetterPortfolio extends Portfolio {
   double value(LocalDate date, StockDatabase stockDatabase) {
     double total = 0;
 
-    Map.Entry<String, StockPurchase> firstPurchase = portfolioFile.entrySet().iterator().next();
-    if (firstPurchase.getValue().getPurchaseDate().isAfter(date)) {
-      return total;
-    }
-
     // For every value in the HashMap...
-    for (String symbol : portfolioFile.keySet()) {
-      // Find the price of a stock on the given date and multiply it by the quantity of stock
-      // purchased.
-      total += portfolioFile.get(symbol).getAmount() *
-          stockDatabase.getPriceOn(symbol, String.valueOf(date), "");
+    for (Map.Entry<String, StockPurchase> entry : portfolioFile.entrySet()) {
+      String symbol = entry.getKey();
+      StockPurchase stockPurchase = entry.getValue();
+      if (stockPurchase.getPurchaseDate().isBefore(date) || stockPurchase.getPurchaseDate().isEqual(date)) {
+        // Find the price of a stock on the given date and multiply it by the quantity of stock
+        // purchased.
+        double price = stockDatabase.getPriceOn(symbol, String.valueOf(date), "");
+        total += stockPurchase.getAmount() * price;
+      }
     }
 
     return total;
   }
+
 
   void retrieveData(String name) {
     File file = new File("./portfolios/" + name + ".csv");
@@ -79,9 +79,12 @@ public class BetterPortfolio extends Portfolio {
   void removeStockFromFile(String name, String symbol, double quantity, LocalDate date) {
     double amount = portfolioFile.get(symbol).getAmount() - quantity;
     if (amount > 0) {
-      portfolioFile.put(symbol, new StockPurchase(amount, date));
+      portfolioFile.put(symbol,
+          new StockPurchase(amount, portfolioFile.get(symbol).getPurchaseDate()));
     }
-    portfolioFile.remove(symbol);
+    else {
+      portfolioFile.remove(symbol);
+    }
     copyToFile(name);
   }
 

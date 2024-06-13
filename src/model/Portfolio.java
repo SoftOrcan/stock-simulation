@@ -30,7 +30,9 @@ class Portfolio {
     if (quantity > 0) {
       portfolio.put(symbol, quantity);
     }
-    portfolio.remove(symbol);
+    else {
+      portfolio.remove(symbol);
+    }
   }
 
   double value(LocalDate date, StockDatabase stockDatabase) {

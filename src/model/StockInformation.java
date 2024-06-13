@@ -131,6 +131,7 @@ class StockInformation {
    */
   double getPriceOn(String date) {
     StockPrice price;
+    int tries = 0;
 
     if (date.contains(" ")) {
       LocalDateTime dateLocalTime =
@@ -138,13 +139,22 @@ class StockInformation {
       while ((price = prices.get(
           dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
         dateLocalTime = dateLocalTime.minusHours(1);
+        tries += 1;
+        if (tries > 1000) {
+          return 0;
+        }
       }
     } else {
       LocalDate dateLocal = LocalDate.parse(date);
       while ((price = prices.get(dateLocal.toString())) == null) {
         dateLocal = dateLocal.minusDays(1);
+        tries += 1;
+        if (tries > 1000) {
+          return 0;
+        }
       }
     }
+
     return price.closePrice;
   }
 }
