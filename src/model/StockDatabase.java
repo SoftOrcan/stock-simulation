@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * The StockDatabase class retrieves stock information directly from the locally-stored .csv
- * file (via the 'getStockInformation()' method), to determine...
+ * The StockDatabase class retrieves stock information directly from the locally-stored .csv file
+ * (via the 'getStockInformation()' method), to determine...
  * <li>Net profit/loss over a time range (via the 'calculateChange()' method).</li>
  * <li>The moving average over a previous time period (via the 'movingAverage()' method).</li>
  * <li>The crossovers overtime (via the 'findCrossovers()' method).</li>
@@ -68,9 +68,9 @@ class StockDatabase {
 
   /**
    * Calculate the x-day crossovers of a stock over a specified time period. An x-day crossover
-   * happens when the closing price for a day is greater than the x-day moving average for that
-   * day. A crossover signals a "buy" opportunity. A crossover can be defined over any period of
-   * time, although the 30-day period (i.e. the 30-day crossover) is usually popular.
+   * happens when the closing price for a day is greater than the x-day moving average for that day.
+   * A crossover signals a "buy" opportunity. A crossover can be defined over any period of time,
+   * although the 30-day period (i.e. the 30-day crossover) is usually popular.
    *
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
@@ -86,8 +86,8 @@ class StockDatabase {
   /**
    * Return the price of a stock on a specified date.
    *
-   * @param symbol The stock to examine.
-   * @param date   The specified date to examine.
+   * @param symbol   The stock to examine.
+   * @param date     The specified date to examine.
    * @param interval The interval to examine.
    * @return The price of a stock on a specified date.
    */

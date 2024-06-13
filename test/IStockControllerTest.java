@@ -1,8 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.io.File;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -30,6 +29,11 @@ public class IStockControllerTest {
 
   @Before
   public void setUp() {
+    File dataDirectory = new File("./data");
+    if (!dataDirectory.exists()) {
+      dataDirectory.mkdirs();
+    }
+
     mockModel = new MockStockModel();
     mockView = new MockStockView();
 

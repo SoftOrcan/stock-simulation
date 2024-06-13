@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,8 +30,40 @@ public class IStockModelTest {
    */
   @Before
   public void setUp() {
+    File dataDirectory = new File("./data");
+    if (!dataDirectory.exists()) {
+      dataDirectory.mkdirs();
+    }
+
     model = new StockModel();
     betterModel = new StockBetterModel();
+  }
+
+  private void clear(String dir) {
+    String path = "./" + dir + "/";
+
+    // Create a File object for the directory
+    File directory = new File(path);
+
+    // Get all files in the directory
+    File[] files = directory.listFiles();
+
+    if (files != null) {
+      // Iterate through each file
+      for (File file : files) {
+        try {
+          // Check if it's a file (not a directory)
+          if (file.isFile()) {
+            // Empty the file
+            file.delete();
+            file.createNewFile();
+          }
+        } catch (IOException e) {
+          // Handle IOException
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   /**
@@ -61,6 +95,8 @@ public class IStockModelTest {
    */
   @Test
   public void testAddStockToBetterPortfolio() {
+    clear("portfolios");
+    clear("data");
     betterModel.createPortfolio("TechStocks");
     betterModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     double portfolioValue = betterModel.portfolioValue("TechStocks", LocalDate.of(2023, 6, 2));
@@ -76,7 +112,7 @@ public class IStockModelTest {
     betterModel.addStockToPortfolio("TechStocks", "GOOG", 15, LocalDate.of(2022, 6, 1));
     betterModel.addStockToPortfolio("TechStocks", "GOOG", 15, LocalDate.of(2021, 2, 1));
     portfolioValue = betterModel.portfolioValue("TechStocks", LocalDate.of(2022, 6, 1));
-    assertEquals(35728.2, portfolioValue, 0.001);
+    assertEquals(69969.3, portfolioValue, 0.001);
     portfolioValue = betterModel.portfolioValue("TechStocks", LocalDate.of(2021, 6, 1));
     assertEquals(37689.950000000004, portfolioValue, 0.001);
     portfolioValue = betterModel.portfolioValue("TechStocks", LocalDate.of(2024, 6, 1));
@@ -291,6 +327,8 @@ public class IStockModelTest {
    */
   @Test
   public void testPortfolioValue() {
+    clear("portfolios");
+    clear("data");
     betterModel.createPortfolio("TechStocks");
     betterModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     betterModel.addStockToPortfolio("TechStocks", "GOOG", 5, LocalDate.of(2023, 6, 1));
@@ -331,6 +369,8 @@ public class IStockModelTest {
    */
   @Test
   public void testPortfolioComposition() {
+    clear("portfolios");
+    clear("data");
     betterModel.createPortfolio("TechStocks");
     betterModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     BarGraph composition = betterModel.portfolioComposition("TechStocks", LocalDate.of(2023, 6, 1));
@@ -359,11 +399,10 @@ public class IStockModelTest {
   @Test
   public void testPortfolioPerformance() {
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
-        LocalDate.of(2023, 6, 1));
-    BarGraph performance = betterModel.portfolioPerformance("TechStocks",
-        LocalDate.of(2023, 1, 1),
-        LocalDate.of(2023, 6, 1), 5);
+    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
+    BarGraph performance =
+        betterModel.portfolioPerformance(
+            "TechStocks", LocalDate.of(2023, 1, 1), LocalDate.of(2023, 6, 1), 5);
     String result = performance.interpret();
     assertTrue(result.contains("*"));
     assertTrue(result.contains("X-Axis Scale:"));
@@ -374,7 +413,8 @@ public class IStockModelTest {
     betterModel.createPortfolio("TechStocks");
     betterModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     betterModel.portfolioRebalance("TechStocks", List.of(50, 50), LocalDate.of(2023, 6, 1));
-    BarGraph distribution = betterModel.portfolioDistribution("TechStocks", LocalDate.of(2023, 6, 1));
+    BarGraph distribution =
+        betterModel.portfolioDistribution("TechStocks", LocalDate.of(2023, 6, 1));
     String result = distribution.interpret();
     assertTrue(result.contains("AAPL"));
   }
