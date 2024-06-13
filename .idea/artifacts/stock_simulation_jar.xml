@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="stock-simulation:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/stock_simulation_jar</output-path>
-    <root id="archive" name="stock-simulation.jar">
-      <element id="module-output" name="stock-simulation" />
-    </root>
-  </artifact>
-</component>
