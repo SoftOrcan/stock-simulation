@@ -10,6 +10,8 @@ public interface IStockBetterModel extends IStockModel {
 
   void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date);
 
+  double portfolioValue(String name, LocalDate date);
+
   BarGraph portfolioComposition(String name, LocalDate date);
 
   BarGraph portfolioDistribution(String name, LocalDate date);

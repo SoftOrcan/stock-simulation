@@ -65,6 +65,10 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
     portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
+  public double portfolioValue(String name, LocalDate date) {
+    return portfolios.get(name).value(date, stockDatabase);
+  }
+
   public BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
     return stockDatabase.performance(symbol, start, end, xLabelCount);
   }

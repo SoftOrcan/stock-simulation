@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Tests and examples for TextualStockController class.
  */
-public class TextualStockControllerTest {
+public class IStockControllerTest {
   private TextualStockController controller;
   private MockStockView mockView;
   private MockStockModel mockModel;
@@ -38,7 +38,7 @@ public class TextualStockControllerTest {
   }
 
   private <T> T last(List<T> strings) {
-    return strings.get(strings.size() - 1);
+    return strings.getLast();
   }
 
   private <T> T secondLast(List<T> strings) {
@@ -47,15 +47,14 @@ public class TextualStockControllerTest {
 
   private void setInput(String input) {
     controller = new TextualStockController(mockModel, mockView, new StringReader(input));
-    betterController = new TextualStockBetterController
-            (betterMockModel, betterMockView, new StringReader(input));
+    betterController =
+        new TextualStockBetterController(betterMockModel, betterMockView, new StringReader(input));
   }
 
   @Test
   public void testBetterCreatePortfolio() {
     String input = "5\nTechStocks\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
     betterMockModel.createPortfolio("TechStocks");
@@ -68,12 +67,11 @@ public class TextualStockControllerTest {
   @Test
   public void testBetterAddStockToPortfolio() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
+
     betterController.control();
-    // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+    // Verify the stock was added to the portfolio.
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
   }
@@ -82,17 +80,14 @@ public class TextualStockControllerTest {
   public void testBetterRemoveStockFromPortfolio() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
             "TechStocks\nAAPL\n5\n2023\n06\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     // Verify the stock was removed from the portfolio
-    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
-            LocalDate.of(2023, 6, 1));
+    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5, LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
@@ -100,8 +95,7 @@ public class TextualStockControllerTest {
   @Test
   public void testBetterStockChange() {
     String input = "1\nAAPL\n2023\n01\n01\n2023\n12\n31\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
 
@@ -112,8 +106,7 @@ public class TextualStockControllerTest {
   @Test
   public void testBetterStockMovingAverage() {
     String input = "2\nAAPL\n2023\n01\n01\n30\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
 
@@ -124,169 +117,130 @@ public class TextualStockControllerTest {
   @Test
   public void testBetterStockCrossovers() {
     String input = "3\nAAPL\n2023\n01\n01\n2023\n12\n31\n30\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
 
-
-    assertTrue(betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
+    assertTrue(
+        betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
   }
-
 
   @Test
   public void testBetterPortfolioValue() {
     String input = "5\nTechStocks\n10\nTechStocks\n2023\n01\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
 
-
-    assertTrue(betterMockView.getMessages().contains("Value of TechStocks: 1000.0."));
+    assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
   }
-
 
   @Test
   public void testBetterPortfolioComposition() {
     String input = "5\nTechStocks\n8\nTechStocks\n2023\n01\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
 
-
-    assertTrue(betterMockView.getMessages().contains("Composition"));
+    assertTrue(betterMockView.getMessages().contains("Composition:"));
   }
-
 
   @Test
   public void testBetterPortfolioDistribution() {
     String input = "5\nTechStocks\n9\nTechStocks\n2023\n01\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
 
-    assertTrue(betterMockView.getMessages().contains("Distribution"));
+    assertTrue(betterMockView.getMessages().contains("Distribution:"));
   }
-
 
   @Test
   public void testBetterPortfolioRebalance() {
-    String input = "5\nTechStocks\n11\nTechStocks\n50-50\n2023\n01\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    String input = "11\nTechStocks\n50-50\n2023\n01\n01\nq\n";
+    setInput(input);
 
     betterController.control();
 
     assertTrue(betterMockView.getMessages().contains("Rebalanced portfolio 'TechStocks'."));
   }
 
-
   @Test
   public void testBetterPortfolioPerformance() {
     String input = "5\nTechStocks\n12\nTechStocks\n2023\n01\n01\n2023\n12\n31\n10\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
 
-
-    assertTrue(betterMockView.getMessages().contains("Performance"));
+    assertTrue(secondLast(betterMockView.getMessages()).contains("Performance of 'TechStocks':"));
   }
 
-
-  @Test (expected = NullPointerException.class)
+  @Test (expected = NoSuchElementException.class)
   public void testBetterInvalidSymbol() {
     String input = "1\nINVALID\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
 
     assertTrue(betterMockView.getErrors().contains("Stock symbol 'INVALID' does not exist."));
   }
-
 
   @Test (expected = DateTimeParseException.class)
   public void testBetterInvalidDate() {
     String input = "1\nAAPL\n2023\n02\n30\n2023\n12\n31\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
+
     betterController.control();
-
-
     assertTrue(betterMockView.getErrors().contains("The day is invalid."));
   }
-
 
   @Test (expected = NoSuchElementException.class)
   public void testBetterInvalidSymbol2() {
     String input = "2\nINVALID\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
-
     assertTrue(betterMockView.getErrors().contains("Stock symbol 'INVALID' does not exist."));
   }
-
 
   @Test (expected = DateTimeParseException.class)
   public void testBetterInvalidDate2() {
     String input = "2\nAAPL\n2023\n02\n30\n2023\n12\n31\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
+
     betterController.control();
-
-
     assertTrue(betterMockView.getErrors().contains("The day is invalid."));
   }
-
 
   @Test (expected = NoSuchElementException.class)
   public void testBetterAddStockToPortfolioInvalidDate() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n20\n2023\n50\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
   }
-
 
   @Test (expected = NullPointerException.class)
   public void testBetterRemoveStockFromPortfolioInvalidSymbol() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
             "TechStocks\nPOOP\n5\n2023\n06\n01\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
+    setInput(input);
 
     betterController.control();
   }
-
 
   @Test (expected = NoSuchElementException.class)
   public void testBetterRemoveStockFromPortfolioInvalidDate() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
             "TechStocks\nAAPL\n5\n2024\n06\n91\nq\n";
-    InputStream in = new ByteArrayInputStream(input.getBytes());
-    System.setIn(in);
-
+    setInput(input);
 
     betterController.control();
-
 
     // Verify the stock was added to the portfolio
     betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
@@ -297,7 +251,6 @@ public class TextualStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
-
 
   @Test
   public void testControllerStockExaminePeriod() {
