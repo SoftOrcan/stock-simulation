@@ -20,21 +20,47 @@ class Portfolio {
     this.portfolio = new HashMap<>();
   }
 
+  /**
+   * Package-private. Add a stock (termed as 'symbol') and the quantity of the stock to a
+   * Portfolio.
+   *
+   * @param symbol   The stock to add.
+   * @param quantity The quantity of stocks purchased.
+   */
   void add(String symbol, Double quantity) {
+    // Retrieve the current amount of a stock, if it exists.
     double currAmount = this.portfolio.getOrDefault(symbol, 0.0);
     portfolio.put(symbol, quantity + currAmount);
   }
 
+  /**
+   * Package-private. Remove a quantity of shares of a stock (termed as 'symbol') from a Portfolio.
+   *
+   * @param symbol The stock to remove.
+   */
   void remove(String symbol, int amount) {
+    // Retrieve the current amount of shares of the stock and compute the remaining amount after
+    // deducting.
     double quantity = portfolio.get(symbol) - amount;
+    // If the quantity of shares is greater than 0, then replace the stock with the new quantity.
     if (quantity > 0) {
       portfolio.put(symbol, quantity);
     }
+    // Otherwise, remove the stock, since its current quantity is 0.
     else {
       portfolio.remove(symbol);
     }
   }
 
+  /**
+   * Package-private. Calculate the value of a Portfolio based on the stocks' value on a given date
+   * (termed as 'date') and the quantity of each stock. Retrieve data relating to the stocks' value
+   * via StockDatabase (termed as 'stockDatabase').
+   *
+   * @param date          The specified date to retrieve data regarding a stock on.
+   * @param stockDatabase The database to retrieve information regarding a stock from.
+   * @return The cumulative value of a Portfolio.
+   */
   double value(LocalDate date, StockDatabase stockDatabase) {
     double total = 0;
     // For every value in the HashMap...

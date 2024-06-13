@@ -13,6 +13,7 @@ import java.util.Objects;
  * <li>The crossovers overtime (via the 'findCrossovers()' method).</li>
  * <li>The price of a Stock on a specified date (via the 'getPriceOn()' method)</li>
  * <li>Determine if a stock symbol exists (via the 'isValidSymbol()' method)</li>
+ * <li>Visualize the performance of a stock (via the 'performance()' method)</li>
  */
 class StockDatabase {
   // The AlphaVantage API to retrieve stock data from.
@@ -105,6 +106,16 @@ class StockDatabase {
     return api.isValidSymbol(symbol);
   }
 
+  /**
+   * Visualize the performance of a stock over a time period. The quantity of x-intervals is based
+   * on the parameter 'xLabelCount'.
+   *
+   * @param symbol      The stock symbol to examine.
+   * @param start       The start date to examine.
+   * @param end         The end date to examine.
+   * @param xLabelCount The quantity of x-intervals to construct.
+   * @return A textual visualization of a stock over a time period.
+   */
   BarGraph performance(String symbol, LocalDate start, LocalDate end, int xLabelCount) {
     BarGraph graph = new BarGraph("Performance of '" + symbol + "':");
     graph.createXAxis(start, end, xLabelCount);

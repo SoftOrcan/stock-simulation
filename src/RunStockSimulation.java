@@ -33,8 +33,8 @@ public class RunStockSimulation {
 
     IStockBetterModel model = new StockBetterModel();
     IStockView view = new StockView(System.out);
-    IStockBetterController controller = new TextualStockBetterController(model, view,
-        new InputStreamReader(System.in));
+    IStockBetterController controller =
+        new TextualStockBetterController(model, view, new InputStreamReader(System.in));
     controller.control();
   }
 }

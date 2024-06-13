@@ -76,7 +76,8 @@ public class BarGraph {
    *
    * @param date          The date to examine.
    * @param portfolio     The portfolio to examine.
-   * @param isComposition If attempting to display the composition or distribution of the portfolio.
+   * @param isComposition If attempting to display the composition or distribution of the
+   *                      portfolio.
    */
   void createEntries(LocalDate date, Set<Map.Entry<String, StockPurchase>> portfolio,
                      boolean isComposition) {
@@ -99,44 +100,65 @@ public class BarGraph {
   }
 
   /**
-   * Construct
+   * Construct the intervals for the x-axis over a time period. The quantity of intervals is
+   * dependent on the parameter 'xLabelCount'.
    *
-   * @param start The start date to examine.
-   * @param end The end date to examine.
+   * @param start       The start date to examine.
+   * @param end         The end date to examine.
    * @param xLabelCount The quantity of x-labels in the bar graph.
    */
   void createXAxis(LocalDate start, LocalDate end, int xLabelCount) {
+    // Determine the quantity of days.
     int range = (int) ChronoUnit.DAYS.between(start, end);
 
+    // If the time range is less than five days...
     if (range < 5) {
+      // ... Create hourly time intervals.
       createIntervals(start, range, xLabelCount, "yyyy-MM-dd HH:mm:ss", 24);
     } else {
+      // Otherwise, create daily, monthly or yearly time intervals.
       createIntervals(start, range, xLabelCount, "yyyy-MM-dd", 1);
     }
   }
 
+  /**
+   * Construct time intervals over a provided time period. The time interval may be in hourly,
+   * daily, monthly or yearly units.
+   *
+   * @param start       The start date to examine.
+   * @param range       The length of the time period.
+   * @param xLabelCount The quantity of x-intervals to create.
+   * @param pattern     The pattern to format the x-intervals.
+   * @param increment   The increment of the x-intervals.
+   */
   private void createIntervals(LocalDate start, int range, int xLabelCount, String pattern,
                                int increment) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+    // 'Increment' is utilized to calculate the quantity of hours within the time range.
+    // Since the first date is required to be included in the bar graph, that is considered one
+    // x-interval made. Therefore, negate the intended x-labels by 1.
     int units = range * increment / (xLabelCount - 1);
 
+    // The first date is required to be included in the bar graph.
     LocalDateTime curr = start.atStartOfDay();
     for (int i = 0; i < xLabelCount; i += 1) {
       xAxis.add(curr.format(formatter));
       curr = pattern.equals("yyyy-MM-dd") ? curr.plusDays(units) : curr.plusHours(units);
     }
 
+    // State the units utilized.
     xInterval = units + (pattern.equals("yyyy-MM-dd") ? " day(s)" : " hours");
   }
 
   /**
-   * Create stock y-axis.
+   * Construct the y-axis for a stock.
    *
-   * @param name  the name
-   * @param start the start
-   * @param end   the end
+   * @param name The stock symbol to examine.
+   * @param start The start date to examine.
+   * @param end The end date to examine.
    */
   void createStockYAxis(String name, LocalDate start, LocalDate end) {
+    // Compute t
     List<Double> prices = getStockPrices(name, start, end);
     createYAxis(prices);
   }

@@ -42,7 +42,7 @@ class StockInformation {
 
   /**
    * Retrieve a stock's (termed as 'symbol') historical data from the .csv file. The data type may
-   * be DAILY (represented as a "" interval) or INTRADAY data (represented as a "60min" interval).
+   * be DAILY (represented as a "" interval) or INTRA-DAY data (represented as a "60min" interval).
    *
    * @param symbol   The stock to examine.
    * @param interval The time interval to examine.
@@ -133,13 +133,18 @@ class StockInformation {
     StockPrice price;
     int tries = 0;
 
+    // If the date is a LocalDateTime format...
     if (date.contains(" ")) {
       LocalDateTime dateLocalTime =
           LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+      // While an entry for a date cannot be found...
       while ((price = prices.get(
           dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
+        // De-advance by one day until an entry for the date is found.
         dateLocalTime = dateLocalTime.minusHours(1);
         tries += 1;
+        // Halt the search after searching through 1000 entries. This equates the data of the
+        // stock not
         if (tries > 1000) {
           return 0;
         }
@@ -147,8 +152,10 @@ class StockInformation {
     } else {
       LocalDate dateLocal = LocalDate.parse(date);
       while ((price = prices.get(dateLocal.toString())) == null) {
+        // De-advance by one day until an entry for the date is found.
         dateLocal = dateLocal.minusDays(1);
         tries += 1;
+        // Halt the search after searching through 1000 entries.
         if (tries > 1000) {
           return 0;
         }
