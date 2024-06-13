@@ -67,6 +67,14 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Created portfolio 'TechStocks'."));
   }
 
+  @Test
+  public void testWrongInitialInput() {
+    String input = "20\n";
+    setInput(input);
+    betterController.control();
+    assertTrue(betterMockView.getMessages().contains("Undefined instruction: 20."));
+  }
+
 
   @Test
   public void testBetterAddStockToPortfolio() {
@@ -95,6 +103,23 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
+
+  @Test (expected = NullPointerException.class)
+  public void testBetterRemoveStockFromPortfolioStockNotInPortfolio() {
+    String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
+            "TechStocks\nSWK\n5\n2023\n06\n01\nq\n";
+    setInput(input);
+
+    betterController.control();
+
+    // Verify the stock was added to the portfolio
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 6, 1));
+    betterMockModel.removeStockFromPortfolio("TechStocks", "SWK", 5,
+            LocalDate.of(2023, 6, 1));
+    assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'SWK' " +
+            "(quantity: 5) from portfolio 'TechStocks'."));
+  }
   
   @Test
   public void testBetterStockChange() {
@@ -106,7 +131,6 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Gain/Loss of 'AAPL': 100.0."));
   }
 
-
   @Test
   public void testBetterStockMovingAverage() {
     String input = "2\nAAPL\n2023\n01\n01\n30\nq\n";
@@ -117,6 +141,15 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Moving average of 'AAPL': 150.0."));
   }
 
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterStockMovingAverageInvalidDate() {
+    String input = "2\nAAPL\n2023\n90\n01\n30\nq\n";
+    setInput(input);
+
+    betterController.control();
+
+    assertTrue(betterMockView.getMessages().contains("Moving average of 'AAPL': 150.0."));
+  }
 
   @Test
   public void testBetterStockCrossovers() {
@@ -129,6 +162,17 @@ public class IStockControllerTest {
         betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
   }
 
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterStockCrossoversInvalidDate() {
+    String input = "3\nAAPL\n2021\n91\n01\n2023\n12\n31\n30\nq\n";
+    setInput(input);
+
+    betterController.control();
+
+    assertTrue(
+            betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
+  }
+
   @Test
   public void testBetterPortfolioValue() {
     String input = "5\nTechStocks\n10\nTechStocks\n2023\n01\n01\nq\n";
@@ -136,6 +180,16 @@ public class IStockControllerTest {
 
     betterController.control();
 
+    assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
+  }
+
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterPortfolioValueNotExist() {
+    String input = "5\nTechStocks\n10\npoopyPortfolio\n";
+    setInput(input);
+
+    betterController.control();
+    System.out.println(betterMockView.getMessages());
     assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
   }
 
@@ -157,6 +211,78 @@ public class IStockControllerTest {
     betterController.control();
 
     assertTrue(betterMockView.getMessages().contains("Distribution:"));
+  }
+
+  @Test
+  public void testBetterPortfolioRebalance() {
+    String inputCreatePortfolio = "5\nportfolio\nq\n";
+    setInput(inputCreatePortfolio);
+    betterController.control();
+    String inputAddStock = "6\nportfolio\nAAPL\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddStock);
+    betterController.control();
+    String inputAddAnotherStock = "6\nportfolio\nGOOG\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddAnotherStock);
+    betterController.control();
+    String inputRebalance = "11\nportfolio\n50-50\n2024\n05\n02\nq\n";
+    setInput(inputRebalance);
+    betterController.control();
+    assertTrue(betterMockView.getMessages().get(betterMockView.getMessages().size() - 2).
+            contains("Rebalanced portfolio 'portfolio'"));
+  }
+
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterPortfolioRebalanceInvalidRatio() {
+    String inputCreatePortfolio = "5\nName\nq\n";
+    setInput(inputCreatePortfolio);
+    betterController.control();
+    String inputAddStock = "6\nName\nAAPL\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddStock);
+    betterController.control();
+    String inputAddAnotherStock = "6\nName\nGOOG\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddAnotherStock);
+    betterController.control();
+    String inputRebalance = "11\nName\n50-50-50-50\n2024\n05\n02\nq\n";
+    setInput(inputRebalance);
+    betterController.control();
+    assertTrue(betterMockView.getMessages().get(betterMockView.getMessages().size() - 2).
+            contains("Rebalanced portfolio 'portfolio'"));
+  }
+
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterPortfolioRebalanceInvalidTicker() {
+    String inputCreatePortfolio = "5\nName\nq\n";
+    setInput(inputCreatePortfolio);
+    betterController.control();
+    String inputAddStock = "6\nName\nAPL\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddStock);
+    betterController.control();
+    String inputAddAnotherStock = "6\nName\nGOOG\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddAnotherStock);
+    betterController.control();
+    String inputRebalance = "11\nName\n50-50-50-50\n2024\n05\n02\nq\n";
+    setInput(inputRebalance);
+    betterController.control();
+    assertTrue(betterMockView.getMessages().get(betterMockView.getMessages().size() - 2).
+            contains("Rebalanced portfolio 'portfolio'"));
+  }
+
+  @Test (expected = NoSuchElementException.class)
+  public void testBetterPortfolioRebalanceInvalidDate() {
+    String inputCreatePortfolio = "5\nName\nq\n";
+    setInput(inputCreatePortfolio);
+    betterController.control();
+    String inputAddStock = "6\nName\nAPL\n20\n2024\n35\n02\nq\n";
+    setInput(inputAddStock);
+    betterController.control();
+    String inputAddAnotherStock = "6\nName\nGOOG\n20\n2024\n05\n02\nq\n";
+    setInput(inputAddAnotherStock);
+    betterController.control();
+    String inputRebalance = "11\nName\n50-50-50-50\n2024\n05\n02\nq\n";
+    setInput(inputRebalance);
+    betterController.control();
+    assertTrue(betterMockView.getMessages().get(betterMockView.getMessages().size() - 2).
+            contains("Rebalanced portfolio 'portfolio'"));
   }
 
   @Test
