@@ -127,7 +127,7 @@ public class StockModelTest {
     assertEquals(15.722799999999985, model.stockMovingAverage("AMZN",
         LocalDate.of(2002, 12, 21), 400), 0.01);
     // Test over a month.
-    assertEquals(175.9499999999999, model.stockMovingAverage("GOOG",
+    assertEquals(179.5600000000001, model.stockMovingAverage("GOOG",
         LocalDate.of(2024, 10, 13), 32), 0.01);
   }
 

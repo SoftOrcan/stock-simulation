@@ -50,7 +50,7 @@ class MockStockModel implements IStockModel {
 
   public void removeStockFromPortfolio(String portfolioName, String symbol, int quantity) {
     // Mock implementation for removeStockFromPortfolio.
-    log.add(String.format("removeStockFromPortfolio: %s, %s, %f", portfolioName, symbol, quantity));
+    log.add(String.format("removeStockFromPortfolio: %s, %s, %d", portfolioName, symbol, quantity));
   }
 
   public double portfolioValue(String portfolioName, LocalDate date) {
