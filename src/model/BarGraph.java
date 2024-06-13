@@ -84,13 +84,13 @@ public class BarGraph {
     for (Map.Entry<String, StockPurchase> entry : portfolio) {
       String stock = entry.getKey(); // Get the stock in the portfolio.
       StockPurchase purchase = entry.getValue(); // Get the purchaseDate of the stock.
-      // Display on stock with purchase dates
+      // Display only stocks with purchase dates up to the specified date.
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        String xAxisValue = isComposition ? stock : entry.getKey();
+        // If the composition of a portfolio is requested,
         String yAxisValue = isComposition ?
             purchase.getAmount() + " shares." :
             "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "") * purchase.getAmount();
-        xAxis.add(xAxisValue);
+        xAxis.add(stock);
         yAxis.add(yAxisValue);
       }
     }
