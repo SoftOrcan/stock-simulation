@@ -1,8 +1,4 @@
-Re: Deliverables - Design Decision
-
-IStockBetterModel (pt. 2)
-Package "controller":
-
+Re: Deliverables - Design Decisions
 
 IStockModel (pt. 1)
 Package "controller":
@@ -38,3 +34,26 @@ the primary public class "StockModel", which implements "IStockModel." This desi
  program handles specific tasks independently. By distributing functionalities across specialized
  classes, the program becomes more flexible, allowing for easier extension or modification of
  features in the future.
+
+IStockBetterModel (pt. 2)
+Package "controller":
+The "controller" package contains an extension to the parent interface "IStockController," namely
+"IStockBetterController." Although IStockBetterController does not contain any additional public
+methods differing from IStockController, its implementing class, "TextualStockBetterController," is
+capable of handling functionalities that its predecessor, "TextualStockController," cannot. This
+includes the ability to perform "stock-performance," which visualizes the price of a stock over a
+period of time, and "portfolio-composition" and "portfolio-distribution," which display the quantity
+ and costs of each stock in the portfolio, respectively.
+
+It is worthwhile to note that the implementation of IStockController has been modified.
+Specifically, instead of requesting the user to specify a date within the LocalDate::parse format (i
+.e., YYYY-MM-DD), the user is prompted to enter each date component individually. Thus, the user
+will be prompted to enter the year, the month, and the date separately, and each component will be
+validated individually. This approach extends to every user input component, such as entering the
+portfolio name (via the 'validatePortfolio()' method), the amount of stock share to sell/add (via
+the 'validateNatural()' and 'isValidInteger()' methods), and the stock symbol name (via the
+'validateSymbol()' method). This design modification, aimed at validating every input separately,
+was implemented to minimize user input errors.
+
+Package "view":
+
