@@ -151,32 +151,36 @@ public class BarGraph {
   }
 
   /**
-   * Construct the y-axis for a stock.
+   * Construct the y-axis for a stock over a time period.
    *
-   * @param name The stock symbol to examine.
+   * @param name  The stock symbol to examine.
    * @param start The start date to examine.
-   * @param end The end date to examine.
+   * @param end   The end date to examine.
    */
   void createStockYAxis(String name, LocalDate start, LocalDate end) {
-    // Compute t
+    // Compute the prices of the stock over a time period.
     List<Double> prices = getStockPrices(name, start, end);
     createYAxis(prices);
   }
 
   /**
-   * Create portfolio y-axis.
+   * Construct the y-axis for a portfolio (i.e. the value of the stocks in the portfolio) over a
+   * time period.
    *
-   * @param stocks the stocks
-   * @param start  the start
-   * @param end    the end
+   * @param stocks The stocks to examine.
+   * @param start  The start date to examine.
+   * @param end    The end date to examine.
    */
   void createPortfolioYAxis(HashMap<String, Double> stocks, LocalDate start, LocalDate end) {
+    // Determine if the time period is less than 5 days.
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
     String intervalType = isShortInterval ? "60min" : "";
     List<Double> prices = new ArrayList<>();
 
+    // For every date in the x-axis...
     for (String interval : xAxis) {
       double total = 0;
+      // Calculate the value of the portfolio on each given date.
       for (Map.Entry<String, Double> symbol : stocks.entrySet()) {
         total += symbol.getValue()
             * stockDatabase.getPriceOn(symbol.getKey(), interval, intervalType);
