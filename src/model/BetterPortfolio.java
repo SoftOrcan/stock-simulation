@@ -70,7 +70,8 @@ public class BetterPortfolio extends Portfolio {
   }
 
   void addStockToFile(String name, String symbol, double quantity, LocalDate date) {
-    double currAmount = portfolioFile.get(symbol).getAmount();
+    double currAmount = portfolioFile.getOrDefault(symbol, new StockPurchase(0.0,
+        LocalDate.parse("2024-01-01"))).getAmount();
     portfolioFile.put(symbol, new StockPurchase(currAmount + quantity, date));
     copyToFile(name);
   }

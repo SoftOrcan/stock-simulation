@@ -34,10 +34,12 @@ class AlphaVantageAPI {
    */
   void getData(String symbol, String interval) {
     try {
-      BufferedReader reader = getBufferedReader(symbol, interval);
+      BufferedReader reader = getBufferedReader(symbol, interval); // Read data from the URL.
+      // PrintWriter to append to the .csv file.
       PrintWriter writer = new PrintWriter("./data/" + interval + symbol + ".csv");
 
       String line;
+      // For every stock data in the URL, copy the information to the .csv.
       while ((line = reader.readLine()) != null) {
         writer.write(line + "\n");
       }
@@ -62,7 +64,8 @@ class AlphaVantageAPI {
    */
   private BufferedReader getBufferedReader(String symbol, String interval) throws IOException {
     String baseURL = "https://www.alphavantage.co/query?function=";
-    // An empty 'interval' represents a
+    // An empty 'interval' represents a DAILY stock retrieval, and a "60min" 'interval'
+    // represents an HOURLY stock retrieval.
     String apiURL = interval.isEmpty() ?
         String.format("%sTIME_SERIES_DAILY&symbol=%s&outputsize=full&apikey=%s&datatype" +
             "=csv", baseURL, symbol, apiKey) :
@@ -71,7 +74,7 @@ class AlphaVantageAPI {
 
 
     URL url = new URL(apiURL);
-    return new BufferedReader(new InputStreamReader(url.openStream()));
+    return new BufferedReader(new InputStreamReader(url.openStream())); // Read data from the URL.
   }
 
   /**

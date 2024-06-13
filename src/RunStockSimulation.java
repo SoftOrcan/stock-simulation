@@ -31,9 +31,9 @@ public class RunStockSimulation {
       dataDirectory.mkdirs();
     }
 
-    IStockModel model = new StockModel();
+    IStockBetterModel model = new StockBetterModel();
     IStockView view = new StockView(System.out);
-    IStockController controller = new TextualStockController(model, view,
+    IStockBetterController controller = new TextualStockBetterController(model, view,
         new InputStreamReader(System.in));
     controller.control();
   }

@@ -56,4 +56,4 @@ the 'validateNatural()' and 'isValidInteger()' methods), and the stock symbol na
 was implemented to minimize user input errors.
 
 Package "view":
-
+The sole implementation modification made in the "view" is

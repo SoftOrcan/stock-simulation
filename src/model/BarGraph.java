@@ -10,22 +10,41 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * The BarGraph class represents a bar graph visualization, and contains methods to construct a bar
+ * graph. Such that, a BarGraph is constructed via the 'createXAxis()', 'createYAxis()',
+ * 'createStockYAxis()', and 'createPortfolioYAxis()' methods, in which the xAxis and yAxis will be
+ * populated. The BarGraph is interpreted as a String via the 'interpret()' method for textual
+ * display.
+ */
 public class BarGraph {
-  private final String title;
-  private final List<String> xAxis = new ArrayList<>();
-  private final List<String> yAxis = new ArrayList<>();
-  private String xInterval = "";
-  private String yScale = "";
+  private final String title; // The title of the bar graph.
+  private final List<String> xAxis = new ArrayList<>(); // The x-axis elements.
+  private final List<String> yAxis = new ArrayList<>(); // The y-axis elements.
+  private String xInterval = ""; // The x-axis intervals.
+  private String yScale = ""; // The y-axis intervals.
+  // The StockDatabase to retrieve stock information from.
   private final StockDatabase stockDatabase = new StockDatabase();
 
+  /**
+   * Instantiates a new BarGraph with the provided title.
+   *
+   * @param title The title of the bar graph.
+   */
   BarGraph(String title) {
     this.title = title;
   }
 
+  /**
+   * Interpret the BarGraph to a String for textual visualization purposes in StockView.
+   *
+   * @return String representation of a BarGraph.
+   */
   public String interpret() {
     StringBuilder builder = new StringBuilder();
-    builder.append(title);
+    builder.append(title); // Include the title.
 
+    // Include the values in the x and y-axes.
     for (int i = 0; i < xAxis.size(); i += 1) {
       builder.append(System.lineSeparator())
           .append(xAxis.get(i))
@@ -33,12 +52,14 @@ public class BarGraph {
           .append(yAxis.get(i));
     }
 
+    // If there is an x-axis scale, include it in the String representation.
     if (!xInterval.isEmpty()) {
       builder.append(System.lineSeparator())
           .append("X-Axis Scale: Every ")
           .append(xInterval);
     }
 
+    // If there is a y-axis scale, include it in the String representation.
     if (!yScale.isEmpty()) {
       builder.append(System.lineSeparator())
           .append("Y-Axis Scale: * = $")
@@ -48,11 +69,22 @@ public class BarGraph {
     return builder.toString();
   }
 
+  /**
+   * Display the values in a portfolio on a specific date, the x-axis and y-axis values varying
+   * depending on if the user is attempting to display the composition or distribution of a
+   * portfolio.
+   *
+   * @param date          The date to examine.
+   * @param portfolio     The portfolio to examine.
+   * @param isComposition If attempting to display the composition or distribution of the portfolio.
+   */
   void createEntries(LocalDate date, Set<Map.Entry<String, StockPurchase>> portfolio,
                      boolean isComposition) {
+    // For every entry in the portfolio...
     for (Map.Entry<String, StockPurchase> entry : portfolio) {
-      String stock = entry.getKey();
-      StockPurchase purchase = entry.getValue();
+      String stock = entry.getKey(); // Get the stock in the portfolio.
+      StockPurchase purchase = entry.getValue(); // Get the purchaseDate of the stock.
+      // Display on stock with purchase dates
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
         String xAxisValue = isComposition ? stock : entry.getKey();
         String yAxisValue = isComposition ?
@@ -64,6 +96,13 @@ public class BarGraph {
     }
   }
 
+  /**
+   * Create x axis.
+   *
+   * @param start       the start
+   * @param end         the end
+   * @param xLabelCount the x label count
+   */
   void createXAxis(LocalDate start, LocalDate end, int xLabelCount) {
     int range = (int) ChronoUnit.DAYS.between(start, end);
 
@@ -88,11 +127,25 @@ public class BarGraph {
     xInterval = units + (pattern.equals("yyyy-MM-dd") ? " day(s)" : " hours");
   }
 
+  /**
+   * Create stock y-axis.
+   *
+   * @param name  the name
+   * @param start the start
+   * @param end   the end
+   */
   void createStockYAxis(String name, LocalDate start, LocalDate end) {
     List<Double> prices = getStockPrices(name, start, end);
     createYAxis(prices);
   }
 
+  /**
+   * Create portfolio y-axis.
+   *
+   * @param stocks the stocks
+   * @param start  the start
+   * @param end    the end
+   */
   void createPortfolioYAxis(HashMap<String, Double> stocks, LocalDate start, LocalDate end) {
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
     String intervalType = isShortInterval ? "60min" : "";
@@ -109,6 +162,7 @@ public class BarGraph {
 
     createYAxis(prices);
   }
+
 
   private List<Double> getStockPrices(String symbol, LocalDate start, LocalDate end) {
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
