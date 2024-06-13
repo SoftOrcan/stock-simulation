@@ -8,8 +8,15 @@ import java.io.IOException;
  * 'displayMessage()' method).
  */
 public class StockView implements IStockView {
-  private final Appendable out;
+  private final Appendable out; // The message to display.
 
+  /**
+   * The StockView class is the interaction window between a user and the program. It is responsive
+   * to the inputs of the user, and renders output messages from the controller (via the
+   * 'displayMessage()' method).
+   *
+   * @param out The message to display.
+   */
   public StockView(Appendable out) {
     this.out = out;
   }
@@ -32,9 +39,14 @@ public class StockView implements IStockView {
     writeOutWithNewline("Error: " + error);
   }
 
-  private void writeOutWithNewline(String str) {
+  /**
+   * Display the message as a new line.
+   *
+   * @param message The message to display.
+   */
+  private void writeOutWithNewline(String message) {
     try {
-      out.append(str).append("\n");
+      out.append(message).append("\n");
     } catch (IOException ex) {
       throw new IllegalStateException("IOException on writing out stream. Something bad happened!");
     }

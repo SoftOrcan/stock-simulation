@@ -38,11 +38,9 @@ public class StockModelTest {
   @Test
   public void testCreatePortfolio() {
     model.createPortfolio("Portfolio One");
-    assertEquals(0, model.portfolioValue("Portfolio One",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(0, model.portfolioValue("Portfolio One", LocalDate.of(2023, 6, 6)), 0.01);
     model.createPortfolio("Portfolio Two");
-    assertEquals(0, model.portfolioValue("Portfolio Two",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(0, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
   }
 
   /**
@@ -104,18 +102,15 @@ public class StockModelTest {
   public void testAddStockToPortfolio() {
     model.createPortfolio("Portfolio One");
     model.addStockToPortfolio("Portfolio One", "AAPL", 10);
-    assertEquals(1792.1, model.portfolioValue("Portfolio One",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(1792.1, model.portfolioValue("Portfolio One", LocalDate.of(2023, 6, 6)), 0.01);
     // Add stock to another portfolio.
     model.createPortfolio("Portfolio Two");
     model.addStockToPortfolio("Portfolio Two", "GOOG", 10);
-    assertEquals(1279.1, model.portfolioValue("Portfolio Two",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(1279.1, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
     // Add stock to same portfolio.
     model.addStockToPortfolio("Portfolio Two", "AMZN", 3);
     model.addStockToPortfolio("Portfolio Two", "AAPL", 5);
-    assertEquals(2554.98, model.portfolioValue("Portfolio Two",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(2554.98, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
   }
 
   /**
@@ -145,25 +140,21 @@ public class StockModelTest {
   public void testRemoveStockFromPortfolio() {
     model.createPortfolio("Portfolio One");
     model.addStockToPortfolio("Portfolio One", "AAPL", 10);
-    assertEquals(1792.1, model.portfolioValue("Portfolio One",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(1792.1, model.portfolioValue("Portfolio One", LocalDate.of(2023, 6, 6)), 0.01);
     // Remove stock.
     model.removeStockFromPortfolio("Portfolio One", "AAPL", 10);
     // Tests.
-    assertEquals(0, model.portfolioValue("Portfolio One",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(0, model.portfolioValue("Portfolio One", LocalDate.of(2023, 6, 6)), 0.01);
 
     model.createPortfolio("Portfolio Two");
     model.addStockToPortfolio("Portfolio Two", "GOOG", 10);
     model.addStockToPortfolio("Portfolio Two", "AMZN", 3);
     model.addStockToPortfolio("Portfolio Two", "AAPL", 5);
     // Initialized data correctly.
-    assertEquals(2554.98, model.portfolioValue("Portfolio Two",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(2554.98, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
     // Remove stock.
     model.removeStockFromPortfolio("Portfolio Two", "GOOG", 10);
-    assertEquals(1275.88, model.portfolioValue("Portfolio Two",
-        LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(1275.88, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
   }
 
   /**

@@ -86,7 +86,9 @@ public class BarGraph {
       StockPurchase purchase = entry.getValue(); // Get the purchaseDate of the stock.
       // Display only stocks with purchase dates up to the specified date.
       if (purchase.getPurchaseDate().isBefore(date) || purchase.getPurchaseDate().equals(date)) {
-        // If the composition of a portfolio is requested,
+        // If the composition of a portfolio is requested, then reflect the selection by
+        // including the "shares" unit. Otherwise, calculate the total value of every stock in
+        // the portfolio and include the "$" unit.
         String yAxisValue = isComposition ?
             purchase.getAmount() + " shares." :
             "$" + stockDatabase.getPriceOn(stock, String.valueOf(date), "") * purchase.getAmount();
@@ -97,11 +99,11 @@ public class BarGraph {
   }
 
   /**
-   * Create x axis.
+   * Construct
    *
-   * @param start       the start
-   * @param end         the end
-   * @param xLabelCount the x label count
+   * @param start The start date to examine.
+   * @param end The end date to examine.
+   * @param xLabelCount The quantity of x-labels in the bar graph.
    */
   void createXAxis(LocalDate start, LocalDate end, int xLabelCount) {
     int range = (int) ChronoUnit.DAYS.between(start, end);
