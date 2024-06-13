@@ -1,9 +1,14 @@
 import java.io.File;
+import java.io.InputStreamReader;
 
 import controller.IStockBetterController;
+import controller.IStockController;
 import controller.TextualStockBetterController;
+import controller.TextualStockController;
 import model.IStockBetterModel;
+import model.IStockModel;
 import model.StockBetterModel;
+import model.StockModel;
 import view.IStockView;
 import view.StockView;
 
@@ -20,15 +25,16 @@ public class RunStockSimulation {
    * @param args The command line argument array.
    */
   public static void main(String[] args) {
-    // If the "data" folder does not exist, create it.
+    // If the "data" directory does not exist, create it.
     File dataDirectory = new File("./data");
     if (!dataDirectory.exists()) {
       dataDirectory.mkdirs();
     }
 
-    IStockBetterModel model = new StockBetterModel();
-    IStockView view = new StockView();
-    IStockBetterController controller = new TextualStockBetterController(model, view);
+    IStockModel model = new StockModel();
+    IStockView view = new StockView(System.out);
+    IStockController controller = new TextualStockController(model, view,
+        new InputStreamReader(System.in));
     controller.control();
   }
 }

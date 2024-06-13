@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 /**
  * The Portfolio class represents a stock portfolio, containing stocks which the user has purchased
@@ -22,7 +21,7 @@ class Portfolio {
   }
 
   void add(String symbol, Double quantity) {
-    double currAmount = this.portfolio.get(symbol);
+    double currAmount = this.portfolio.getOrDefault(symbol, 0.0);
     portfolio.put(symbol, quantity + currAmount);
   }
 

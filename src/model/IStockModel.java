@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * The IStockModel interface represents the "backend" of StocksStimulation. Such that, it
- * contains methods to...
+ * The IStockModel interface represents the "backend" of StocksStimulation. Such that, it contains
+ * methods to...
  * <li>Calculate the net profit/loss of a stock over a time period (via the 'calculateChange()'
  * method).</li>
  * <li>The moving average of a stock over a time period (via the 'movingAverage ()' method).</li>
@@ -43,9 +43,9 @@ public interface IStockModel {
 
   /**
    * Calculate the x-day crossovers of a stock over a specified time period. An x-day crossover
-   * happens when the closing price for a day is greater than the x-day moving average for that
-   * day. A crossover signals a "buy" opportunity. A crossover can be defined over any period of
-   * time, although the 30-day period (i.e. the 30-day crossover) is usually popular.
+   * happens when the closing price for a day is greater than the x-day moving average for that day.
+   * A crossover signals a "buy" opportunity. A crossover can be defined over any period of time,
+   * although the 30-day period (i.e. the 30-day crossover) is usually popular.
    *
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
@@ -76,17 +76,18 @@ public interface IStockModel {
    * Add a stock (termed as 'symbol') to a portfolio, representative of purchasing a share of a
    * stock to a portfolio.
    *
-   * @param name The name of the portfolio.
-   * @param symbol        The stock to add.
-   * @param quantity        The quantity of the stock to add.
+   * @param name     The name of the portfolio.
+   * @param symbol   The stock to add.
+   * @param quantity The quantity of the stock to add.
    */
   void addStockToPortfolio(String name, String symbol, double quantity);
 
   /**
-   * Remove a stock (termed as 'symbol') from a portfolio.
+   * Remove a quantity of stock (termed as 'symbol') from a portfolio.
    *
-   * @param name The name of the portfolio.
-   * @param symbol        The stock to remove.
+   * @param name   The name of the portfolio.
+   * @param symbol The stock to remove.
+   * @param quantity The quantity of stock to remove.
    */
   void removeStockFromPortfolio(String name, String symbol, int quantity);
 
@@ -96,7 +97,7 @@ public interface IStockModel {
    * stock.
    *
    * @param name The name of the portfolio.
-   * @param date          The date to examine.
+   * @param date The date to examine.
    * @return The value of a portfolio on a specific date.
    */
   double portfolioValue(String name, LocalDate date);

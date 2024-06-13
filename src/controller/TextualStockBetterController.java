@@ -13,15 +13,16 @@ public class TextualStockBetterController extends TextualStockController impleme
   private final String ls = System.lineSeparator();
   private final IStockView view;
   private final IStockBetterModel model;
+  private final Scanner sc;
 
-  public TextualStockBetterController(IStockBetterModel model, IStockView view) {
-    super(model, view);
+  public TextualStockBetterController(IStockBetterModel model, IStockView view, Readable in) {
+    super(model, view, in);
     this.view = view;
     this.model = model;
+    this.sc = new Scanner(in);
   }
 
   public void control() {
-    Scanner sc = new Scanner(System.in);
     view.displayMessage(menu());
 
     while (sc.hasNext()) {
@@ -31,12 +32,12 @@ public class TextualStockBetterController extends TextualStockController impleme
       } else if (userInstruction.equals("m")) {
         view.displayMessage(menu());
       } else {
-        processCommand(userInstruction, sc, model);
+        processCommand(userInstruction, model);
       }
     }
   }
 
-  private void processCommand(String userInstruction, Scanner sc, IStockBetterModel model) {
+  private void processCommand(String userInstruction, IStockBetterModel model) {
     String name;
     String symbol;
     LocalDate date;
@@ -157,7 +158,7 @@ public class TextualStockBetterController extends TextualStockController impleme
             validateDate(sc, "year", 3) + "-"
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
-        view.displayMessage("Value of " + name + ": " + model.portfolioValue(name, date) + ".");
+        view.displayMessage("Value of " + name + ": $" + model.portfolioValue(name, date) + ".");
         view.displayMessage(returnToMenu());
         break;
       case "11":

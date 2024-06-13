@@ -1,7 +1,11 @@
-Stock Simulation - Re: Deliverables
-Design Decision
+Re: Deliverables - Design Decision
 
-Package: "controller"
+IStockBetterModel (pt. 2)
+Package "controller":
+
+
+IStockModel (pt. 1)
+Package "controller":
 The "controller" package contains two files: the parent interface "IStockController" and
 "TextualStockController", a class which implements IStockController. We created the interface in
 case of future implementations where we might need to create another controller. In such a
@@ -9,7 +13,7 @@ scenario, we would simply need to create another class that implements IStockCon
 methods of a similar nature to TextualStockController. Since TextualStockController is accessed by
 tests beyond the scope of the package, the class is required to be public.
 
-Package: "view"
+Package "view":
 The "view" package shares a similar nature with the "controller" package. Therefore, we created a
 parent interface (i.e., "IStockView") containing the methods required to render contents to the user
 . This preparation is for future implementations in case we need to create another class with a
@@ -17,7 +21,7 @@ similar nature to StockView (the current class implementing IStockView), but it 
 that behave differently from the current methods in StockView. Since StockView is accessed by
 TextualStockController, the class is required to be public.
 
-Package: "model"
+Package "model":
 The "model" package contains the "backend" components of the Stock Simulation program. It includes
 the primary public class "StockModel", which implements "IStockModel." This design decision shares a
  similar nature with the "controller" and "view" packages. This preparation is for future

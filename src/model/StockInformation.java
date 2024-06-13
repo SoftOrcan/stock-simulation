@@ -41,9 +41,11 @@ class StockInformation {
   }
 
   /**
-   * Retrieve a stock's (termed as 'symbol') historical data from the .csv file.
+   * Retrieve a stock's (termed as 'symbol') historical data from the .csv file. The data type may
+   * be DAILY (represented as a "" interval) or INTRADAY data (represented as a "60min" interval).
    *
-   * @param symbol The stock to examine.
+   * @param symbol   The stock to examine.
+   * @param interval The time interval to examine.
    */
   private void getHistoricalPrices(String symbol, String interval) {
     try (BufferedReader reader = // Attempt to read the .csv file, if it exists.
@@ -122,23 +124,23 @@ class StockInformation {
   }
 
   /**
-   * Return the price of a stock on a specified date.
+   * Return the price of a stock on a specific date.
    *
-   * @param time The specified date to examine.
-   * @return The price of a stock on a specified date.
+   * @param date The specified date to examine.
+   * @return The price of a stock on a specific date.
    */
-  double getPriceOn(String time) {
+  double getPriceOn(String date) {
     StockPrice price;
 
-    if (time.contains(" ")) {
+    if (date.contains(" ")) {
       LocalDateTime dateLocalTime =
-          LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+          LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
       while ((price = prices.get(
           dateLocalTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))) == null) {
         dateLocalTime = dateLocalTime.minusHours(1);
       }
     } else {
-      LocalDate dateLocal = LocalDate.parse(time);
+      LocalDate dateLocal = LocalDate.parse(date);
       while ((price = prices.get(dateLocal.toString())) == null) {
         dateLocal = dateLocal.minusDays(1);
       }

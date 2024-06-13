@@ -17,7 +17,8 @@ import java.util.logging.Logger;
 class AlphaVantageAPI {
   // Logger to record functionality or capture thrown exceptions.
   private final Logger logger = Logger.getLogger(AlphaVantageAPI.class.getName());
-  private final String apiKey; // The apiKey to access AlphaVantageAPI.
+  // The apiKey to access AlphaVantageAPI.
+  private final String apiKey;
 
   /**
    * Generated key to access data from the AlphaVantage API.
@@ -49,8 +50,19 @@ class AlphaVantageAPI {
     }
   }
 
+  /**
+   * Create the URL. This is the query to the web service. The query string includes the type of
+   * query (i.e. DAILY or INTRADAY stock prices) (termed as 'interval') and the stock symbol to be
+   * looked up (termed as 'symbol').
+   *
+   * @param symbol The stock to examine.
+   * @param interval The interval to examine (i.e. "" or "60min").
+   * @return BufferedReader to read the data contained in the URL.
+   * @throws IOException If the URL is deteriorated or cannot be accessed.
+   */
   private BufferedReader getBufferedReader(String symbol, String interval) throws IOException {
     String baseURL = "https://www.alphavantage.co/query?function=";
+    // An empty 'interval' represents a
     String apiURL = interval.isEmpty() ?
         String.format("%sTIME_SERIES_DAILY&symbol=%s&outputsize=full&apikey=%s&datatype" +
             "=csv", baseURL, symbol, apiKey) :

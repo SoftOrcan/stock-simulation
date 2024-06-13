@@ -47,8 +47,8 @@ public class StockModel implements IStockModel {
 
   /**
    * Calculate the net profit/loss of a stock (termed as 'symbol') from and to a specified date
-   * range by referencing stockDatabase. The net profit/loss is:
-   * endDate.closingPrice - startDate.closingPrice.
+   * range by referencing stockDatabase. The net profit/loss is: endDate.closingPrice -
+   * startDate.closingPrice.
    *
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
@@ -111,19 +111,20 @@ public class StockModel implements IStockModel {
    * Add a quantity of stock (termed as 'symbol') to a portfolio, representative of purchasing a
    * share of a stock to a portfolio.
    *
-   * @param name The name of the portfolio.
-   * @param symbol        The stock to add.
-   * @param quantity        The quantity of the stock to add.
+   * @param name     The name of the portfolio.
+   * @param symbol   The stock to add.
+   * @param quantity The quantity of the stock to add.
    */
   public void addStockToPortfolio(String name, String symbol, double quantity) {
     portfolios.get(name).add(symbol, quantity);
   }
 
   /**
-   * Remove a stock (termed as 'symbol') from a portfolio.
+   * Remove a quantity of stock (termed as 'symbol') from a portfolio.
    *
-   * @param name The name of the portfolio.
-   * @param symbol        The stock to remove.
+   * @param name     The name of the portfolio.
+   * @param symbol   The stock to remove.
+   * @param quantity The quantity of stock to remove.
    */
   public void removeStockFromPortfolio(String name, String symbol, int quantity) {
     portfolios.get(name).remove(symbol, quantity);
@@ -134,7 +135,7 @@ public class StockModel implements IStockModel {
    * stock in stockDatabase.
    *
    * @param name The name of the portfolio.
-   * @param date          The date to examine.
+   * @param date The date to examine.
    * @return The value of a portfolio on a specific date.
    */
   public double portfolioValue(String name, LocalDate date) {
