@@ -42,17 +42,13 @@ public class IStockModelTest {
   private void clear(String dir) {
     String path = "./" + dir + "/";
 
-    // Create a File object for the directory
     File directory = new File(path);
 
-    // Get all files in the directory
     File[] files = directory.listFiles();
 
     if (files != null) {
-      // Iterate through each file
       for (File file : files) {
         try {
-          // Check if it's a file (not a directory)
           if (file.isFile()) {
             // Empty the file
             file.delete();
