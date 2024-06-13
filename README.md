@@ -18,9 +18,9 @@
 
 - [x] Create a portfolio with a specified name. A portfolio is utilized to contain shares of one
   or more stock.
-- [x] Add a stock to a portfolio *on a specific date*, representative of purchasing a share of a
+- [x] Add a stock to a portfolio on a specific date, representative of purchasing a share of a
   stock to a portfolio.
-- [x] Sell/Remove a stock from a portfolio *on a specific date*.
+- [x] Sell/Remove a stock from a portfolio on a specific date.
 - [x] Determine the composition of a portfolio at a specific date. Note that the composition may
   change over time. The composition must include (a) the list of stocks and (b) the number of
   shares of each stock.
