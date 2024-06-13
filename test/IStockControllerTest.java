@@ -42,7 +42,7 @@ public class IStockControllerTest {
   }
 
   private <T> T last(List<T> strings) {
-    return strings.getLast();
+    return strings.get(strings.size() - 1);
   }
 
   private <T> T secondLast(List<T> strings) {
