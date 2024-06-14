@@ -16,6 +16,12 @@ import java.util.List;
  * method)</li>
  */
 public interface IStockBetterModel extends IStockModel {
+  /**
+   * Create a portfolio with a specified name. A portfolio is utilized to contain shares of one or
+   * more stock.
+   *
+   * @param name The name of the portfolio.
+   */
   void createPortfolio(String name);
 
   /**
@@ -95,6 +101,12 @@ public interface IStockBetterModel extends IStockModel {
    */
   void portfolioRebalance(String name, List<Integer> split, LocalDate date);
 
+  /**
+   * Determine if a portfolio exists.
+   *
+   * @param name The name of the portfolio.
+   * @return If a portfolio exists or not.
+   */
   boolean hasPortfolio(String name);
 
   /**
