@@ -139,7 +139,7 @@ public class TextualStockBetterController extends TextualStockController impleme
             validateDate(sc, "year", 3) + "-"
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
-        model.addStockToPortfolio(name, symbol, amount, date);
+        model.addStockToPortfolioFile(name, symbol, amount, date);
         view.displayMessage("On " + date + ": Added '" + symbol + "' (quantity: " + amount + ") to "
             + "portfolio '" + name + "'.");
         view.displayMessage(returnToMenu());
@@ -152,7 +152,7 @@ public class TextualStockBetterController extends TextualStockController impleme
             validateDate(sc, "year", 3) + "-"
                 + validateDate(sc, "month", 3) + "-"
                 + validateDate(sc, "day", 3));
-        model.removeStockFromPortfolio(name, symbol, amount, date);
+        model.removeStockFromPortfolioFile(name, symbol, amount, date);
         view.displayMessage("On " + date + ": Removed '" + symbol + "' (quantity: " + amount + ") "
             + "from portfolio '" + name + "'.");
         view.displayMessage(returnToMenu());

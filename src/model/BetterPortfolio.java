@@ -55,7 +55,8 @@ public class BetterPortfolio extends Portfolio {
       String symbol = entry.getKey();
       StockPurchase stockPurchase = entry.getValue();
       // Only calculate the prices of the stocks purchased before the provided date.
-      if (stockPurchase.getPurchaseDate().isBefore(date) || stockPurchase.getPurchaseDate().isEqual(date)) {
+      if (stockPurchase.getPurchaseDate().isBefore(date) ||
+          stockPurchase.getPurchaseDate().isEqual(date)) {
         // Find the price of a stock on the given date and multiply it by the quantity of stock
         // purchased.
         double price = stockDatabase.getPriceOn(symbol, String.valueOf(date), "");

@@ -36,7 +36,7 @@ public interface IStockBetterModel extends IStockModel {
    * @param quantity The quantity of stocks purchased.
    * @param date     The date of the purchase of the stock.
    */
-  void addStockToPortfolio(String name, String symbol, int quantity, LocalDate date);
+  void addStockToPortfolioFile(String name, String symbol, int quantity, LocalDate date);
 
   /**
    * Package-private. Remove a quantity of shares of a stock (termed as 'symbol') from a Portfolio.
@@ -46,7 +46,7 @@ public interface IStockBetterModel extends IStockModel {
    * @param quantity The quantity of stock to remove.
    * @param date     The date of the removal of the stock.
    */
-  void removeStockFromPortfolio(String name, String symbol, int quantity, LocalDate date);
+  void removeStockFromPortfolioFile(String name, String symbol, int quantity, LocalDate date);
 
   /**
    * Package-private. Calculate the value of a portfolio based on the stocks' value on a given date

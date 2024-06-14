@@ -107,7 +107,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param quantity The quantity of stocks purchased.
    * @param date     The date of the purchase of the stock.
    */
-  public void addStockToPortfolio(String name, String symbol, int quantity, LocalDate date) {
+  public void addStockToPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
     portfolios.get(name).addStockToFile(name, symbol, quantity, date);
   }
 
@@ -119,7 +119,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param quantity The quantity of stock to remove.
    * @param date     The date of the removal of the stock.
    */
-  public void removeStockFromPortfolio(String name, String symbol, int quantity, LocalDate date) {
+  public void removeStockFromPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
     portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 

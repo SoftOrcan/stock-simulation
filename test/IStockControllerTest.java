@@ -100,7 +100,7 @@ public class IStockControllerTest {
 
     betterController.control();
     // Verify the stock was added to the portfolio.
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterMockModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
@@ -118,10 +118,10 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterMockModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     // Verify the stock was removed from the portfolio
-    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+    betterMockModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
             LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
@@ -139,9 +139,9 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterMockModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
-    betterMockModel.removeStockFromPortfolio("TechStocks", "SWK", 5,
+    betterMockModel.removeStockFromPortfolioFile("TechStocks", "SWK", 5,
             LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'SWK' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
@@ -424,7 +424,7 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterMockModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
@@ -454,10 +454,10 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterMockModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     // Verify the stock was removed from the portfolio
-    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+    betterMockModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
             LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));

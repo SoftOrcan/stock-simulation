@@ -99,7 +99,7 @@ public class IStockModelTest {
   public void testAddStockToBetterPortfolio() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     double portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 2));
@@ -114,9 +114,9 @@ public class IStockModelTest {
             LocalDate.of(2023, 6, 1));
     assertEquals(1800.9, portfolioValue, 0.001);
     // add multiple stocks so different stocks are in portfolio on different dates
-    betterModel.addStockToPortfolio("TechStocks", "GOOG", 15,
+    betterModel.addStockToPortfolioFile("TechStocks", "GOOG", 15,
             LocalDate.of(2022, 6, 1));
-    betterModel.addStockToPortfolio("TechStocks", "GOOG", 15,
+    betterModel.addStockToPortfolioFile("TechStocks", "GOOG", 15,
             LocalDate.of(2021, 2, 1));
     portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2022, 6, 1));
@@ -136,14 +136,14 @@ public class IStockModelTest {
   public void testRemoveStockFromBetterPortfolio() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
-    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+    betterModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
             LocalDate.of(2023, 7, 2));
     double portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 1));
     assertEquals(900.45, portfolioValue, 0.001);
-    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+    betterModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
             LocalDate.of(2023, 6, 3));
     portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 3));
@@ -345,9 +345,9 @@ public class IStockModelTest {
   public void testPortfolioValue() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
-    betterModel.addStockToPortfolio("TechStocks", "GOOG", 5,
+    betterModel.addStockToPortfolioFile("TechStocks", "GOOG", 5,
             LocalDate.of(2023, 6, 1));
     double portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 1));
@@ -396,7 +396,7 @@ public class IStockModelTest {
   public void testAddPortfolioInvalidDate() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 32, 1));
   }
 
@@ -407,7 +407,7 @@ public class IStockModelTest {
   public void testRemovePortfolioInvalidDate() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 10,
+    betterModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 32, 1));
   }
 
@@ -419,13 +419,13 @@ public class IStockModelTest {
   public void testRemovePortfolioRemoveTooMuch() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 11, 1));
-    betterModel.addStockToPortfolio("TechStocks", "GOOG", 1,
+    betterModel.addStockToPortfolioFile("TechStocks", "GOOG", 1,
             LocalDate.of(2023, 11, 1));
     assertEquals(2045.72, betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 12, 1)), 0.01);
-    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 1000,
+    betterModel.removeStockFromPortfolioFile("TechStocks", "AAPL", 1000,
             LocalDate.of(2023, 12, 1));
     assertEquals(133.32, betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 12, 2)), 0.01);
@@ -438,7 +438,7 @@ public class IStockModelTest {
   public void testAddPortfolioInvalidTicker() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AKPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AKPL", 10,
             LocalDate.of(2023, 32, 1));
   }
 
@@ -449,7 +449,7 @@ public class IStockModelTest {
   public void testPortfolioComposition() {
     clear("portfolios");
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     BarGraph composition = betterModel.portfolioComposition("TechStocks",
             LocalDate.of(2023, 6, 1));
@@ -468,7 +468,7 @@ public class IStockModelTest {
   @Test
   public void testPortfolioDistribution() {
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     BarGraph distribution =
         betterModel.portfolioDistribution("TechStocks",
@@ -483,7 +483,7 @@ public class IStockModelTest {
   @Test
   public void testPortfolioPerformance() {
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     BarGraph performance =
         betterModel.portfolioPerformance(
@@ -500,7 +500,7 @@ public class IStockModelTest {
   @Test
   public void testPortfolioRebalance() {
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL", 10,
             LocalDate.of(2023, 6, 1));
     betterModel.portfolioRebalance("TechStocks", List.of(50, 50),
             LocalDate.of(2023, 6, 1));
@@ -517,11 +517,11 @@ public class IStockModelTest {
   @Test
   public void testIsValidSplit() {
     betterModel.createPortfolio("TechStocks");
-    betterModel.addStockToPortfolio("TechStocks", "AAPL",
+    betterModel.addStockToPortfolioFile("TechStocks", "AAPL",
             10, LocalDate.of(2023, 6, 1));
     boolean isValid = betterModel.isValidSplit("TechStocks", List.of("AAPL", "GOOG"));
     assertFalse(isValid);
-    betterModel.addStockToPortfolio("TechStocks", "GOOG", 10,
+    betterModel.addStockToPortfolioFile("TechStocks", "GOOG", 10,
             LocalDate.of(2023, 6, 1));
     isValid = betterModel.isValidSplit("TechStocks", List.of("AAPL"));
     assertFalse(isValid);

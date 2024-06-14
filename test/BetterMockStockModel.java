@@ -123,7 +123,7 @@ public class BetterMockStockModel implements IStockBetterModel {
    * @param date     The date of the purchase of the stock.
    */
   @Override
-  public void addStockToPortfolio(String name, String symbol, int quantity, LocalDate date) {
+  public void addStockToPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
     portfolios.get(name).addStockToFile(name, symbol, quantity, date);
   }
 
@@ -136,7 +136,7 @@ public class BetterMockStockModel implements IStockBetterModel {
    * @param date     The date of the removal of the stock.
    */
   @Override
-  public void removeStockFromPortfolio(String name, String symbol, int quantity, LocalDate date) {
+  public void removeStockFromPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
     portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
