@@ -5,31 +5,35 @@ Steps to Run the Program:
        After running the JAR file, you will be prompted to enter commands.
        Use the following commands to interact with the program:
 
-        stock-examine-period [symbol] [start-date] [end-date]
-        stock-examine-average [symbol] [date] [number of days]
-        stock-examine-crossovers [symbol] [start-date] [end-date] [number of days]
-        portfolio-create [name]
-        portfolio-add [name] [symbol] [amount]
-        portfolio-remove [name] [symbol]
-        portfolio-value [name] [date]
+        1) stock-change
+        2) stock-average
+        3) stock-crossovers
+        4) stock-performance
+        5) portfolio-create
+        6) portfolio-add
+        7) portfolio-remove
+        8) portfolio-composition
+        9) portfolio-distribution
+        10) portfolio-value
+        11) portfolio-rebalance
+        12) portfolio-performance
         q: quit the program
+
+        Enter numerical option (e.g. Enter '1' for stock-change):
     3. To create a new portfolio, enter the following command:
-        portfolio-create
+        5
        followed by the desired name of the portfolio.
-    4. To create the second portfolio, enter the same command followed by the desired second
-        portfolio name.
-    5. To add stocks to the first portfolio, enter the following command:
-        portfolio-add
+    4. To add stocks to the first portfolio, enter the following command:
+        6
        followed by the name of the first portfolio, the ticker symbol of the company the user
-       desires to purchase stock from, and the desired number of stocks from the company to be
-       purchased.
+       desires to purchase stock from (AAPL), and the desired number of stocks from the company to be
+       purchased, and the year, month, and day the stock was to be purchased (2024 05 02).
     6. Complete the command two more times so that 3 stocks are added to the first portfolio.
-    7. Complete the command two times but using the name of the second portfolio in order to add
-       The necessary stocks to the second portfolio.
-    8. To get the value of the portfolios on a specific date enter the following command:
-        portfolio-value
+        (Ex: [(KO), (2023 02 04)] [(GOOG), (2022 02 04)])
+    7. To get the value of the portfolio on 2 specific dates enter the following command:
+        10
        followed by the name of the desired portfolio and the desired date. The date should be given
-       with the following format: DATE-MM-DD
+       with the following format: DATE MM DD
 
 Stocks supported by program:
     The stocks supported by the program are all the stocks supported by the alpha vantage api. This

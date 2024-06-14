@@ -67,11 +67,36 @@ the 'validateNatural()' and 'isValidInteger()' methods), and the stock symbol na
 was implemented to minimize user input errors.
 
 Package "view":
-The sole implementation modification introduces additional features tailored to handle richer user
-interactions and display requirements, aligning with the evolving needs of the stock management
-application. This design approach maintains consistency in user experience while facilitating the
-implementation of more sophisticated rendering methods or user input validations as the application
-evolves.
+The sole implementation modification is the addition of the Appendable 'out' field. This is an
+improvement, as the previous implementation was tightly coupled with System.in and System.out.
 
 Package "model":
-An addition to the "package" is the interface IStockBetterController and StockBetterController.
+An addition to the package is the interface "IStockBetterController" and its implementing class,
+"StockBetterController". IStockBetterController extends the functionalities of IStockController.
+This enables it to display portfolio performance (via the 'portfolioPerformance()' method),
+portfolio distribution (i.e., the value of each stock in a portfolio) (via the
+'portfolioDistribution()' method), portfolio composition (i.e., the quantity of each stock in a
+portfolio) (via the 'portfolioComposition()' method), stock performance (via the 'stockPerformance()
+' method), and rebalance a portfolio (i.e., modify the quantity of each stock based on provided
+weights) (via the 'portfolioRebalance()' method). Furthermore, StockBetterController is able to
+reflect modifications made to its HashMap directly in the .csv representation of a portfolio. Since
+StockBetterController extends the functionalities of StockController, it is worthwhile to create an
+interface that reflects its additional functionalities. However, it is still vital to preserve the
+HashMap "portfolio", to ensure that the program does not rely simply on the .csv file to retrieve
+data regarding a portfolio.
+
+This follows with the Portfolio class. Since any modifications to the "portfolio" field must be
+reflected to its .csv representation, it is worthwhile to create a class, namely "BetterPortfolio",
+that is able to reflect these additional functionalities. The BetterPortfolio class contains methods
+ that differ from its counterpart, "Portfolio". For example, the addition and removal of a stock
+ requires a date, and it is able to rebalance, and visualize the composition and distribution of a
+ portfolio.
+
+Furthermore, to visualize the performance of a stock and portfolio over a time period, the class
+"BarGraph" was implemented. The "backend" of the program, as a whole, delegates implementation to
+individual classes. The design decision to delegate responsibilities to different classes ensures
+that each component of the program handles specific tasks independently. By distributing
+functionalities across specialized classes, the program becomes more flexible, allowing for easier
+extension or modification of features in the future. Therefore, the "BarGraph" class is responsible
+for the computation, interpretation, and visualization of a stock and portfolio performance, and
+portfolio composition and distribution.

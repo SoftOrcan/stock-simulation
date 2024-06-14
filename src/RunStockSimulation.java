@@ -2,13 +2,9 @@ import java.io.File;
 import java.io.InputStreamReader;
 
 import controller.IStockBetterController;
-import controller.IStockController;
 import controller.TextualStockBetterController;
-import controller.TextualStockController;
 import model.IStockBetterModel;
-import model.IStockModel;
 import model.StockBetterModel;
-import model.StockModel;
 import view.IStockView;
 import view.StockView;
 

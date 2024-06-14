@@ -22,7 +22,7 @@ public class TextualStockBetterController extends TextualStockController impleme
   // The model, or "backend", which contains methods to "parse" the user input (i.e. compute
   // the result).
   private final IStockBetterModel model;
-  private final Scanner sc;
+  private final Scanner sc; // Scanner to read user input.
 
   /**
    * A TextualStocksBetterController receives and "parses" inputs by calling the appropriate,
@@ -60,13 +60,6 @@ public class TextualStockBetterController extends TextualStockController impleme
     }
   }
 
-  /**
-   * Process the user input by parsing and calling the corresponding method in IStockModel and
-   * displaying the result via IStockView.
-   *
-   * @param userInstruction The user input to parse.
-   * @param model           The IStockModel to compute based on the command provided.
-   */
   private void processCommand(String userInstruction, IStockBetterModel model) {
     String name;
     String symbol;
@@ -239,8 +232,7 @@ public class TextualStockBetterController extends TextualStockController impleme
   }
 
   /**
-   * Provide the available features of the program and the parameters which the methods require
-   * to compute the result.
+   * Provide the available features of the program.
    *
    * @return A String displaying the available features of the program.
    */

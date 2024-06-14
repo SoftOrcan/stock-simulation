@@ -22,7 +22,7 @@ public class TextualStockController implements IStockController {
   // The model, or "backend", which contains methods to "parse" the user input (i.e. compute
   // the result).
   private final IStockModel model;
-  private final Scanner sc;
+  private final Scanner sc; // Scanner to read the user input.
 
   /**
    * A TextualStocksController receives and "parses" inputs by calling the appropriate,
@@ -42,7 +42,7 @@ public class TextualStockController implements IStockController {
 
   /**
    * Display the menu to the user, and process user inputs by either calling methods in
-   * IStockController or halt the program at the keystroke 'q'.
+   * IStockController (via the 'processCommand()' method) or halt the program at the keystroke 'q'.
    */
   public void control() {
     view.displayMessage(menu());
@@ -59,13 +59,6 @@ public class TextualStockController implements IStockController {
     }
   }
 
-  /**
-   * Process the user input by parsing and calling the corresponding method in IStockModel and
-   * displaying the result via IStockView.
-   *
-   * @param userInstruction The user input to parse.
-   * @param model           The IStockModel to compute based on the command provided.
-   */
   private void processCommand(String userInstruction, IStockModel model) {
     String name; // The name of a portfolio.
     String symbol; // The stock symbol to examine.
@@ -76,7 +69,7 @@ public class TextualStockController implements IStockController {
     int amount; // The amount of stocks to purchase.
 
     switch (userInstruction) {
-      case "1": // stock-change
+      case "1":
         symbol = validateSymbol(sc);
         start = LocalDate.parse(
             validateDate(sc, "year", 1) + "-"
@@ -90,7 +83,7 @@ public class TextualStockController implements IStockController {
             + model.stockChange(symbol, start, end) + ".");
         view.displayMessage(returnToMenu());
         break;
-      case "2": // stock-moving-average
+      case "2":
         symbol = validateSymbol(sc);
         date = LocalDate.parse(
             validateDate(sc, "year", 3) + "-"
@@ -101,7 +94,7 @@ public class TextualStockController implements IStockController {
             + model.stockMovingAverage(symbol, date, numDays) + ".");
         view.displayMessage(returnToMenu());
         break;
-      case "3": // stock-crossovers
+      case "3":
         symbol = validateSymbol(sc);
         start = LocalDate.parse(
             validateDate(sc, "year", 1) + "-"
@@ -175,6 +168,7 @@ public class TextualStockController implements IStockController {
    * @return The name of the portfolio, if it exists. Otherwise, request the user for another name.
    */
   String validatePortfolio(Scanner sc) {
+    // Prompt to display to the user.
     String prompt = "Enter portfolio name to modify/view:";
     view.displayMessage(prompt);
 
@@ -191,18 +185,19 @@ public class TextualStockController implements IStockController {
   }
 
   /**
-   * Validate the stock symbol, ensuring it exists in the API.
+   * Validate the stock symbol, ensuring it exists in the AlphaVantage API.
    *
    * @param sc Scanner to read the user input.
-   * @return The name of the stock symbol, if it exists.
+   * @return The name of the stock, if it exists. Otherwise, request the user for another symbol.
    */
   String validateSymbol(Scanner sc) {
+    // Prompt to display to the user.
     String prompt = "Enter stock symbol (e.g. 'AAPL' for Apple or 'KO' for Cola-Cola Company):";
     view.displayMessage(prompt);
 
     String symbol = sc.next();
 
-    // If the symbol does not exist, prompt the user for another symbol name.
+    // If the symbol does not exist, prompt the user for another symbol.
     while (!model.isValidSymbol(symbol)) {
       view.displayError("Stock symbol '" + symbol + "' does not exist.");
       view.displayMessage(prompt);
@@ -216,9 +211,10 @@ public class TextualStockController implements IStockController {
    * Validate a number, ensuring it is a natural.
    *
    * @param sc Scanner to read the user input.
-   * @return The number, if it is a valid natural.
+   * @return The number, if it is a valid natural. Otherwise, prompt the user for another natural.
    */
   int validateNatural(Scanner sc) {
+    // Prompt to display to the user.
     String prompt = "Enter a POSITIVE numerical value:";
     view.displayMessage(prompt);
 
@@ -260,6 +256,7 @@ public class TextualStockController implements IStockController {
             (dateComponent.equals("month") ?
                 "month (i.e. from '01' to '12'):" :
                 "day (e.g. '04', '01', or '19'):");
+    // Prompt to display to the user.
     String prompt = "Enter " + type + component;
 
     view.displayMessage(prompt);
@@ -318,6 +315,11 @@ public class TextualStockController implements IStockController {
     return "m: return to menu" + ls + "q: quit the program";
   }
 
+  /**
+   * Provide the available features of the program.
+   *
+   * @return A String displaying the available features of the program.
+   */
   protected String menu() {
     return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls +
         "1) stock-change" + ls +

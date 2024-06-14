@@ -14,6 +14,8 @@ import java.util.List;
  * method)</li>
  * <li>Display the value of each stock in the portfolio (via the 'portfolioDistribution()'
  * method)</li>
+ * <li>Rebalance the stocks in a portfolio based on the given weights (via the 'portfolioRebalance
+ * ()' method) .</li>
  */
 public interface IStockBetterModel extends IStockModel {
   /**
@@ -104,9 +106,9 @@ public interface IStockBetterModel extends IStockModel {
    * Rebalance a portfolio to ensure that the weight of each stock is equivalent. The weight is
    * based on the parameter 'split'.
    *
-   * @param name          The name of the portfolio.
-   * @param split         The weight of each stock.
-   * @param date          The date to examine.
+   * @param name  The name of the portfolio.
+   * @param split The weight of each stock.
+   * @param date  The date to examine.
    */
   void portfolioRebalance(String name, List<Integer> split, LocalDate date);
 
@@ -119,8 +121,8 @@ public interface IStockBetterModel extends IStockModel {
   boolean hasPortfolio(String name);
 
   /**
-   * Validate the user input, ensuring that every stock in the portfolio contains a weight and
-   * each value is numerical.
+   * Validate the user input, ensuring that every stock in the portfolio contains a weight and each
+   * value is numerical.
    *
    * @param split The weight of each stock in the portfolio.
    * @return If the user input contains numerical values, and provides a weight to every stock.
