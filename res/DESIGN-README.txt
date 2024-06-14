@@ -2,12 +2,23 @@ Re: Deliverables - Design Decisions
 
 IStockModel (pt. 1)
 Package "controller":
-The "controller" package contains two files: the parent interface "IStockController" and
+The "controller" package contains four files: the parent interface "IStockController" and
 "TextualStockController", a class which implements IStockController. We created the interface in
 case of future implementations where we might need to create another controller. In such a
 scenario, we would simply need to create another class that implements IStockController, with
 methods of a similar nature to TextualStockController. Since TextualStockController is accessed by
-tests beyond the scope of the package, the class is required to be public.
+tests beyond the scope of the package, the class is required to be public. The controller package
+expands its functionality with the introduction of the TextualStockBetterController class, which
+builds upon the foundation laid by TextualStockController while implementing the
+IStockBetterController interface. This design choice was made to augment the stock
+management system with advanced features while ensuring compatibility with existing
+interfaces and future scalability. By inheriting from TextualStockController,
+TextualStockBetterController leverages its core functionalities, maintaining code reusability and
+adhering to object-oriented principles. The implementation of IStockBetterController extends the
+controller's capabilities, enabling specialized operations tailored to more sophisticated stock
+analysis and portfolio management tasks. This approach fosters clear separation of concerns and
+facilitates seamless collaboration between the controller, IStockBetterModel, and IStockView,
+ensuring cohesive interaction across application layers.
 
 Package "view":
 The "view" package shares a similar nature with the "controller" package. Therefore, we created a
@@ -56,4 +67,8 @@ the 'validateNatural()' and 'isValidInteger()' methods), and the stock symbol na
 was implemented to minimize user input errors.
 
 Package "view":
-The sole implementation modification made in the "view" is
+The sole implementation modification introduces additional features tailored to handle richer user
+interactions and display requirements, aligning with the evolving needs of the stock management
+application. This design approach maintains consistency in user experience while facilitating the
+implementation of more sophisticated rendering methods or user input validations as the application
+evolves.
