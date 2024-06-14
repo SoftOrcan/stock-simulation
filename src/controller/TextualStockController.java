@@ -318,12 +318,6 @@ public class TextualStockController implements IStockController {
     return "m: return to menu" + ls + "q: quit the program";
   }
 
-  /**
-   * Provide the available features of the program and the parameters which the methods require
-   * to compute the result.
-   *
-   * @return A String displaying the available features of the program.
-   */
   protected String menu() {
     return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls +
         "1) stock-change" + ls +
