@@ -51,13 +51,13 @@ public class BetterMockStockModel implements IStockBetterModel {
   }
 
   @Override
-  public void addStockToPortfolio(String name, String symbol, int amount, LocalDate date) {
-    portfolios.get(name).addStockToFile(name, symbol, amount, date);
+  public void addStockToPortfolio(String name, String symbol, int quantity, LocalDate date) {
+    portfolios.get(name).addStockToFile(name, symbol, quantity, date);
   }
 
   @Override
-  public void removeStockFromPortfolio(String name, String symbol, int amount, LocalDate date) {
-    portfolios.get(name).removeStockFromFile(name, symbol, amount, date);
+  public void removeStockFromPortfolio(String name, String symbol, int quantity, LocalDate date) {
+    portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
   @Override

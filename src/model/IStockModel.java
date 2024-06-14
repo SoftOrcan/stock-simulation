@@ -15,7 +15,7 @@ import java.util.List;
  * <li>Create (via the 'createPortfolio()' method)</li>
  * <li>Modify (via the 'addStockToPortfolio()' and 'removeStockFromPortfolio()' methods)</li>
  * <li>Calculate the value of a portfolio based on the stocks purchased and the price of the
- * stocks on a given date (via the 'valueOfPortfolio()' method).</li>
+ * stocks on a given date (via the 'portfolioValue()' method).</li>
  */
 public interface IStockModel {
   /**

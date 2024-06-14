@@ -37,6 +37,7 @@ class Portfolio {
    * Package-private. Remove a quantity of shares of a stock (termed as 'symbol') from a Portfolio.
    *
    * @param symbol The stock to remove.
+   * @param amount The quantity of stock to remove.
    */
   void remove(String symbol, int amount) {
     // Retrieve the current amount of shares of the stock and compute the remaining amount after
