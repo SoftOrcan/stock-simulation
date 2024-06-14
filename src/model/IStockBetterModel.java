@@ -76,7 +76,16 @@ public interface IStockBetterModel extends IStockModel {
    */
   BarGraph portfolioDistribution(String name, LocalDate date);
 
-
+  /**
+   * Visualize the performance of a stock over a time period. The quantity of x-intervals is based
+   * on the parameter 'xLabelCount'.
+   *
+   * @param symbol      The stock symbol to examine.
+   * @param start       The start date to examine.
+   * @param end         The end date to examine.
+   * @param xLabelCount The quantity of x-intervals to construct.
+   * @return A textual visualization of a stock over a time period.
+   */
   BarGraph stockPerformance(String symbol, LocalDate start, LocalDate end, int xLabelCount);
 
   /**
