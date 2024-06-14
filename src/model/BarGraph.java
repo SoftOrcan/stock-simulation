@@ -190,8 +190,7 @@ public class BarGraph {
 
     createYAxis(prices);
   }
-
-
+  
   private List<Double> getStockPrices(String symbol, LocalDate start, LocalDate end) {
     boolean isShortInterval = ChronoUnit.DAYS.between(start, end) < 5;
     String intervalType = isShortInterval ? "60min" : "";

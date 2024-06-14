@@ -12,6 +12,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * The BetterPortfolio class represents a stock portfolio, containing stocks which the user has
+ * purchased (via the 'add()' method). It is permissible for the user to remove a purchased stock
+ * (via the 'remove()' method) and calculate the cumulative value of the portfolio based on the
+ * prices of the stocks on a given date (via the 'value()' method).
+ *
+ * <p>The difference between the BetterPortfolio and Portfolio classes </p>
+ */
 public class BetterPortfolio extends Portfolio {
   private final Logger logger = Logger.getLogger(BetterPortfolio.class.getName());
   private final Map<String, StockPurchase> portfolioFile;
@@ -27,6 +35,7 @@ public class BetterPortfolio extends Portfolio {
     for (Map.Entry<String, StockPurchase> entry : portfolioFile.entrySet()) {
       String symbol = entry.getKey();
       StockPurchase stockPurchase = entry.getValue();
+      // Only calculate the prices of the stocks purchased before the provided date.
       if (stockPurchase.getPurchaseDate().isBefore(date) || stockPurchase.getPurchaseDate().isEqual(date)) {
         // Find the price of a stock on the given date and multiply it by the quantity of stock
         // purchased.
