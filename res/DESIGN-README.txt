@@ -72,3 +72,6 @@ interactions and display requirements, aligning with the evolving needs of the s
 application. This design approach maintains consistency in user experience while facilitating the
 implementation of more sophisticated rendering methods or user input validations as the application
 evolves.
+
+Package "model":
+An addition to the "package" is the interface IStockBetterController and StockBetterController.

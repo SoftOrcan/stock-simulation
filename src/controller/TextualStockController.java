@@ -4,7 +4,6 @@ import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
-import java.util.List;
 import java.util.Scanner;
 
 import model.IStockModel;

@@ -8,13 +8,32 @@ import java.util.stream.Collectors;
 import model.IStockBetterModel;
 import view.IStockView;
 
+/**
+ * A TextualStocksBetterController receives and "parses" inputs by calling the appropriate,
+ * corresponding method(s) in IStockBetterModel (via the 'control()' and 'processCommand()' methods)
+ * . In addition, the controller interacts with IStockView by displaying the output textually, and
+ * contains the method 'menu()' to display the available features of the program.
+ */
 public class TextualStockBetterController extends TextualStockController implements
     IStockBetterController {
   private final String ls = System.lineSeparator();
+  // The view, or "frontend", which displays the output textually to the user.
   private final IStockView view;
+  // The model, or "backend", which contains methods to "parse" the user input (i.e. compute
+  // the result).
   private final IStockBetterModel model;
   private final Scanner sc;
 
+  /**
+   * A TextualStocksBetterController receives and "parses" inputs by calling the appropriate,
+   * corresponding method(s) in IStockBetterModel (via the 'control()' and 'processCommand()'
+   * methods). In addition, the controller interacts with IStockView by displaying the output
+   * textually. This constructor is public as it is called by tests beyond the package's scope.
+   *
+   * @param model The model, which contains methods to compute the user input.
+   * @param view  The view to display the output textually to the user.
+   * @param in    Readable to read the user input.
+   */
   public TextualStockBetterController(IStockBetterModel model, IStockView view, Readable in) {
     super(model, view, in);
     this.view = view;
@@ -22,6 +41,10 @@ public class TextualStockBetterController extends TextualStockController impleme
     this.sc = new Scanner(in);
   }
 
+  /**
+   * Display the menu to the user, and process user inputs by either calling methods in
+   * IStockController or halt the program at the keystroke 'q'.
+   */
   public void control() {
     view.displayMessage(menu());
 
@@ -37,6 +60,13 @@ public class TextualStockBetterController extends TextualStockController impleme
     }
   }
 
+  /**
+   * Process the user input by parsing and calling the corresponding method in IStockModel and
+   * displaying the result via IStockView.
+   *
+   * @param userInstruction The user input to parse.
+   * @param model           The IStockModel to compute based on the command provided.
+   */
   private void processCommand(String userInstruction, IStockBetterModel model) {
     String name;
     String symbol;
@@ -208,6 +238,12 @@ public class TextualStockBetterController extends TextualStockController impleme
     return split;
   }
 
+  /**
+   * Provide the available features of the program and the parameters which the methods require
+   * to compute the result.
+   *
+   * @return A String displaying the available features of the program.
+   */
   @Override
   protected String menu() {
     return "Dates must be parsable by LocalDate::parse (e.g. 2024-06-06)." + ls +
