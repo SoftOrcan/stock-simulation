@@ -508,7 +508,8 @@ public class IStockControllerTest {
 
     // Check if the correct message is displayed.
     assertEquals("Crossovers of 'AAPL': [].", secondLast(mockView.getMessages()));
-    assertEquals("findCrossovers: AAPL, 2023-01-01, 2023-06-01, 20", last(mockModel.getLog()));
+    assertEquals("findCrossovers: AAPL, 2023-01-01, 2023-06-01, 20",
+            last(mockModel.getLog()));
   }
 
   /**
@@ -541,7 +542,8 @@ public class IStockControllerTest {
     // Check if the correct message is displayed.
     assertEquals("Added 'AAPL' (quantity: 10) to portfolio 'MyPortfolio'.",
         secondLast(mockView.getMessages()));
-    assertEquals("addStockToPortfolio: MyPortfolio, AAPL, 10.000000", last(mockModel.getLog()));
+    assertEquals("addStockToPortfolio: MyPortfolio, AAPL, 10.000000",
+            last(mockModel.getLog()));
   }
 
   /**
@@ -558,7 +560,8 @@ public class IStockControllerTest {
     // Check if the correct message is displayed.
     assertEquals("Removed 'AAPL' (quantity: 5) from portfolio 'MyPortfolio'.",
         secondLast(mockView.getMessages()));
-    assertEquals("removeStockFromPortfolio: MyPortfolio, AAPL, 5", last(mockModel.getLog()));
+    assertEquals("removeStockFromPortfolio: MyPortfolio, AAPL, 5",
+            last(mockModel.getLog()));
   }
 
   /**

@@ -3,6 +3,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,9 +72,11 @@ public class IStockModelTest {
   @Test
   public void testCreatePortfolio() {
     model.createPortfolio("Portfolio One");
-    assertEquals(0, model.portfolioValue("Portfolio One", LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(0, model.portfolioValue("Portfolio One",
+            LocalDate.of(2023, 6, 6)), 0.01);
     model.createPortfolio("Portfolio Two");
-    assertEquals(0, model.portfolioValue("Portfolio Two", LocalDate.of(2023, 6, 6)), 0.01);
+    assertEquals(0, model.portfolioValue("Portfolio Two",
+            LocalDate.of(2023, 6, 6)), 0.01);
   }
 
   /**
@@ -140,7 +143,8 @@ public class IStockModelTest {
     double portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 1));
     assertEquals(900.45, portfolioValue, 0.001);
-    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 5, LocalDate.of(2023, 6, 3));
+    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+            LocalDate.of(2023, 6, 3));
     portfolioValue = betterModel.portfolioValue("TechStocks",
             LocalDate.of(2023, 6, 3));
     assertEquals(0, portfolioValue, 0.01);
@@ -214,16 +218,20 @@ public class IStockModelTest {
     model.addStockToPortfolio("Portfolio Two", "AAPL", 10);
     // Test when change is negative.
     assertEquals(-0.6399999999999864,
-        model.stockChange("AAPL", LocalDate.of(2024, 5, 3), LocalDate.of(2024, 5, 8)), 0.01);
+        model.stockChange("AAPL", LocalDate.of(2024, 5, 3),
+                LocalDate.of(2024, 5, 8)), 0.01);
     // Test when change is positive.
     assertEquals(9.509999999999991,
-        model.stockChange("AAPL", LocalDate.of(2024, 5, 8), LocalDate.of(2024, 6, 2)), 0.01);
+        model.stockChange("AAPL", LocalDate.of(2024, 5, 8),
+                LocalDate.of(2024, 6, 2)), 0.01);
     // Test change over years.
     assertEquals(-174.81,
-        model.stockChange("AAPL", LocalDate.of(2011, 3, 8), LocalDate.of(2023, 6, 2)), 0.01);
+        model.stockChange("AAPL", LocalDate.of(2011, 3, 8),
+                LocalDate.of(2023, 6, 2)), 0.01);
     // test change over months.
     assertEquals(-6.22999999999999,
-        model.stockChange("AAPL", LocalDate.of(2022, 3, 8), LocalDate.of(2022, 6, 2)), 0.01);
+        model.stockChange("AAPL", LocalDate.of(2022, 3, 8),
+                LocalDate.of(2022, 6, 2)), 0.01);
   }
 
   /**
@@ -330,7 +338,7 @@ public class IStockModelTest {
             LocalDate.of(2015, 5, 3), 4));
   }
 
-  /*
+  /**
    * This method tests portfolio value on the better model.
    */
   @Test
@@ -382,6 +390,59 @@ public class IStockModelTest {
   }
 
   /**
+   * Tests add with invalid date.
+   */
+  @Test (expected = DateTimeException.class)
+  public void testAddPortfolioInvalidDate() {
+    clear("portfolios");
+    betterModel.createPortfolio("TechStocks");
+    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 32, 1));
+  }
+
+  /**
+   * Tests remove with invalid date.
+   */
+  @Test (expected = DateTimeException.class)
+  public void testRemovePortfolioInvalidDate() {
+    clear("portfolios");
+    betterModel.createPortfolio("TechStocks");
+    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 32, 1));
+  }
+
+  /**
+   * Tests remove too much from portfolio. Note: should remove until that stock's value in
+   * portfolio is 0.
+   */
+  @Test
+  public void testRemovePortfolioRemoveTooMuch() {
+    clear("portfolios");
+    betterModel.createPortfolio("TechStocks");
+    betterModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 11, 1));
+    betterModel.addStockToPortfolio("TechStocks", "GOOG", 1,
+            LocalDate.of(2023, 11, 1));
+    assertEquals(2045.72, betterModel.portfolioValue("TechStocks",
+            LocalDate.of(2023, 12, 1)), 0.01);
+    betterModel.removeStockFromPortfolio("TechStocks", "AAPL", 1000,
+            LocalDate.of(2023, 12, 1));
+    assertEquals(133.32, betterModel.portfolioValue("TechStocks",
+            LocalDate.of(2023, 12, 2)), 0.01);
+  }
+
+  /**
+   * Tests when addPortfolio has invalid ticker symbol.
+   */
+  @Test (expected = DateTimeException.class)
+  public void testAddPortfolioInvalidTicker() {
+    clear("portfolios");
+    betterModel.createPortfolio("TechStocks");
+    betterModel.addStockToPortfolio("TechStocks", "AKPL", 10,
+            LocalDate.of(2023, 32, 1));
+  }
+
+  /**
    * Tests portfolio composition method.
    */
   @Test
@@ -396,8 +457,6 @@ public class IStockModelTest {
     assertTrue(betterModel.portfolioComposition(
         "TechStocks", LocalDate.of(2023, 6, 1)).
             interpret().contains("AAPL"));
-    // This is occurring because you didn't clear the portfolio, so TechStocks actually contains
-    // more shares in AAPL than 10.
     assertTrue(betterModel.portfolioComposition(
         "TechStocks", LocalDate.of(2023, 6, 1)).
             interpret().contains("10"));
