@@ -62,7 +62,7 @@ public class BarGraph {
     // If there is a y-axis scale, include it in the String representation.
     if (!yScale.isEmpty()) {
       builder.append(System.lineSeparator())
-          .append("Y-Axis Scale: * = $")
+          .append("Y-Axis Scale (Absolute): * = $")
           .append(yScale);
     }
 
