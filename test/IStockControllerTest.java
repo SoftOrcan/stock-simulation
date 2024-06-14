@@ -27,6 +27,10 @@ public class IStockControllerTest {
   private BetterMockStockView betterMockView;
   private BetterMockStockModel betterMockModel;
 
+  /**
+   * Sets up mock models and views before each test.
+   * Creates necessary data directories if they don't exist.
+   */
   @Before
   public void setUp() {
     File dataDirectory = new File("./data");
@@ -49,12 +53,20 @@ public class IStockControllerTest {
     return strings.get(strings.size() - 2);
   }
 
+  /**
+   * Sets up input for textual controllers.
+   *
+   * @param input The input string to simulate user input.
+   */
   private void setInput(String input) {
     controller = new TextualStockController(mockModel, mockView, new StringReader(input));
     betterController =
         new TextualStockBetterController(betterMockModel, betterMockView, new StringReader(input));
   }
 
+  /**
+   * Tests portfolio creation in {@link TextualStockBetterController}.
+   */
   @Test
   public void testBetterCreatePortfolio() {
     String input = "5\nTechStocks\nq\n";
@@ -67,6 +79,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Created portfolio 'TechStocks'."));
   }
 
+  /**
+   * Tests handling of undefined initial input in {@link TextualStockBetterController}.
+   */
   @Test
   public void testWrongInitialInput() {
     String input = "20\n";
@@ -75,7 +90,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Undefined instruction: 20."));
   }
 
-
+  /**
+   * Tests adding a stock to a portfolio in {@link TextualStockBetterController}.
+   */
   @Test
   public void testBetterAddStockToPortfolio() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\nq\n";
@@ -83,11 +100,15 @@ public class IStockControllerTest {
 
     betterController.control();
     // Verify the stock was added to the portfolio.
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
   }
 
+  /**
+   * Tests removing a stock from a portfolio in {@link TextualStockBetterController}.
+   */
   @Test
   public void testBetterRemoveStockFromPortfolio() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
@@ -97,13 +118,18 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 6, 1));
     // Verify the stock was removed from the portfolio
-    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5, LocalDate.of(2023, 6, 1));
+    betterMockModel.removeStockFromPortfolio("TechStocks", "AAPL", 5,
+            LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'AAPL' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
 
+  /**
+   * Tests removing a stock from a portfolio.
+   */
   @Test (expected = NullPointerException.class)
   public void testBetterRemoveStockFromPortfolioStockNotInPortfolio() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
@@ -120,7 +146,10 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Removed 'SWK' " +
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
-  
+
+  /**
+   * Tests stock change method on better stock model.
+   */
   @Test
   public void testBetterStockChange() {
     String input = "1\nAAPL\n2023\n01\n01\n2023\n12\n31\nq\n";
@@ -131,6 +160,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Gain/Loss of 'AAPL': 100.0."));
   }
 
+  /**
+   * Tests stockmovingaverage method on better stock model.
+   */
   @Test
   public void testBetterStockMovingAverage() {
     String input = "2\nAAPL\n2023\n01\n01\n30\nq\n";
@@ -141,6 +173,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Moving average of 'AAPL': 150.0."));
   }
 
+  /**
+   * Tests stockmovingaverage method on better stock model with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterStockMovingAverageInvalidDate() {
     String input = "2\nAAPL\n2023\n90\n01\n30\nq\n";
@@ -151,6 +186,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Moving average of 'AAPL': 150.0."));
   }
 
+  /**
+   * Tests stock crossovers method on better model.
+   */
   @Test
   public void testBetterStockCrossovers() {
     String input = "3\nAAPL\n2023\n01\n01\n2023\n12\n31\n30\nq\n";
@@ -162,6 +200,9 @@ public class IStockControllerTest {
         betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
   }
 
+  /**
+   * Tests stock crossovers method on better model with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterStockCrossoversInvalidDate() {
     String input = "3\nAAPL\n2021\n91\n01\n2023\n12\n31\n30\nq\n";
@@ -170,9 +211,13 @@ public class IStockControllerTest {
     betterController.control();
 
     assertTrue(
-            betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
+            betterMockView.getMessages().contains("Crossovers of 'AAPL': " +
+                    "[2023-01-01, 2023-12-31]."));
   }
 
+  /**
+   * Tests portfolio value method on better model.
+   */
   @Test
   public void testBetterPortfolioValue() {
     String input = "5\nTechStocks\n10\nTechStocks\n2023\n01\n01\nq\n";
@@ -183,6 +228,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
   }
 
+  /**
+   * Tests portfolio value method on better model with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterPortfolioValueNotExist() {
     String input = "5\nTechStocks\n10\npoopyPortfolio\n";
@@ -193,6 +241,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
   }
 
+  /**
+   * Tests better portfolio composition method.
+   */
   @Test
   public void testBetterPortfolioComposition() {
     String input = "5\nTechStocks\n8\nTechStocks\n2023\n01\n01\nq\n";
@@ -203,6 +254,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Composition:"));
   }
 
+  /**
+   * Tests better portfolio distribution method.
+   */
   @Test
   public void testBetterPortfolioDistribution() {
     String input = "5\nTechStocks\n9\nTechStocks\n2023\n01\n01\nq\n";
@@ -213,6 +267,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getMessages().contains("Distribution:"));
   }
 
+  /**
+   * Tests better portfolio rebalance method.
+   */
   @Test
   public void testBetterPortfolioRebalance() {
     String inputCreatePortfolio = "5\nportfolio\nq\n";
@@ -231,6 +288,9 @@ public class IStockControllerTest {
             contains("Rebalanced portfolio 'portfolio'"));
   }
 
+  /**
+   * Tests better portfolio rebalance method with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterPortfolioRebalanceInvalidRatio() {
     String inputCreatePortfolio = "5\nName\nq\n";
@@ -249,6 +309,9 @@ public class IStockControllerTest {
             contains("Rebalanced portfolio 'portfolio'"));
   }
 
+  /**
+   * Tests better portfolio rebalance method with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterPortfolioRebalanceInvalidTicker() {
     String inputCreatePortfolio = "5\nName\nq\n";
@@ -267,6 +330,9 @@ public class IStockControllerTest {
             contains("Rebalanced portfolio 'portfolio'"));
   }
 
+  /**
+   * Tests better portfolio rebalance method with invalid input.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterPortfolioRebalanceInvalidDate() {
     String inputCreatePortfolio = "5\nName\nq\n";
@@ -285,6 +351,9 @@ public class IStockControllerTest {
             contains("Rebalanced portfolio 'portfolio'"));
   }
 
+  /**
+   * Tests better portfolio performance method.
+   */
   @Test
   public void testBetterPortfolioPerformance() {
     String input = "5\nTechStocks\n12\nTechStocks\n2023\n01\n01\n2023\n12\n31\n10\nq\n";
@@ -295,6 +364,9 @@ public class IStockControllerTest {
     assertTrue(secondLast(betterMockView.getMessages()).contains("Performance of 'TechStocks':"));
   }
 
+  /**
+   * Tests when invalid entered.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterInvalidSymbol() {
     String input = "1\nINVALID\nq\n";
@@ -305,6 +377,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getErrors().contains("Stock symbol 'INVALID' does not exist."));
   }
 
+  /**
+   * Tests with invalid date entered.
+   */
   @Test (expected = DateTimeParseException.class)
   public void testBetterInvalidDate() {
     String input = "1\nAAPL\n2023\n02\n30\n2023\n12\n31\nq\n";
@@ -314,6 +389,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getErrors().contains("The day is invalid."));
   }
 
+  /**
+   * Tests with invalid symbol.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterInvalidSymbol2() {
     String input = "2\nINVALID\nq\n";
@@ -323,6 +401,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getErrors().contains("Stock symbol 'INVALID' does not exist."));
   }
 
+  /**
+   * Tests with invalid date.
+   */
   @Test (expected = DateTimeParseException.class)
   public void testBetterInvalidDate2() {
     String input = "2\nAAPL\n2023\n02\n30\n2023\n12\n31\nq\n";
@@ -332,6 +413,9 @@ public class IStockControllerTest {
     assertTrue(betterMockView.getErrors().contains("The day is invalid."));
   }
 
+  /**
+   * Tests add stock to portfolio.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterAddStockToPortfolioInvalidDate() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n20\n2023\n50\n01\nq\n";
@@ -340,11 +424,15 @@ public class IStockControllerTest {
     betterController.control();
 
     // Verify the stock was added to the portfolio
-    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10, LocalDate.of(2023, 6, 1));
+    betterMockModel.addStockToPortfolio("TechStocks", "AAPL", 10,
+            LocalDate.of(2023, 6, 1));
     assertTrue(betterMockView.getMessages().contains("On 2023-06-01: Added 'AAPL' " +
             "(quantity: 10) to portfolio 'TechStocks'."));
   }
 
+  /**
+   * Tests remove from portfolio invalid.
+   */
   @Test (expected = NullPointerException.class)
   public void testBetterRemoveStockFromPortfolioInvalidSymbol() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
@@ -354,6 +442,9 @@ public class IStockControllerTest {
     betterController.control();
   }
 
+  /**
+   * Tests remove from portfolio invalid.
+   */
   @Test (expected = NoSuchElementException.class)
   public void testBetterRemoveStockFromPortfolioInvalidDate() {
     String input = "5\nTechStocks\n6\nTechStocks\nAAPL\n10\n2023\n06\n01\n7\n" +
@@ -372,6 +463,9 @@ public class IStockControllerTest {
             "(quantity: 5) from portfolio 'TechStocks'."));
   }
 
+  /**
+   * Tests examine period.
+   */
   @Test
   public void testControllerStockExaminePeriod() {
     // Set up input.
@@ -385,6 +479,9 @@ public class IStockControllerTest {
     assertEquals("calculateChange: AAPL, 2023-01-01, 2023-06-01", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests examining stock change period in {@link TextualStockController}.
+   */
   @Test
   public void testControllerStockExamineAverage() {
     // Set up input.
@@ -398,6 +495,9 @@ public class IStockControllerTest {
     assertEquals("movingAverage: AAPL, 2023-01-01, 30", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests examining stock moving average in {@link TextualStockController}.
+   */
   @Test
   public void testControllerStockExamineCrossovers() {
     // Set up input.
@@ -411,6 +511,9 @@ public class IStockControllerTest {
     assertEquals("findCrossovers: AAPL, 2023-01-01, 2023-06-01, 20", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests examining stock crossovers in {@link TextualStockController}.
+   */
   @Test
   public void testControllerPortfolioCreate() {
     // Set up input.
@@ -424,6 +527,9 @@ public class IStockControllerTest {
     assertEquals("createPortfolio: MyPortfolio", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests creating a portfolio in {@link TextualStockController}.
+   */
   @Test
   public void testControllerPortfolioAdd() {
     // Set up input.
@@ -438,6 +544,9 @@ public class IStockControllerTest {
     assertEquals("addStockToPortfolio: MyPortfolio, AAPL, 10.000000", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests removing a stock to a portfolio in {@link TextualStockController}.
+   */
   @Test
   public void testControllerPortfolioRemove() {
     // Set up input.
@@ -452,6 +561,9 @@ public class IStockControllerTest {
     assertEquals("removeStockFromPortfolio: MyPortfolio, AAPL, 5", last(mockModel.getLog()));
   }
 
+  /**
+   * Tests getting portfolio value.
+   */
   @Test
   public void testControllerPortfolioValue() {
     // Set up input.
@@ -465,6 +577,9 @@ public class IStockControllerTest {
     assertEquals("valueOfPortfolio: MyPortfolio, 2023-06-06", last(mockModel.getLog()));
   }
 
+  /**
+   * Examine when period invalid.
+   */
   @Test
   public void testControllerStockExaminePeriodInvalid() {
     // Set up input.
@@ -477,6 +592,9 @@ public class IStockControllerTest {
     assertEquals("Stock symbol 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test examine average with invalid input.
+   */
   @Test
   public void testControllerStockExamineAverageInvalid() {
     // Set up input.
@@ -489,6 +607,9 @@ public class IStockControllerTest {
     assertEquals("Stock symbol 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test with invalid input with crossovers.
+   */
   @Test
   public void testControllerStockExamineCrossoversInvalid() {
     // Set up input.
@@ -501,6 +622,9 @@ public class IStockControllerTest {
     assertEquals("Stock symbol 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test add with invalid.
+   */
   @Test
   public void testControllerPortfolioAddToInvalid() {
     // Set up input.
@@ -513,6 +637,9 @@ public class IStockControllerTest {
     assertEquals("Portfolio 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test remove with invalid.
+   */
   @Test
   public void testControllerPortfolioRemoveToInvalid() {
     // Set up input.
@@ -525,6 +652,9 @@ public class IStockControllerTest {
     assertEquals("Portfolio 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test value with invalid.
+   */
   @Test
   public void testControllerPortfolioValueOfInvalid() {
     // Set up input.
@@ -537,6 +667,9 @@ public class IStockControllerTest {
     assertEquals("Portfolio 'AZAZAZ' does not exist.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test add with fraction.
+   */
   @Test
   public void testControllerPortfolioAddFractional() {
     // Set up input.
@@ -549,6 +682,9 @@ public class IStockControllerTest {
     assertEquals("The numerical value 10.5 is invalid.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test add with negative.
+   */
   @Test
   public void testControllerPortfolioAddNegative() {
     // Set up input.
@@ -561,6 +697,9 @@ public class IStockControllerTest {
     assertEquals("The numerical value -10 is invalid.", last(mockView.getErrors()));
   }
 
+  /**
+   * Test with add invalid input.
+   */
   @Test
   public void testControllerPortfolioAddInvalid() {
     // Set up input.
