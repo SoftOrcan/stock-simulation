@@ -10,16 +10,29 @@ class MockStockView implements IStockView {
   private final List<String> messages;
   private final List<String> errors;
 
+  /**
+   * Constructs a MockStockView instance with empty message and error lists.
+   */
   MockStockView() {
     messages = new ArrayList<>();
     errors = new ArrayList<>();
   }
 
+  /**
+   * Displays a message by adding it to the message list.
+   *
+   * @param message The message to display.
+   */
   public void displayMessage(String message) {
     // Store the last displayed message.
     messages.add(message);
   }
 
+  /**
+   * Displays an error by adding it to the error list.
+   *
+   * @param error The error to display.
+   */
   public void displayError(String error) {
     errors.add(error);
   }

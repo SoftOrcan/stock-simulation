@@ -6,6 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A mock implementation of the {@link IStockBetterModel} interface.
+ * This class provides dummy implementations for various stock-related operations.
+ */
 public class BetterMockStockModel implements IStockBetterModel {
   private final Map<String, BetterPortfolio> portfolios = new HashMap<>();
   private final StockDatabase stockDatabase = new StockDatabase();
@@ -14,7 +18,6 @@ public class BetterMockStockModel implements IStockBetterModel {
   public double stockChange(String symbol, LocalDate startDate, LocalDate endDate) {
     return 100.0;
   }
-
   @Override
   public double stockMovingAverage(String symbol, LocalDate date, int numDays) {
     return 150.0;
