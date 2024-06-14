@@ -136,7 +136,8 @@ public class BetterMockStockModel implements IStockBetterModel {
    * @param date     The date of the removal of the stock.
    */
   @Override
-  public void removeStockFromPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
+  public void removeStockFromPortfolioFile(String name, String symbol, int quantity,
+                                           LocalDate date) {
     portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
