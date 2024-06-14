@@ -8,6 +8,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+/**
+ * The StockBetterModel class represents the "backend" of StockStimulation. Such that, it contains
+ * implemented methods to (inheriting from the 'StockModel' class)...
+ * <li>Calculate the net profit/loss of a stock over a time period (via the 'calculateChange()'
+ * method).</li>
+ * <li>The moving average of a stock over a time period (via the 'movingAverage ()' method).</li>
+ * <li>The crossovers of a stock over a time period (via the 'findCrossovers()' method).</li>
+ *
+ * <p> Additionally, the StockBetterModel class has capabilities to...</p>
+ * <li>Create (via the 'createPortfolio()' method)</li>
+ * <li>Modify (via the 'addStockToPortfolio()' and 'removeStockFromPortfolio()' methods)</li>
+ * <li>Calculate the value of a portfolio based on the stocks purchased and the price of the
+ * stocks on a given date (via the 'valueOfPortfolio()' method).</li>
+ * <li>Display the quantity of each stock in the portfolio (via the 'portfolioComposition()'
+ * method)</li>
+ * <li>Display the value of each stock in the portfolio (via the 'portfolioDistribution()'
+ * method)</li>
+ * <li>Rebalance the stocks in a portfolio based on the given weights (via the
+ * 'portfolioRebalance()' method) .</li>
+ */
 public class StockBetterModel extends StockModel implements IStockBetterModel {
   private final Logger logger = Logger.getLogger(StockBetterModel.class.getName());
   // Portfolios owned, represented as a HashMap<PortfolioName (String), Portfolio>.
@@ -184,6 +204,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * Validate the user input, ensuring that every stock in the portfolio contains a weight and
    * each value is numerical.
    *
+   * @param name The name of the portfolio.
    * @param split The weight of each stock in the portfolio.
    * @return If the user input contains numerical values, and provides a weight to every stock.
    */

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The StockModel class represents the "backend" of StocksStimulation. Such that, it contains
+ * The StockModel class represents the "backend" of StockStimulation. Such that, it contains
  * implemented methods to...
  * <li>Calculate the net profit/loss of a stock over a time period (via the 'calculateChange()'
  * method).</li>
