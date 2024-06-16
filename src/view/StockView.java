@@ -63,11 +63,6 @@ public class StockView implements IStockView {
     return 0;
   }
 
-  @Override
-  public void quit() {
-    // does nothing, used for GUI
-  }
-
   /**
    * Display the message as a new line.
    *

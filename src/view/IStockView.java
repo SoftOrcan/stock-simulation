@@ -35,7 +35,5 @@ public interface IStockView {
 
   int getDropdown(String name);
 
-  void quit();
-
   void addListener(ActionListener listener);
 }

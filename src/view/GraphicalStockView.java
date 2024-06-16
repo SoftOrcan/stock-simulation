@@ -2,7 +2,6 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.util.Objects;
 
 import javax.swing.*;
@@ -78,10 +77,5 @@ public class GraphicalStockView extends JFrame implements IStockView {
       }
     }
     throw new IllegalStateException();
-  }
-
-  @Override
-  public void quit() {
-    this.dispose();
   }
 }

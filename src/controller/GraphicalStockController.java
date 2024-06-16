@@ -31,7 +31,6 @@ public class GraphicalStockController implements IStockController, ActionListene
     switch (e.getActionCommand()) {
       case "quit":
         System.exit(0);
-        view.quit();
         break;
       // ActionSelection
       case "create":
