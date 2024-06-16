@@ -63,7 +63,7 @@ public class GraphicalStockController implements IStockController, ActionListene
           case "create":
             name = view.getTextField("name");
             model.createPortfolio(name);
-            messageCreator = () -> "Portfolio " + name + " created.";
+            messageCreator = () -> "Portfolio '" + name + "' created.";
             break;
           case "add":
             name = view.getTextField("name");
