@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class EntryPanel extends AStockPanel {
-  private final JPanel entryPanel;
   private final JButton submit;
 
   public EntryPanel(String actionName, String[] inputNames, boolean queryDates) {
@@ -14,20 +13,21 @@ public class EntryPanel extends AStockPanel {
     setLayout(new GridLayout(0, 1));
     setName(actionName);
 
-    entryPanel = new JPanel();
     submit = new JButton("Submit");
     setUp(actionName, inputNames, queryDates);
   }
 
   private void setUp(String actionName, String[] inputNames, boolean queryDates) {
     this.add(new JLabel(actionName));
+    JPanel entryPanel = new JPanel();
+    entryPanel.setName("entry");
     entryPanel.setLayout(new GridLayout(0, 2));
 
     for (String name : inputNames) {
       entryPanel.add(new JLabel(name));
       JTextField textField = new JTextField();
-      textField.setName(name + "Entry");
-      entryPanel.add(new JTextField());
+      textField.setName(name);
+      entryPanel.add(textField);
     }
 
     this.add(entryPanel);
@@ -41,11 +41,12 @@ public class EntryPanel extends AStockPanel {
       fillComboBox(months, 1, 12);
       fillComboBox(days, 1, 31);
 
-      years.setName("yearDropdown");
-      months.setName("monthDropdown");
-      days.setName("dayDropdown");
+      years.setName("year");
+      months.setName("month");
+      days.setName("day");
 
       JPanel dates = new JPanel();
+      dates.setName("dropdown");
       dates.setLayout(new GridLayout(0, 2));
       dates.add(new JLabel("Year"));
       dates.add(years);

@@ -1,15 +1,17 @@
 package view;
 
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.Objects;
 
 import javax.swing.*;
 
-public class GraphicalView extends JFrame implements IStockView {
+public class GraphicalStockView extends JFrame implements IStockView {
   private AStockPanel panel;
+  private ActionListener listener;
 
-  public GraphicalView() {
+  public GraphicalStockView() {
     setTitle("Stock Simulation");
     setSize(500, 500);
     this.panel = new ActionSelectionPanel();
@@ -17,7 +19,8 @@ public class GraphicalView extends JFrame implements IStockView {
     setVisible(true);
   }
 
-  public void setListener(ActionListener listener) {
+  public void addListener(ActionListener listener) {
+    this.listener = listener;
     panel.addListener(listener);
   }
 
@@ -25,6 +28,7 @@ public class GraphicalView extends JFrame implements IStockView {
   public void setPanel(AStockPanel panel) {
     remove(this.panel);
     this.panel = panel;
+    panel.addListener(listener);
     add(panel);
     setVisible(true);
   }
@@ -50,20 +54,30 @@ public class GraphicalView extends JFrame implements IStockView {
 
   @Override
   public String getTextField(String name) {
-    return ((JTextField) (Arrays.stream(panel.getComponents())
-        .filter(c -> c instanceof JTextField && c.getName().equals(name + "Entry"))
-        .findFirst()
-        .orElseGet(JTextField::new)))
-        .getText();
+    for (Component component : panel.getComponents()) {
+      if ("entry".equals(component.getName())) {
+        for (Component child : ((JPanel) component).getComponents()) {
+          if (name.equals(child.getName())) {
+            return ((JTextField) child).getText();
+          }
+        }
+      }
+    }
+    throw new IllegalStateException();
   }
 
   @Override
   public int getDropdown(String name) {
-    return Objects.requireNonNull(((Integer) ((JComboBox<?>) (
-        Arrays.stream(panel.getComponents())
-            .filter(c -> c instanceof JComboBox && c.getName().equals(name + "Dropdown"))
-            .findFirst()
-            .orElseGet(JComboBox::new))).getSelectedItem()));
+    for (Component component : panel.getComponents()) {
+      if ("dropdown".equals(component.getName())) {
+        for (Component child : ((JPanel) component).getComponents()) {
+          if (name.equals(child.getName())) {
+            return (int) Objects.requireNonNull(((JComboBox<?>) child).getSelectedItem());
+          }
+        }
+      }
+    }
+    throw new IllegalStateException();
   }
 
   @Override

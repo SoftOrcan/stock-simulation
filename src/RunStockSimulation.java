@@ -4,7 +4,7 @@ import controller.GraphicalStockController;
 import controller.IStockController;
 import model.IStockBetterModel;
 import model.StockBetterModel;
-import view.GraphicalView;
+import view.GraphicalStockView;
 import view.IStockView;
 
 /**
@@ -27,7 +27,7 @@ public class RunStockSimulation {
     }
 
     IStockBetterModel model = new StockBetterModel();
-    IStockView view = new GraphicalView();
+    IStockView view = new GraphicalStockView();
     IStockController controller = new GraphicalStockController(model, view);
     controller.control();
   }

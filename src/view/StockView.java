@@ -40,7 +40,7 @@ public class StockView implements IStockView {
     writeOutWithNewline("Error: " + error);
   }
 
-  public void setListener(ActionListener listener) {
+  public void addListener(ActionListener listener) {
     // does nothing, used for GUI
   }
 

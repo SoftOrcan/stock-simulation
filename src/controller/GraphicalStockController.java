@@ -19,7 +19,7 @@ public class GraphicalStockController implements IStockController, ActionListene
   public GraphicalStockController(IStockBetterModel model, IStockView view) {
     this.model = model;
     this.view = view;
-    view.setListener(this);
+    view.addListener(this);
   }
 
   @Override
@@ -35,21 +35,19 @@ public class GraphicalStockController implements IStockController, ActionListene
         break;
       // ActionSelection
       case "create":
-        view.setPanel(new EntryPanel("create", new String[] { "name" }, false));
+        view.setPanel(new EntryPanel("create", new String[] {"name"}, false));
         break;
       case "add":
-        view.setPanel(
-            new EntryPanel("add", new String[] {"name", "symbols", "shares", "date"}, true));
+        view.setPanel(new EntryPanel("add", new String[] {"name", "symbol", "shares"}, true));
         break;
       case "remove":
-        view.setPanel(
-            new EntryPanel("remove", new String[] {"name", "symbols", "shares", "date"}, true));
+        view.setPanel(new EntryPanel("remove", new String[] {"name", "symbol", "shares"}, true));
         break;
       case "value":
-        view.setPanel(new EntryPanel("value", new String[] {"name", "date"}, true));
+        view.setPanel(new EntryPanel("value", new String[] {"name"}, true));
         break;
       case "composition":
-        view.setPanel(new EntryPanel("composition", new String[] {"name", "date"}, true));
+        view.setPanel(new EntryPanel("composition", new String[] {"name"}, true));
         break;
       case "submit":
         String name;
