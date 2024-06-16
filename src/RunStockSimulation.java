@@ -26,8 +26,8 @@ public class RunStockSimulation {
       dataDirectory.mkdirs();
     }
 
-    IStockBetterModel model = new StockBetterModel();
     IStockView view = new GraphicalStockView();
+    IStockBetterModel model = new StockBetterModel();
     IStockController controller = new GraphicalStockController(model, view);
     controller.control();
   }

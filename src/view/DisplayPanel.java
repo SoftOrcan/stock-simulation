@@ -13,7 +13,9 @@ public class DisplayPanel extends AStockPanel {
     setLayout(new GridLayout(0, 1));
     setName("Display");
 
-    this.add(new JLabel(message));
+    JLabel label =
+        new JLabel("<html>" + message.replace(System.lineSeparator(), "<br>") + "</html>");
+    add(label);
 
     menu = new JButton("Menu");
     menu.setActionCommand("menu");

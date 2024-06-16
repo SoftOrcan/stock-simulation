@@ -158,8 +158,8 @@ public class BetterPortfolio extends Portfolio {
    * @param date The date to examine.
    * @return A textual visualization of the quantity of each stock in the portfolio.
    */
-  BarGraph composition(LocalDate date) {
-    BarGraph graph = new BarGraph("Composition:");
+  BarGraph composition(String name, LocalDate date) {
+    BarGraph graph = new BarGraph("Composition of Portfolio '" + name + "':");
     if (portfolioFile.isEmpty()) {
       return graph;
     }

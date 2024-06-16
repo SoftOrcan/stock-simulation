@@ -125,6 +125,7 @@ public class GraphicalStockController implements IStockController, ActionListene
             throw new IllegalStateException("Unexpected value: " + view.getPanelName());
         }
         if (isValid) {
+          System.out.println(messageCreator.get());
           view.setPanel(new DisplayPanel(messageCreator.get()));
         } else {
           view.displayError("Invalid input given.");

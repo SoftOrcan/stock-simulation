@@ -159,7 +159,7 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @return A textual visualization of the quantity of each stock in the portfolio.
    */
   public BarGraph portfolioComposition(String name, LocalDate date) {
-    return portfolios.get(name).composition(date);
+    return portfolios.get(name).composition(name, date);
   }
 
   /**
