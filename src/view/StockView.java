@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 /**
@@ -37,6 +38,34 @@ public class StockView implements IStockView {
    */
   public void displayError(String error) {
     writeOutWithNewline("Error: " + error);
+  }
+
+  public void setListener(ActionListener listener) {
+    // does nothing, used for GUI
+  }
+
+  public void setPanel(AStockPanel panel) {
+    // does nothing, used for GUI
+  }
+
+  public String getPanelName() {
+    // does nothing, used for GUI
+    return "";
+  }
+
+  public String getTextField(String name) {
+    // does nothing, used for GUI
+    return "";
+  }
+
+  public int getDropdown(String name) {
+    // does nothing, used for GUI
+    return 0;
+  }
+
+  @Override
+  public void quit() {
+    // does nothing, used for GUI
   }
 
   /**
