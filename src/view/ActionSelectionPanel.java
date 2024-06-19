@@ -2,58 +2,63 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.*;
 
 public class ActionSelectionPanel extends AStockPanel {
 
-  public ActionSelectionPanel() {
+  public ActionSelectionPanel(List<String> portfolios, String selected) {
     super();
     setLayout(new GridLayout(0, 1));
     setName("ActionSelection");
 
-    JButton create = new JButton("Create a Portfolio");
-    JButton add = new JButton("Buy a Stock");
-    JButton remove = new JButton("Sell a Stock");
-    JButton value = new JButton("Value of Portfolio");
-    JButton composition = new JButton("Composition of Portfolio");
+    JComboBox<String> portfolioBox = new JComboBox<>();
+    for (String portfolio : portfolios) {
+      portfolioBox.addItem(portfolio);
+    }
+    if (!selected.isEmpty()) {
+      portfolioBox.setSelectedItem(selected);
+      System.out.println(selected);
+    }
+    portfolioBox.setAction(new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        features.setPortfolio((String) portfolioBox.getSelectedItem());
+      }
+    });
+    this.add(portfolioBox);
 
-    create.setAction(new AbstractAction() {
+    this.add(new JButton(new AbstractAction("Create a Portfolio") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.enter("create");
       }
-    });
-    add.setAction(new AbstractAction() {
+    }));
+    this.add(new JButton(new AbstractAction("Buy a Stock") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.enter("add");
       }
-    });
-    remove.setAction(new AbstractAction() {
+    }));
+    this.add(new JButton(new AbstractAction("Sell a Stock") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.enter("remove");
       }
-    });
-    value.setAction(new AbstractAction() {
+    }));
+    this.add(new JButton(new AbstractAction("Value of Portfolio") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.enter("value");
       }
-    });
-    composition.setAction(new AbstractAction() {
+    }));
+    this.add(new JButton(new AbstractAction("Composition of Portfolio") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.enter("composition");
       }
-    });
-
-    this.add(create);
-    this.add(add);
-    this.add(remove);
-    this.add(value);
-    this.add(composition);
+    }));
     this.add(quit);
   }
 }

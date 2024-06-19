@@ -3,6 +3,7 @@ package model;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +69,11 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    */
   public boolean hasPortfolio(String name) {
     return portfolios.containsKey(name);
+  }
+
+  @Override
+  public List<String> getPortfolios() {
+    return new ArrayList<>(portfolios.keySet());
   }
 
   /**

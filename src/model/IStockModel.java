@@ -109,4 +109,6 @@ public interface IStockModel {
    * @return If a portfolio exists or not.
    */
   boolean hasPortfolio(String name);
+
+  List<String> getPortfolios();
 }

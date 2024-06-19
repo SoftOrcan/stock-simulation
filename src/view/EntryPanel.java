@@ -3,6 +3,9 @@ package view;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,27 +21,32 @@ public class EntryPanel extends AStockPanel {
     setLayout(new GridLayout(0, 1));
     setName(actionName);
 
-    this.add(new JLabel(actionName));
+    this.add(new JLabel(actionName, SwingConstants.CENTER));
     JPanel entryPanel = new JPanel();
     entryPanel.setLayout(new GridLayout(0, 2));
 
     for (String name : inputNames) {
-      JLabel label = new JLabel(name);
+      JLabel label = new JLabel(name, SwingConstants.CENTER);
+      label.setOpaque(true);
       entryPanel.add(label);
       JTextField textField = new JTextField();
-      textField.setAction(new AbstractAction() {
+      textField.addKeyListener(new KeyAdapter() {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void keyReleased(KeyEvent e) {
           features.validate(actionName, name, textField.getText(), label, textField);
+          System.out.println(e.getKeyChar());
         }
       });
       entryPanel.add(textField);
     }
 
-    this.add(entryPanel);
+    if (inputNames.length != 0) {
+      this.add(entryPanel);
+    }
 
     if (queryDates) {
       JPanel datePanel = new JPanel();
+      datePanel.setLayout(new GridLayout(3, 2));
 
       JComboBox<Integer> years = new JComboBox<>();
       JComboBox<Integer> months = new JComboBox<>();
@@ -61,40 +69,55 @@ public class EntryPanel extends AStockPanel {
       months.setAction(validateDate);
       days.setAction(validateDate);
 
-      datePanel.add(new JLabel("Year"));
+      datePanel.add(new JLabel("Year", SwingConstants.CENTER));
       datePanel.add(years);
-      datePanel.add(new JLabel("Month"));
+      datePanel.add(new JLabel("Month", SwingConstants.CENTER));
       datePanel.add(months);
-      datePanel.add(new JLabel("Day"));
+      datePanel.add(new JLabel("Day", SwingConstants.CENTER));
       datePanel.add(days);
       this.add(datePanel);
 
-
+      JButton submit = new JButton(new AbstractAction("Submit") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          Map<String, String> entries = new HashMap<>();
+          for (int index = 0; index < inputNames.length; index++) {
+            entries.put(inputNames[index],
+                ((JTextField) entryPanel.getComponent(2 * index + 1)).getText());
+          }
+          entries.put("year",
+              String.valueOf(years.getSelectedItem()));
+          entries.put("month",
+              String.valueOf(months.getSelectedItem()));
+          entries.put("day",
+              String.valueOf(days.getSelectedItem()));
+          features.submit(actionName, entries);
+        }
+      });
+      this.add(submit);
+    } else {
+      JButton submit = new JButton(new AbstractAction("Submit") {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+          Map<String, String> entries = new HashMap<>();
+          for (int index = 0; index < inputNames.length; index++) {
+            entries.put(inputNames[index],
+                ((JTextField) entryPanel.getComponent(2 * index + 1)).getText());
+          }
+          features.submit(actionName, entries);
+        }
+      });
+      this.add(submit);
     }
 
 
-    JButton submit = new JButton("Submit");
-    submit.setAction(new AbstractAction() {
+
+    this.add(new JButton(new AbstractAction("Menu") {
       @Override
       public void actionPerformed(ActionEvent e) {
-        Map<String, String> entries = new HashMap<>();
-        for (int index = 0; index < inputNames.length; index++) {
-          entries.put(inputNames[index],
-              ((JTextField) entryPanel.getComponent(2 * index + 1)).getText());
-        }
-        if (queryDates) {
-          entries.put("year",
-              String.valueOf(((JComboBox<?>) ((JPanel) getComponent(2)).getComponent(1)).getSelectedItem()));
-          entries.put("month",
-              String.valueOf(((JComboBox<?>) ((JPanel) getComponent(2)).getComponent(3)).getSelectedItem()));
-          entries.put("day",
-              String.valueOf(((JComboBox<?>) ((JPanel) getComponent(2)).getComponent(5)).getSelectedItem()));
-        }
-        features.submit(actionName, entries);
+        features.menu();
       }
-    });
-
-    this.add(submit);
+    }));
     this.add(quit);
   }
 

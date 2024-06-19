@@ -11,14 +11,12 @@ public class GraphicalStockView extends JFrame implements IStockView {
   public GraphicalStockView() {
     setTitle("Stock Simulation");
     setSize(500, 500);
-    this.panel = new ActionSelectionPanel();
-    add(panel);
+    panel = new AStockPanel() {}; // dud panel
   }
 
   @Override
   public void draw() {
     this.setVisible(true);
-    this.repaint();
   }
 
   public void setFeatures(Features features) {

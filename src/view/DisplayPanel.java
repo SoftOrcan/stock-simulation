@@ -2,11 +2,8 @@ package view;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
-
-import controller.Features;
 
 public class DisplayPanel extends AStockPanel {
 
@@ -15,18 +12,15 @@ public class DisplayPanel extends AStockPanel {
     setLayout(new GridLayout(0, 1));
     setName("Display");
 
-    JLabel label =
-        new JLabel("<html>" + message.replace(System.lineSeparator(), "<br>") + "</html>");
-    add(label);
+    add(new JLabel("<html>" + message.replace(System.lineSeparator(), "<br>") + "</html>",
+        SwingConstants.CENTER));
 
-    JButton menu = new JButton("Menu");
-    menu.setAction(new AbstractAction() {
+    this.add(new JButton(new AbstractAction("Menu") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.menu();
       }
-    });
-    this.add(menu);
+    }));
     this.add(quit);
   }
 }

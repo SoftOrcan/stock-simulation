@@ -12,11 +12,7 @@ public abstract class AStockPanel extends JPanel {
   protected Features features;
 
   public AStockPanel() {
-    quit = new JButton("Quit");
-    quit.setText("test");
-    quit.setVisible(true);
-    this.repaint();
-    quit.setAction(new AbstractAction() {
+    quit = new JButton(new AbstractAction("Quit") {
       @Override
       public void actionPerformed(ActionEvent e) {
         features.quit();

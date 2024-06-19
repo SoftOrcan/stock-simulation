@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,11 @@ public class StockModel implements IStockModel {
    */
   public boolean hasPortfolio(String name) {
     return portfolios.containsKey(name);
+  }
+
+  @Override
+  public List<String> getPortfolios() {
+    return new ArrayList<>(portfolios.keySet());
   }
 
   /**

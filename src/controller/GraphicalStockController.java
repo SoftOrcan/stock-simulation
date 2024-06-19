@@ -4,6 +4,7 @@ import java.awt.*;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.List;
 import java.util.function.Supplier;
 
 import javax.swing.*;
@@ -17,38 +18,48 @@ import view.IStockView;
 public class GraphicalStockController implements IStockController, Features {
   private final IStockView view;
   private final IStockBetterModel model;
+  private String selected;
 
   public GraphicalStockController(IStockBetterModel model, IStockView view) {
     this.model = model;
     this.view = view;
-    view.setFeatures(this);
+    selected = "";
   }
 
   @Override
   public void control() {
-    view.draw();
+    List<String> portfolios = model.getPortfolios();
+    selected = portfolios.isEmpty() ? "" :
+        portfolios.get(0);
+    view.setPanel(new ActionSelectionPanel(portfolios, selected));
+    view.setFeatures(this);
   }
 
   @Override
   public void enter(String action) {
-    switch (action) {
-      case "create":
-        view.setPanel(new EntryPanel("create", new String[]{"name"}, false));
-        break;
-      case "add":
-        view.setPanel(new EntryPanel("add", new String[]{"name", "symbol", "shares"}, true));
-        break;
-      case "remove":
-        view.setPanel(new EntryPanel("remove", new String[]{"name", "symbol", "shares"}, true));
-        break;
-      case "value":
-        view.setPanel(new EntryPanel("value", new String[]{"name"}, true));
-        break;
-      case "composition":
-        view.setPanel(new EntryPanel("composition", new String[]{"name"}, true));
-        break;
-      default:
-        throw new IllegalStateException("Invalid action: " + action);
+    if (action.equals("create")) {
+      view.setPanel(new EntryPanel("create", new String[]{"name"}, false));
+      return;
+    }
+    if (!selected.isEmpty()) {
+      switch (action) {
+        case "add":
+          view.setPanel(new EntryPanel("add", new String[]{"symbol", "shares"}, true));
+          break;
+        case "remove":
+          view.setPanel(new EntryPanel("remove", new String[]{"symbol", "shares"}, true));
+          break;
+        case "value":
+          view.setPanel(new EntryPanel("value", new String[]{}, true));
+          break;
+        case "composition":
+          view.setPanel(new EntryPanel("composition", new String[]{}, true));
+          break;
+        default:
+          throw new IllegalStateException("Invalid action: " + action);
+      }
+    } else {
+      view.displayError("Please create or select a profile");
     }
   }
 
@@ -65,16 +76,17 @@ public class GraphicalStockController implements IStockController, Features {
 
     switch (actionName) {
       case "create":
-        allValid = true;
         name = entries.get("name");
-        model.createPortfolio(name);
-        messageCreator = () -> "Portfolio '" + name + "' created.";
+        allValid = !name.isEmpty();
+        messageCreator = () -> {
+          model.createPortfolio(name);
+          setPortfolio(name);
+          return "Portfolio '" + name + "' created.";
+        };
         break;
       case "add":
-        name = entries.get("name");
-        allValid = model.hasPortfolio(name);
         symbol = entries.get("symbol");
-        allValid &= model.isValidSymbol(symbol);
+        allValid = model.isValidSymbol(symbol);
         shares = entries.get("shares");
         allValid &= isValidInteger(shares);
         day = Integer.parseInt(entries.get("day"));
@@ -84,15 +96,13 @@ public class GraphicalStockController implements IStockController, Features {
         messageCreator =
             () -> {
               LocalDate date = LocalDate.of(year, month, day);
-              model.addStockToPortfolioFile(name, symbol, Integer.parseInt(shares), date);
-              return "On " + date + ": Added '" + symbol + "' to Portfolio '" + name + "'.";
+              model.addStockToPortfolioFile(selected, symbol, Integer.parseInt(shares), date);
+              return "On " + date + ": Added '" + symbol + "' to Portfolio '" + selected + "'.";
             };
         break;
       case "remove":
-        name = entries.get("name");
-        allValid = model.hasPortfolio(name);
         symbol = entries.get("symbol");
-        allValid &= model.isValidSymbol(symbol);
+        allValid = model.isValidSymbol(symbol);
         shares = entries.get("shares");
         allValid &= isValidInteger(shares);
         day = Integer.parseInt(entries.get("day"));
@@ -102,29 +112,25 @@ public class GraphicalStockController implements IStockController, Features {
         messageCreator =
             () -> {
               LocalDate date = LocalDate.of(year, month, day);
-              model.removeStockFromPortfolioFile(name, symbol, Integer.parseInt(shares), date);
-              return "On " + date + ": Removed '" + symbol + "' from Portfolio '" + name + "'.";
+              model.removeStockFromPortfolioFile(selected, symbol, Integer.parseInt(shares), date);
+              return "On " + date + ": Removed '" + symbol + "' from Portfolio '" + selected + "'.";
             };
         break;
       case "value":
-        name = entries.get("name");
-        allValid = model.hasPortfolio(name);
         day = Integer.parseInt(entries.get("day"));
         month = Integer.parseInt(entries.get("month"));
         year = Integer.parseInt(entries.get("year"));
-        allValid &= isValidDate(day, month, year);
-        messageCreator = () -> "Value of '" + name + "': $"
-            + model.portfolioValue(name, LocalDate.of(year, month, day));
+        allValid = isValidDate(day, month, year);
+        messageCreator = () -> "Value of '" + selected + "': $"
+            + model.portfolioValue(selected, LocalDate.of(year, month, day));
         break;
       case "composition":
-        name = entries.get("name");
-        allValid = model.hasPortfolio(name);
         day = Integer.parseInt(entries.get("day"));
         month = Integer.parseInt(entries.get("month"));
         year = Integer.parseInt(entries.get("year"));
-        allValid &= isValidDate(day, month, year);
+        allValid = isValidDate(day, month, year);
         messageCreator = () ->
-            model.portfolioComposition(name, LocalDate.of(year, month, day)).interpret();
+            model.portfolioComposition(selected, LocalDate.of(year, month, day)).interpret();
         break;
       default:
         throw new IllegalStateException("Invalid action: " + actionName);
@@ -142,9 +148,10 @@ public class GraphicalStockController implements IStockController, Features {
     switch (name) {
       case "name":
         if (actionName.equals("create")) {
-          return;
+          changeValidation(label, entry, !value.isEmpty());
+        } else {
+          changeValidation(label, entry, model.hasPortfolio(value));
         }
-        changeValidation(label, entry, model.hasPortfolio(value));
         break;
       case "symbol":
         changeValidation(label, entry, model.isValidSymbol(value));
@@ -165,8 +172,13 @@ public class GraphicalStockController implements IStockController, Features {
   }
 
   @Override
+  public void setPortfolio(String portfolio) {
+    selected = portfolio;
+  }
+
+  @Override
   public void menu() {
-    view.setPanel(new ActionSelectionPanel());
+    view.setPanel(new ActionSelectionPanel(model.getPortfolios(), selected));
   }
 
   @Override
@@ -199,8 +211,5 @@ public class GraphicalStockController implements IStockController, Features {
       label.setBackground(Color.RED);
       entry.setBackground(Color.RED);
     }
-    label.setVisible(true);
-    entry.setVisible(true);
-    view.draw();
   }
 }
