@@ -1,7 +1,8 @@
 package view;
 
-import java.awt.event.ActionListener;
 import java.io.IOException;
+
+import controller.Features;
 
 /**
  * The StockView class is the interaction window between a user and the program. It is responsive
@@ -40,7 +41,7 @@ public class StockView implements IStockView {
     writeOutWithNewline("Error: " + error);
   }
 
-  public void addListener(ActionListener listener) {
+  public void setFeatures(Features features) {
     // does nothing, used for GUI
   }
 
@@ -48,19 +49,9 @@ public class StockView implements IStockView {
     // does nothing, used for GUI
   }
 
-  public String getPanelName() {
+  @Override
+  public void draw() {
     // does nothing, used for GUI
-    return "";
-  }
-
-  public String getTextField(String name) {
-    // does nothing, used for GUI
-    return "";
-  }
-
-  public int getDropdown(String name) {
-    // does nothing, used for GUI
-    return 0;
   }
 
   /**

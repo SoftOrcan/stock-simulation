@@ -1,12 +1,14 @@
 package view;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import controller.Features;
+
 public class DisplayPanel extends AStockPanel {
-  private final JButton menu;
 
   public DisplayPanel(String message) {
     super();
@@ -17,15 +19,14 @@ public class DisplayPanel extends AStockPanel {
         new JLabel("<html>" + message.replace(System.lineSeparator(), "<br>") + "</html>");
     add(label);
 
-    menu = new JButton("Menu");
-    menu.setActionCommand("menu");
+    JButton menu = new JButton("Menu");
+    menu.setAction(new AbstractAction() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        features.menu();
+      }
+    });
     this.add(menu);
     this.add(quit);
-  }
-
-  @Override
-  void addListener(ActionListener listener) {
-    super.addListener(listener);
-    menu.addActionListener(listener);
   }
 }

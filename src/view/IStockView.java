@@ -1,10 +1,6 @@
 package view;
 
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
-import controller.GraphicalStockController;
+import controller.Features;
 
 /**
  * The IStockView interface is responsible for displaying the output of the user interaction (via
@@ -29,11 +25,7 @@ public interface IStockView {
 
   void setPanel(AStockPanel panel);
 
-  String getPanelName();
+  void draw();
 
-  String getTextField(String name);
-
-  int getDropdown(String name);
-
-  void addListener(ActionListener listener);
+  void setFeatures(Features features);
 }
