@@ -1,7 +1,5 @@
 package view;
 
-import java.util.List;
-
 import controller.Features;
 
 /**
@@ -10,7 +8,6 @@ import controller.Features;
  * user interface following the user input.
  */
 public interface IStockView {
-
   /**
    * Display the message from the controller to the user.
    *

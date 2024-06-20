@@ -10,9 +10,9 @@ import view.IStockView;
 
 /**
  * A TextualStocksBetterController receives and "parses" inputs by calling the appropriate,
- * corresponding method(s) in IStockBetterModel (via the 'control()' and 'processCommand()' methods)
- * . In addition, the controller interacts with IStockView by displaying the output textually, and
- * contains the method 'menu()' to display the available features of the program.
+ * corresponding method(s) in IStockBetterModel (via the 'control()' and 'processCommand()'
+ * methods). In addition, the controller interacts with IStockView by displaying the output
+ * textually, and contains the method 'menu()' to display the available features of the program.
  */
 public class TextualStockBetterController extends TextualStockController implements
     IStockBetterController {

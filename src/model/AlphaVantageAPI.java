@@ -28,9 +28,11 @@ class AlphaVantageAPI {
   }
 
   /**
-   * Retrieve historical data of a stock and store the information locally as a .csv file.
+   * Retrieve historical data of a stock from the Alpha Vantage API and store the information
+   * locally as a .csv file.
    *
    * @param symbol The stock to examine.
+   * @param interval The time interval to examine (i.e. either DAILY or HOURLY stock).
    */
   void getData(String symbol, String interval) {
     try {
@@ -57,7 +59,7 @@ class AlphaVantageAPI {
    * query (i.e. DAILY or INTRADAY stock prices) (termed as 'interval') and the stock symbol to be
    * looked up (termed as 'symbol').
    *
-   * @param symbol The stock to examine.
+   * @param symbol   The stock to examine.
    * @param interval The interval to examine (i.e. "" or "60min").
    * @return BufferedReader to read the data contained in the URL.
    * @throws IOException If the URL is deteriorated or cannot be accessed.

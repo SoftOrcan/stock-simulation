@@ -6,8 +6,8 @@ import java.util.List;
 import controller.Features;
 
 /**
- * The StockView class is the interaction window between a user and the program. It is responsive
- * to the inputs of the user, and renders output messages from the controller (via the
+ * The StockView class is the interaction window between a user and the program. It is responsive to
+ * the inputs of the user, and renders output messages from the controller (via the
  * 'displayMessage()' method).
  */
 public class StockView implements IStockView {
@@ -42,17 +42,30 @@ public class StockView implements IStockView {
     writeOutWithNewline("Error: " + error);
   }
 
+  /**
+   * Change the {@code Features} that events are sent to. However, as this is utilized in the GUI,
+   * this method does nothing in StockView.
+   *
+   * @param features The {@code Features} to use.
+   */
   public void setFeatures(Features features) {
-    // does nothing, used for GUI
   }
 
+  /**
+   * Change the shown panel to the given panel.  However, as this is utilized in the GUI, this
+   * method does nothing in StockView.
+   *
+   * @param panel The new panel to display.
+   */
   public void setPanel(AStockPanel panel) {
-    // does nothing, used for GUI
   }
 
+  /**
+   * Turn on the view. However, as this is utilized in the GUI, this method does nothing in
+   * StockView.
+   */
   @Override
   public void draw() {
-    // does nothing, used for GUI
   }
 
   /**

@@ -117,8 +117,17 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param symbol   The stock to add.
    * @param quantity The quantity of stocks purchased.
    * @param date     The date of the purchase of the stock.
+   * @throws IllegalArgumentException If an input is invalid.
    */
-  public void addStockToPortfolioFile(String name, String symbol, int quantity, LocalDate date) {
+  public void addStockToPortfolioFile(String name, String symbol, int quantity,
+                                      LocalDate date) throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
+    if (!isValidSymbol(symbol)) {
+      throw new IllegalArgumentException("Symbol " + symbol + " is not valid.");
+    }
     portfolios.get(name).addStockToFile(name, symbol, quantity, date);
   }
 
@@ -129,9 +138,17 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param symbol   The stock to remove.
    * @param quantity The quantity of stock to remove.
    * @param date     The date of the removal of the stock.
+   * @throws IllegalArgumentException If an input is invalid.
    */
   public void removeStockFromPortfolioFile(String name, String symbol, int quantity,
-                                           LocalDate date) {
+                                           LocalDate date) throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
+    if (!isValidSymbol(symbol)) {
+      throw new IllegalArgumentException("Symbol " + symbol + " is not valid.");
+    }
     portfolios.get(name).removeStockFromFile(name, symbol, quantity, date);
   }
 
@@ -142,8 +159,13 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param name The name of a portfolio.
    * @param date The specified date to retrieve data regarding a stock on.
    * @return The cumulative value of a BetterPortfolio.
+   * @throws IllegalArgumentException If an input is invalid.
    */
-  public double portfolioValue(String name, LocalDate date) {
+  public double portfolioValue(String name, LocalDate date) throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
     return portfolios.get(name).value(date, stockDatabase);
   }
 
@@ -168,8 +190,14 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param name The name of a portfolio.
    * @param date The date to examine.
    * @return A textual visualization of the quantity of each stock in the portfolio.
+   * @throws IllegalArgumentException If an input is invalid.
    */
-  public BarGraph portfolioComposition(String name, LocalDate date) {
+  public BarGraph portfolioComposition(String name, LocalDate date)
+      throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
     return portfolios.get(name).composition(name, date);
   }
 
@@ -180,8 +208,14 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param name The name of a portfolio.
    * @param date The date to examine.
    * @return A textual visualization of the value of each stock in the portfolio.
+   * @throws IllegalArgumentException If an input is invalid.
    */
-  public BarGraph portfolioDistribution(String name, LocalDate date) {
+  public BarGraph portfolioDistribution(String name, LocalDate date)
+      throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
     return portfolios.get(name).distribution(date);
   }
 
@@ -194,9 +228,14 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * @param end         The end date to examine.
    * @param xLabelCount The quantity of x-axis labels.
    * @return Textual visualization of the portfolio over a time period.
+   * @throws IllegalArgumentException If an input is invalid.
    */
   public BarGraph portfolioPerformance(String name, LocalDate start, LocalDate end,
-                                       int xLabelCount) {
+                                       int xLabelCount) throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
     return portfolios.get(name).performance(name, start, end, xLabelCount);
   }
 
@@ -204,19 +243,25 @@ public class StockBetterModel extends StockModel implements IStockBetterModel {
    * Rebalance a portfolio to ensure that the weight of each stock is equivalent. The weight is
    * based on the parameter 'split'.
    *
-   * @param name          The name of the portfolio.
-   * @param split         The weight of each stock.
-   * @param date          The date to examine.
+   * @param name  The name of the portfolio.
+   * @param split The weight of each stock.
+   * @param date  The date to examine.
+   * @throws IllegalArgumentException If an input is invalid.
    */
-  public void portfolioRebalance(String name, List<Integer> split, LocalDate date) {
+  public void portfolioRebalance(String name, List<Integer> split, LocalDate date)
+      throws IllegalArgumentException {
+    // Throw if a portfolio under the specified name does not exist.
+    if (!hasPortfolio(name)) {
+      throw new IllegalArgumentException("Portfolio " + name + " does not exist.");
+    }
     portfolios.get(name).rebalance(name, split, date, new StockDatabase());
   }
 
   /**
-   * Validate the user input, ensuring that every stock in the portfolio contains a weight and
-   * each value is numerical.
+   * Validate the user input, ensuring that every stock in the portfolio contains a weight and each
+   * value is numerical.
    *
-   * @param name The name of the portfolio.
+   * @param name  The name of the portfolio.
    * @param split The weight of each stock in the portfolio.
    * @return If the user input contains numerical values, and provides a weight to every stock.
    */

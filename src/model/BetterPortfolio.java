@@ -7,7 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllformedLocaleException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -217,6 +219,7 @@ public class BetterPortfolio extends Portfolio {
    * @param stockDatabase The StockDatabase to retrieve the prices of the stocks.
    */
   void rebalance(String name, List<Integer> split, LocalDate date, StockDatabase stockDatabase) {
+    isValidIntegerSplit(split);
     double portfolioValue = value(date, stockDatabase); // The current value of the portfolio.
     int index = 0;
     double rebalancedPrice; // The re-computed price of each stock, considering the weight.
@@ -243,6 +246,18 @@ public class BetterPortfolio extends Portfolio {
     copyToFile(name);
   }
 
+  private void isValidIntegerSplit(List<Integer> split) throws IllegalArgumentException {
+    int sum = 0;
+
+    for (Integer value : split) {
+      sum += value;
+    }
+
+    if (sum != 100) {
+      throw new IllegalArgumentException("Invalid split! Sum does not equate 100.");
+    }
+  }
+
   /**
    * Validate the user input, ensuring that every stock in the portfolio contains a weight and
    * each value is numerical.
@@ -256,12 +271,15 @@ public class BetterPortfolio extends Portfolio {
       return false;
     }
 
+    int sum = 0;
     try {
       // If the values in the split is non-numerical, return false.
       for (String value : split) {
-        Integer.parseInt(value);
+        sum += Integer.parseInt(value);
       }
-      return true;
+
+      // The total of the splits must equate to 100.
+      return sum == 100;
     } catch (NumberFormatException e) {
       return false;
     }
