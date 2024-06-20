@@ -196,10 +196,11 @@ public class GraphicalStockController implements IStockController, Features {
    * @param value      The value of the field.
    * @param label      The label panel used for field entry.
    * @param entry      The input panel used for field entry.
+   * @throws IllegalArgumentException If an unknown command is provided.
    */
   @Override
   public void validate(String actionName, String name, String value, JLabel label,
-                       JComponent entry) {
+                       JComponent entry) throws IllegalArgumentException {
     switch (name) {
       case "name":
         if (actionName.equals("create")) {
@@ -218,6 +219,8 @@ public class GraphicalStockController implements IStockController, Features {
         // Validate if a valid numerical value is provided.
         changeValidation(label, entry, isValidInteger(value));
         break;
+      default:
+        throw new IllegalStateException("Exception: Unknown command!");
     }
   }
 
