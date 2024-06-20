@@ -46,6 +46,11 @@ public class StockModel implements IStockModel {
     return portfolios.containsKey(name);
   }
 
+  /**
+   * {@inheritDoc} Changes to this list will not affect the model in any way.
+   *
+   * @return The list of portfolios.
+   */
   @Override
   public List<String> getPortfolios() {
     return new ArrayList<>(portfolios.keySet());
