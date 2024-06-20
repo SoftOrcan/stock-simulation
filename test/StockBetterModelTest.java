@@ -45,30 +45,30 @@ public class StockBetterModelTest extends IStockModelTest {
     secondModel2.createPortfolio("Portfolio One");
     secondModel2.createPortfolio("Portfolio Two");
     secondModel2.addStockToPortfolioFile("Portfolio Two", "AAPL", 10,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
 
 
     thirdModel2.createPortfolio("Portfolio One");
     thirdModel2.addStockToPortfolioFile("Portfolio One", "AAPL", 10,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
     thirdModel2.addStockToPortfolioFile("Portfolio One", "GOOG", 100,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
     thirdModel2.addStockToPortfolioFile("Portfolio One", "AMZN", 50,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
 
 
     fourthModel2.createPortfolio("Portfolio One");
     fourthModel2.addStockToPortfolioFile("Portfolio One", "AAPL", 10,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
     fourthModel2.addStockToPortfolioFile("Portfolio One", "AMZN", 20,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
     fourthModel2.addStockToPortfolioFile("Portfolio One", "GOOG", 30,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
 
 
     fifthModel2.createPortfolio("Portfolio One");
     fifthModel2.addStockToPortfolioFile("Portfolio One", "AAPL", 10,
-            LocalDate.of(2000, 01, 01));
+        LocalDate.of(2000, 01, 01));
   }
 
 
@@ -135,14 +135,14 @@ public class StockBetterModelTest extends IStockModelTest {
     model2 = new StockBetterModel();
     model2.createPortfolio("TechStocks");
     model2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     model2.addStockToPortfolioFile("TechStocks", "GOOG", 5,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     double portfolioValue = model2.portfolioValue("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     assertEquals(2422.75, portfolioValue, 0.01);
     portfolioValue = model2.portfolioValue("TechStocks",
-            LocalDate.of(2000, 6, 1));
+        LocalDate.of(2000, 6, 1));
     assertEquals(0, portfolioValue, 0.01);
   }
 
@@ -155,18 +155,18 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     BarGraph composition = betterModel2.portfolioComposition("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     String result = composition.interpret();
     assertTrue(betterModel2.portfolioComposition("TechStocks",
-            LocalDate.of(2023, 6, 1)).interpret().contains("AAPL"));
-    assertEquals("Composition of Portfolio 'TechStocks':\n" +
-            "AAPL: 10.0 shares.", betterModel2.portfolioComposition("TechStocks",
-            LocalDate.of(2023, 6, 1)).interpret());
+        LocalDate.of(2023, 6, 1)).interpret().contains("AAPL"));
+    assertEquals("Composition of Portfolio 'TechStocks':" + System.lineSeparator()
+        + "AAPL: 10.0 shares.", betterModel2.portfolioComposition("TechStocks",
+        LocalDate.of(2023, 6, 1)).interpret());
     assertTrue(betterModel2.portfolioComposition("TechStocks",
-            LocalDate.of(2023, 6, 1)).interpret().contains
-            ("Composition of Portfolio 'TechStocks':"));
+        LocalDate.of(2023, 6, 1)).interpret().contains
+        ("Composition of Portfolio 'TechStocks':"));
   }
 
 
@@ -178,9 +178,9 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     BarGraph distribution = betterModel2.portfolioDistribution("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     String result = distribution.interpret();
     assertTrue(result.contains("AAPL"));
   }
@@ -191,16 +191,14 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     BarGraph performance = betterModel2.portfolioPerformance("TechStocks",
-            LocalDate.of(2023, 1, 1),
-            LocalDate.of(2023, 6, 1), 5);
+        LocalDate.of(2023, 1, 1),
+        LocalDate.of(2023, 6, 1), 5);
     String result = performance.interpret();
     assertTrue(result.contains("*"));
     assertTrue(result.contains("X-Axis Scale:"));
   }
-
-
 
 
   @Test
@@ -208,16 +206,14 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     betterModel2.portfolioRebalance("TechStocks", List.of(50, 50),
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     BarGraph distribution = betterModel2.portfolioDistribution("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     String result = distribution.interpret();
     assertTrue(result.contains("AAPL"));
   }
-
-
 
 
   @Test
@@ -225,11 +221,11 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     boolean isValid = betterModel2.isValidSplit("TechStocks", List.of("AAPL", "GOOG"));
     assertFalse(isValid);
     betterModel2.addStockToPortfolioFile("TechStocks", "GOOG", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     isValid = betterModel2.isValidSplit("TechStocks", List.of("AAPL"));
     assertFalse(isValid);
   }
@@ -244,35 +240,35 @@ public class StockBetterModelTest extends IStockModelTest {
     betterModel2 = new StockBetterModel();
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     double portfolioValue = betterModel2.portfolioValue("TechStocks", LocalDate.of
-            (2023, 6, 2));
+        (2023, 6, 2));
     // check for portfolio after add date
     assertEquals(1809.5, portfolioValue, 0.001);
     // check for portfolio before add date
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2023, 5, 2));
+        LocalDate.of(2023, 5, 2));
     assertEquals(0, portfolioValue, 0.001);
     // check for portfolio on add date
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     assertEquals(1800.9, portfolioValue, 0.001);
     // add multiple stocks so different stocks are in portfolio on differeent dates
     betterModel2.addStockToPortfolioFile("TechStocks", "GOOG", 15,
-            LocalDate.of(2022, 6, 1));
+        LocalDate.of(2022, 6, 1));
     betterModel2.addStockToPortfolioFile("TechStocks", "GOOG", 15,
-            LocalDate.of(2021, 2, 1));
+        LocalDate.of(2021, 2, 1));
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2022, 6, 1));
+        LocalDate.of(2022, 6, 1));
     assertEquals(68482.2, portfolioValue, 0.001);
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2021, 6, 1));
+        LocalDate.of(2021, 6, 1));
     assertEquals(72894.3, portfolioValue, 0.001);
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2024, 6, 1));
+        LocalDate.of(2024, 6, 1));
     assertEquals(7141.3, portfolioValue, 0.001);
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2000, 6, 1));
+        LocalDate.of(2000, 6, 1));
     assertEquals(0, portfolioValue, 0.001);
   }
 
@@ -285,16 +281,16 @@ public class StockBetterModelTest extends IStockModelTest {
     clear("portfolios");
     betterModel2.createPortfolio("TechStocks");
     betterModel2.addStockToPortfolioFile("TechStocks", "AAPL", 10,
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     betterModel2.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
-            LocalDate.of(2023, 7, 2));
+        LocalDate.of(2023, 7, 2));
     double portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2023, 6, 1));
+        LocalDate.of(2023, 6, 1));
     assertEquals(900.45, portfolioValue, 0.001);
     betterModel2.removeStockFromPortfolioFile("TechStocks", "AAPL", 5,
-            LocalDate.of(2023, 6, 3));
+        LocalDate.of(2023, 6, 3));
     portfolioValue = betterModel2.portfolioValue("TechStocks",
-            LocalDate.of(2023, 6, 3));
+        LocalDate.of(2023, 6, 3));
     assertEquals(0, portfolioValue, 0.01);
   }
 
