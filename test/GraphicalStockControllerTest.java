@@ -171,6 +171,19 @@ public class GraphicalStockControllerTest {
   }
 
   @Test
+  public void testStockValue() {
+    // Check the value of the portfolio
+    controller.enter("value");
+    Map<String, String> valueEntries = new HashMap<>();
+    valueEntries.put("day", "1");
+    valueEntries.put("month", "1");
+    valueEntries.put("year", "2022");
+    controller.submit("value", valueEntries);
+    List<String> messages = ((MockGraphicalStockView) view).getMessages();
+    assertEquals("setPanel(Display)", messages.get(3));
+  }
+
+  @Test
   public void testPortfolioComposition() {
     // First, create a portfolio
     controller.enter("create");

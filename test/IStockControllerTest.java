@@ -2,6 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -225,6 +226,15 @@ public class IStockControllerTest {
     String input = "5\nTechStocks\n10\nTechStocks\n2023\n01\n01\nq\n";
     setInput(input);
 
+    betterController.control();
+    assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
+
+    input = "q\n";
+    setInput(input);
+    betterController.control();
+
+    input = "10\nTechStocks\n2023\n01\n01\nq\n";
+    setInput(input);
     betterController.control();
 
     assertTrue(betterMockView.getMessages().contains("Value of TechStocks: $1000.0."));
