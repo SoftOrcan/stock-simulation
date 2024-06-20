@@ -13,6 +13,7 @@ public class ActionSelectionPanel extends AStockPanel {
     setLayout(new GridLayout(0, 1));
     setName("ActionSelection");
 
+    this.add(new JLabel("Select portfolio:", SwingConstants.CENTER));
     JComboBox<String> portfolioBox = new JComboBox<>();
     for (String portfolio : portfolios) {
       portfolioBox.addItem(portfolio);

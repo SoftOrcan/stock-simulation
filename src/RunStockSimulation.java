@@ -1,11 +1,14 @@
 import java.io.File;
+import java.io.InputStreamReader;
 
 import controller.GraphicalStockController;
 import controller.IStockController;
+import controller.TextualStockBetterController;
 import model.IStockBetterModel;
 import model.StockBetterModel;
 import view.GraphicalStockView;
 import view.IStockView;
+import view.StockView;
 
 /**
  * The RunStockSimulation class runs the Stock Simulation program in its entirety, interacting
@@ -26,9 +29,17 @@ public class RunStockSimulation {
       dataDirectory.mkdirs();
     }
 
-    IStockView view = new GraphicalStockView();
     IStockBetterModel model = new StockBetterModel();
-    IStockController controller = new GraphicalStockController(model, view);
+    IStockView view;
+    IStockController controller;
+
+    if (args.length >= 1 && args[0].equals("-text")) {
+      view = new StockView(System.out);
+      controller = new TextualStockBetterController(model, view, new InputStreamReader(System.in));
+    } else {
+      view = new GraphicalStockView();
+      controller = new GraphicalStockController(model, view);
+    }
     controller.control();
   }
 }
