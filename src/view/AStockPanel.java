@@ -20,6 +20,11 @@ public abstract class AStockPanel extends JPanel {
     });
   }
 
+  /**
+   * Change the {@code Features} that events are sent to.
+   *
+   * @param features The {@code Features} to use.
+   */
   protected void setFeatures(Features features) {
     this.features = features;
   }

@@ -110,5 +110,10 @@ public interface IStockModel {
    */
   boolean hasPortfolio(String name);
 
+  /**
+   * Gets list of portfolios.
+   *
+   * @return The list of portfolios.
+   */
   List<String> getPortfolios();
 }

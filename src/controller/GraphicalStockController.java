@@ -28,11 +28,12 @@ public class GraphicalStockController implements IStockController, Features {
 
   @Override
   public void control() {
+    view.setFeatures(this);
     List<String> portfolios = model.getPortfolios();
     selected = portfolios.isEmpty() ? "" :
-        portfolios.get(0);
+        portfolios.getFirst();
     view.setPanel(new ActionSelectionPanel(portfolios, selected));
-    view.setFeatures(this);
+    view.draw();
   }
 
   @Override
