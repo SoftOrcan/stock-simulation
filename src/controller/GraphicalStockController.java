@@ -15,6 +15,13 @@ import view.DisplayPanel;
 import view.EntryPanel;
 import view.IStockView;
 
+/**
+ * A GraphicalStockController is a GUI which receives and "parses" inputs by calling the
+ * appropriate, corresponding method(s) in IStockBetterModel (via the 'control()' and 'enter()'
+ * methods). In addition, the controller interacts with IStockView by displaying the output
+ * graphically, and contains the method 'menu()' to display the available features of the program.
+ * The
+ */
 public class GraphicalStockController implements IStockController, Features {
   private final IStockView view;
   private final IStockBetterModel model;
@@ -26,16 +33,25 @@ public class GraphicalStockController implements IStockController, Features {
     selected = "";
   }
 
+  /**
+   * Display the menu screen containing controls to the user. Receive user input and call the
+   * appropriate, corresponding method in IStockModel. Display the output to the user via
+   * IStockView.
+   */
   @Override
   public void control() {
     view.setFeatures(this);
     List<String> portfolios = model.getPortfolios();
-    selected = portfolios.isEmpty() ? "" :
-        portfolios.getFirst();
+    selected = portfolios.isEmpty() ? "" : portfolios.get(portfolios.size() - 1);
     view.setPanel(new ActionSelectionPanel(portfolios, selected));
     view.draw();
   }
 
+  /**
+   * Prompt user to enter inputs for given action.
+   *
+   * @param action The name of the intended action.
+   */
   @Override
   public void enter(String action) {
     if (action.equals("create")) {
@@ -64,6 +80,12 @@ public class GraphicalStockController implements IStockController, Features {
     }
   }
 
+  /**
+   * Do action. {@code entries} stores inputs from view.
+   *
+   * @param actionName The name of the intended action.
+   * @param entries    The map from field name to field value.
+   */
   @Override
   public void submit(String actionName, Map<String, String> entries) {
     String name;
@@ -143,6 +165,15 @@ public class GraphicalStockController implements IStockController, Features {
     }
   }
 
+  /**
+   * Notify user if {@code value} is invalid in relation to the given action.
+   *
+   * @param actionName The name of the intended action.
+   * @param name       The name of the field.
+   * @param value      The value of the field.
+   * @param label      The label panel used for field entry.
+   * @param entry      The input panel used for field entry.
+   */
   @Override
   public void validate(String actionName, String name, String value, JLabel label,
                        JComponent entry) {
@@ -163,6 +194,14 @@ public class GraphicalStockController implements IStockController, Features {
     }
   }
 
+  /**
+   * Notify user if provided date is invalid.
+   *
+   * @param day     The given day.
+   * @param month   The given month.
+   * @param year    The given year.
+   * @param dateBox The panel used for date entry.
+   */
   @Override
   public void validateDate(int day, int month, int year, JPanel dateBox) {
     if (isValidDate(day, month, year)) {
@@ -172,6 +211,11 @@ public class GraphicalStockController implements IStockController, Features {
     }
   }
 
+  /**
+   * Set the portfolio to do operations on.
+   *
+   * @param portfolio The portfolio to select.
+   */
   @Override
   public void setPortfolio(String portfolio) {
     selected = portfolio;
@@ -182,6 +226,9 @@ public class GraphicalStockController implements IStockController, Features {
     view.setPanel(new ActionSelectionPanel(model.getPortfolios(), selected));
   }
 
+  /**
+   * Quit the stock simulation.
+   */
   @Override
   public void quit() {
     System.exit(0);

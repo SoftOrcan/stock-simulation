@@ -43,16 +43,16 @@ public class StockView implements IStockView {
   }
 
   public void setFeatures(Features features) {
-    // does nothing, used for GUI
+    // Does nothing, used for GUI.
   }
 
   public void setPanel(AStockPanel panel) {
-    // does nothing, used for GUI
+    // Does nothing, used for GUI.
   }
 
   @Override
   public void draw() {
-    // does nothing, used for GUI
+    // Does nothing, used for GUI.
   }
 
   /**

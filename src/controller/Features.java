@@ -4,8 +4,10 @@ import java.util.Map;
 
 import javax.swing.*;
 
+/**
+ * The Features interface is responsible
+ */
 public interface Features {
-
   /**
    * Quit the stock simulation.
    */

@@ -7,6 +7,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -256,12 +257,15 @@ public class BetterPortfolio extends Portfolio {
       return false;
     }
 
+    int sum = 0;
     try {
       // If the values in the split is non-numerical, return false.
       for (String value : split) {
-        Integer.parseInt(value);
+        sum += Integer.parseInt(value);
       }
-      return true;
+
+      // The total of the splits must equate to 100.
+      return sum == 100;
     } catch (NumberFormatException e) {
       return false;
     }
