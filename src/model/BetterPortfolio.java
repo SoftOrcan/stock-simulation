@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllformedLocaleException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -218,6 +219,7 @@ public class BetterPortfolio extends Portfolio {
    * @param stockDatabase The StockDatabase to retrieve the prices of the stocks.
    */
   void rebalance(String name, List<Integer> split, LocalDate date, StockDatabase stockDatabase) {
+    isValidIntegerSplit(split);
     double portfolioValue = value(date, stockDatabase); // The current value of the portfolio.
     int index = 0;
     double rebalancedPrice; // The re-computed price of each stock, considering the weight.
@@ -242,6 +244,18 @@ public class BetterPortfolio extends Portfolio {
     // Copy the updated HashMap representation of a portfolio to the .csv representation of a
     // portfolio.
     copyToFile(name);
+  }
+
+  private void isValidIntegerSplit(List<Integer> split) throws IllegalArgumentException {
+    int sum = 0;
+
+    for (Integer value : split) {
+      sum += value;
+    }
+
+    if (sum != 100) {
+      throw new IllegalArgumentException("Invalid split! Sum does not equate 100.");
+    }
   }
 
   /**
