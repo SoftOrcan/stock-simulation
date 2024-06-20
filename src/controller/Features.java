@@ -4,8 +4,15 @@ import java.util.Map;
 
 import javax.swing.*;
 
+/**
+ * The Features interface is responsible for responding to the user interactions with the GUI. For
+ * example, opting to 'quit()' would result in the termination of the program, while opting to
+ * view the menu (via the 'menu()' method) would redirect the user to the selection page.
+ * Additional functionalities include the ability to prompt the user to enter inputs for a given
+ * action (via the 'enter()' method), and 'submit()' the input(s) for the program to
+ * appropriately process.
+ */
 public interface Features {
-
   /**
    * Quit the stock simulation.
    */
@@ -53,7 +60,7 @@ public interface Features {
   void validateDate(int day, int month, int year, JPanel dateBox);
 
   /**
-   * Set the portfolio to do operations on.
+   * Set the portfolio to perform operations on.
    *
    * @param portfolio The portfolio to select.
    */
