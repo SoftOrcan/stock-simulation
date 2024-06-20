@@ -14,7 +14,9 @@ import model.StockBetterModel;
 
 import static org.junit.Assert.*;
 
-
+/**
+ * This class tests the better stock model.
+ */
 public class StockBetterModelTest extends IStockModelTest {
 
   IStockBetterModel model2;

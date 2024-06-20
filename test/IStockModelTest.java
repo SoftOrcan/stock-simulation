@@ -5,7 +5,9 @@ import model.IStockModel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-
+/**
+ * This class is an abstract class that implements test methods for the model tests.
+ */
 public abstract class IStockModelTest {
 
 
@@ -18,7 +20,10 @@ public abstract class IStockModelTest {
     assertTrue(model.hasPortfolio("StocksThree"));
   }
 
-
+  /**
+   * This method tests the calculate change method.
+   * @param model IStock model
+   */
   public void testCalculateChange(IStockModel model) {
     // Test when change is negative.
     assertEquals(-0.6399999999999864, model.stockChange("AAPL",
@@ -38,7 +43,10 @@ public abstract class IStockModelTest {
             LocalDate.of(2022, 6, 2)), 0.01);
   }
 
-
+  /**
+   * This method tests the moving average method.
+   * @param model IStockModel model
+   */
   public void testMovingAverage(IStockModel model) {
     assertEquals(175.93045454545452, model.stockMovingAverage("AAPL",
             LocalDate.of(2022, 1, 3), 22), 0.01);
@@ -50,7 +58,10 @@ public abstract class IStockModelTest {
             LocalDate.of(2024, 10, 13), 32), 0.01);
   }
 
-
+  /**
+   * This method tests the find crossovers method.
+   * @param model IStockModel model
+   */
   public void testFindCrossovers(IStockModel model) {
     assertEquals(Arrays.asList(
                     LocalDate.of(2015, 4, 3),
@@ -77,7 +88,10 @@ public abstract class IStockModelTest {
                     LocalDate.of(2015, 5, 3), 4));
   }
 
-
+  /**
+   * This method tests the value of portfolio method.
+   * @param model IStockModel model
+   */
   public void testValueOfPortfolio(IStockModel model) {
     // Test value of on current day.
     assertEquals(1792.1, model.portfolioValue("Portfolio One",

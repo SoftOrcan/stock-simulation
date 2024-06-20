@@ -8,11 +8,17 @@ import java.util.List;
 
 import javax.swing.*;
 
+/**
+ * This class represents a mock representation of the Graphical Stock View.
+ */
 public class MockGraphicalStockView implements IStockView {
   private final List<String> messages = new ArrayList<>();
   private AStockPanel currentPanel;
   private Features features;
 
+  /**
+   * This method constructs a graphical stock view object.
+   */
   public MockGraphicalStockView() {
     currentPanel = new MockPanel();
   }
@@ -46,19 +52,33 @@ public class MockGraphicalStockView implements IStockView {
     currentPanel.setFeatures(features);
   }
 
+  /**
+   * This method returns a list of string representing messages.
+   * @return messages
+   */
   public List<String> getMessages() {
     return messages;
   }
 
+  /**
+   * This method returns the current panel.
+   * @return current Panel
+   */
   public Container getPanel() {
     return currentPanel;
   }
 
+  /**
+   * This method returns the current panel.
+   * @return currentPanel
+   */
   public Component getCreatePanel() {
     return currentPanel;
   }
 
-  // Mock Panel to ensure getPanel() returns a non-null container
+  /**
+   * This class represents mock Panel to ensure getPanel() returns a non-null container
+   */
   public class MockPanel extends AStockPanel {
     public MockPanel() {
       super();

@@ -12,29 +12,53 @@ import model.IStockModel;
 public class MockStockModel implements IStockModel {
   private final List<String> log;
 
-
+  /**
+   * Constructs a MockStockModel.
+   */
   MockStockModel() {
     log = new ArrayList<>();
   }
 
-
+  /**
+   * Gets log.
+   * @return list
+   */
   List<String> getLog() {
     return log;
   }
 
-
+  /**
+   * Returns stock change
+   * @param symbol    The stock to examine.
+   * @param startDate The start date to examine.
+   * @param endDate   The end date to examine.
+   * @return double
+   */
   public double stockChange(String symbol, LocalDate startDate, LocalDate endDate) {
     log.add(String.format("calculateChange: %s, %s, %s", symbol, startDate, endDate));
     return 0;
   }
 
-
+  /**
+   * Returns moving average.
+   * @param symbol  The stock to examine.
+   * @param date    The start date to examine.
+   * @param numDays The last x days to examine.
+   * @return double
+   */
   public double stockMovingAverage(String symbol, LocalDate date, int numDays) {
     log.add(String.format("movingAverage: %s, %s, %d", symbol, date, numDays));
     return 0;
   }
 
-
+  /**
+   * Returns list of local dates with crossovers
+   * @param symbol    The stock to examine.
+   * @param startDate The start date to examine.
+   * @param endDate   The last date to examine.
+   * @param x   The x-days to examine.
+   * @return List<LocalDate>
+   */
   public List<LocalDate> stockCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
                                          int x) {
     log.add(String.format("findCrossovers: %s, %s, %s, %d", symbol, startDate, endDate, x));

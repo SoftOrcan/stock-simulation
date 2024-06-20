@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.HashMap;
 import view.IStockView;
 
+/**
+ * This class tests the methods of GraphicalStockController.
+ */
 public class GraphicalStockControllerTest {
 
   private IStockBetterModel model;
@@ -31,6 +34,17 @@ public class GraphicalStockControllerTest {
   }
 
   @Test
+  public void testControl() {
+    controller.control();
+    List<String> messages = ((MockGraphicalStockView) view).getMessages();
+    assertEquals(4, messages.size());
+    assertEquals("setPanel(ActionSelection)", messages.get(0));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(ActionSelection)", messages.get(2));
+    assertEquals("draw()", messages.get(3));
+  }
+
+  @Test
   public void testCreatePortfolio() {
     // Simulate user actions for creating a portfolio
     controller.enter("create");
@@ -40,10 +54,11 @@ public class GraphicalStockControllerTest {
 
     // Verify the expected messages
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(3, messages.size());
+    assertEquals(4, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
   }
 
   @Test
@@ -66,13 +81,13 @@ public class GraphicalStockControllerTest {
 
     // Verify the expected messages
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(5, messages.size());
+    assertEquals(6, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    //assertEquals("displayMessage(Portfolio 'TestPortfolio' created.)", messages.get(2));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
   }
 
   @Test
@@ -105,15 +120,15 @@ public class GraphicalStockControllerTest {
 
     // Verify the expected messages
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    //assertEquals("displayMessage(Portfolio 'TestPortfolio' created.)", messages.get(2));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(remove)", messages.get(5));
-    assertEquals("setPanel(Display)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(remove)", messages.get(6));
+    assertEquals("setPanel(Display)", messages.get(7));
   }
 
   @Test
@@ -144,15 +159,15 @@ public class GraphicalStockControllerTest {
 
     // Verify the expected messages
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    //assertEquals("displayMessage(Portfolio 'TestPortfolio' created.)", messages.get(2));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(value)", messages.get(5));
-    assertEquals("setPanel(Display)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(value)", messages.get(6));
+    assertEquals("setPanel(Display)", messages.get(7));
   }
 
   @Test
@@ -183,14 +198,16 @@ public class GraphicalStockControllerTest {
 
     // Verify the expected messages
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(composition)", messages.get(5));
-    assertEquals("setPanel(Display)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(composition)", messages.get(6));
+    assertEquals("setPanel(Display)", messages.get(7));
+
   }
 
   @Test
@@ -217,14 +234,15 @@ public class GraphicalStockControllerTest {
     controller.submit("composition", compositionEntries);
 
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(composition)", messages.get(5));
-    assertEquals("displayError(Invalid input provided.)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(composition)", messages.get(6));
+    assertEquals("displayError(Invalid input provided.)", messages.get(7));
   }
 
   @Test
@@ -244,12 +262,13 @@ public class GraphicalStockControllerTest {
     controller.submit("add", addEntries);
 
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(5, messages.size());
+    assertEquals(6, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("displayError(Invalid input provided.)", messages.get(4));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("displayError(Invalid input provided.)", messages.get(5));
   }
 
   @Test
@@ -278,14 +297,15 @@ public class GraphicalStockControllerTest {
     controller.submit("remove", removeEntries);
 
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(remove)", messages.get(5));
-    assertEquals("displayError(Invalid input provided.)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(remove)", messages.get(6));
+    assertEquals("displayError(Invalid input provided.)", messages.get(7));
   }
 
   @Test
@@ -312,14 +332,15 @@ public class GraphicalStockControllerTest {
     controller.submit("value", valueEntries);
 
     List<String> messages = ((MockGraphicalStockView) view).getMessages();
-    assertEquals(7, messages.size());
+    assertEquals(8, messages.size());
     assertEquals("setPanel(ActionSelection)", messages.get(0));
-    assertEquals("setPanel(create)", messages.get(1));
-    assertEquals("setPanel(Display)", messages.get(2));
-    assertEquals("setPanel(add)", messages.get(3));
-    assertEquals("setPanel(Display)", messages.get(4));
-    assertEquals("setPanel(value)", messages.get(5));
-    assertEquals("displayError(Invalid input provided.)", messages.get(6));
+    assertEquals("draw()", messages.get(1));
+    assertEquals("setPanel(create)", messages.get(2));
+    assertEquals("setPanel(Display)", messages.get(3));
+    assertEquals("setPanel(add)", messages.get(4));
+    assertEquals("setPanel(Display)", messages.get(5));
+    assertEquals("setPanel(value)", messages.get(6));
+    assertEquals("displayError(Invalid input provided.)", messages.get(7));
   }
 
 }

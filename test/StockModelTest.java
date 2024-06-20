@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import model.IStockModel;
 import model.StockModel;
 
-
+/**
+ * This class tests the stock model.
+ */
 public class StockModelTest extends IStockModelTest{
 
 

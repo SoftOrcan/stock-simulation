@@ -11,6 +11,8 @@ import java.util.NoSuchElementException;
 import controller.TextualStockBetterController;
 import controller.TextualStockController;
 import model.BetterMockStockModel;
+import view.BetterMockStockView;
+import view.MockStockView;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

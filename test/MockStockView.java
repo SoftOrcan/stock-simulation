@@ -1,3 +1,5 @@
+package view;
+
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class MockStockView implements IStockView {
   private final List<String> errors;
 
 
-  MockStockView() {
+  public MockStockView() {
     messages = new ArrayList<>();
     errors = new ArrayList<>();
   }
@@ -52,7 +54,7 @@ public class MockStockView implements IStockView {
    *
    * @return The list of messages
    */
-  List<String> getMessages() {
+  public List<String> getMessages() {
     return messages;
   }
 
@@ -62,7 +64,7 @@ public class MockStockView implements IStockView {
    *
    * @return The list of errors
    */
-  List<String> getErrors() {
+  public List<String> getErrors() {
     return errors;
   }
 }
