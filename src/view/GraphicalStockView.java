@@ -23,7 +23,8 @@ public class GraphicalStockView extends JFrame implements IStockView {
   public GraphicalStockView() {
     setTitle("Stock Simulation");
     setSize(500, 500);
-    panel = new AStockPanel() {};
+    panel = new AStockPanel() {
+    };
   }
 
   /**
@@ -64,7 +65,8 @@ public class GraphicalStockView extends JFrame implements IStockView {
    * @param message The message from the controller to display.
    */
   @Override
-  public void displayMessage(String message) {}
+  public void displayMessage(String message) {
+  }
 
   /**
    * Display the error from the controller to the user.

@@ -259,8 +259,8 @@ public class BetterPortfolio extends Portfolio {
   }
 
   /**
-   * Validate the user input, ensuring that every stock in the portfolio contains a weight and
-   * each value is numerical.
+   * Validate the user input, ensuring that every stock in the portfolio contains a weight and each
+   * value is numerical.
    *
    * @param split The weight of each stock in the portfolio.
    * @return If the user input contains numerical values, and provides a weight to every stock.

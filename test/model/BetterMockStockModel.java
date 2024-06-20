@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * A mock implementation of the {@link IStockBetterModel} interface. This class provides dummy
  * implementations for various stock-related operations.

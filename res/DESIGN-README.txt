@@ -1,6 +1,6 @@
 Re: Deliverables - Design Decisions
 
-IStockModel (pt. 1)
+IStockModel, IStockView & IStockController (pt. 1)
 Package "controller":
 The "controller" package contains four files: the parent interface "IStockController" and
 "TextualStockController", a class which implements IStockController. We created the interface in
@@ -46,7 +46,9 @@ the primary public class "StockModel", which implements "IStockModel." This desi
  classes, the program becomes more flexible, allowing for easier extension or modification of
  features in the future.
 
-IStockBetterModel (pt. 2)
+---
+
+IStockBetterModel & IStockBetterController (pt. 2)
 Package "controller":
 The "controller" package contains an extension to the parent interface "IStockController," namely
 "IStockBetterController." Although IStockBetterController does not contain any additional public
@@ -100,3 +102,44 @@ functionalities across specialized classes, the program becomes more flexible, a
 extension or modification of features in the future. Therefore, the "BarGraph" class is responsible
 for the computation, interpretation, and visualization of a stock and portfolio performance, and
 portfolio composition and distribution.
+
+---
+
+GraphicalStockController & GraphicalStockView (pt. 3)
+Package "controller":
+An inheriting child, named "GraphicalStockController", was added to the controller package. It is
+responsible for processing the user interaction with the GUI. Specifically, the
+GraphicalStockController is a GUI which receives and "parses" inputs by calling the appropriate,
+corresponding method(s) in IStockBetterModel (via the 'control()' and 'enter()' methods). In
+addition, the controller interacts with IStockView by displaying the output graphically, and
+contains the method 'menu()' to display the available features of the program, the method 'quit()'
+to terminate the program, and the methods 'enter()' and 'submit()' to process the user input and
+return a result. Furthermore, the "Features" interface was implemented. The Features interface is
+responsible for responding to the user interactions with the GUI. For example, opting to 'quit()'
+would result in the termination of the program, while opting to view the menu (via the 'menu()'
+method) would redirect the user to the selection page. Additional functionalities include the
+ability to prompt the user to enter inputs for a given action (via the 'enter()' method), and
+'submit()' the input(s) for the program to appropriately process. In a sense, the Features interface
+serves as a connection between the controller and view packages.
+
+Package "view":
+A subclass to the IStockView, namely "GraphicalStockView", was implemented to reflect the
+implementation of the GUI (versus the former text-based view). It is responsive to the inputs of the
+user, and renders output messages from the controller (via the 'displayMessage()' method). It draws
+the panel (via the 'draw()' method), and display the available features of the program to the GUI
+(via the 'setFeatures()' method). Furthermore, to in support of GraphicalStockView, the abstract
+class "AStockPanel" was implemented. The AStockPanel abstract class represents the functionality
+panels of the program. For example, its child, "ActionSelectionPanel", provides a menu of the
+features of the program, while the "EntryPanel" prompts the user to enter the inputs, dependent on
+the feature selected. This means will allow the modification of panels and implementation of
+additional panels to be smoother, as a class will simply need to be created that extends the
+abstract class AStockPanel.
+
+Package "model":
+The only modifications made are in the StockBetterModel, permitting the methods to throw an
+exception once an invalid input is provided. This does not change the implementation of the code,
+but is rather, an enhancement. Suppose a different developer create a controller that uses the
+present model, but does not validate the fields. By throwing an exception, the developer would be
+aware to perform input validation in his/her controller implementation. Overall, this would create a
+robust model that does not crash or depend on the controller to always provide it with validated
+outputs.

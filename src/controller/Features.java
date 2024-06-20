@@ -6,11 +6,10 @@ import javax.swing.*;
 
 /**
  * The Features interface is responsible for responding to the user interactions with the GUI. For
- * example, opting to 'quit()' would result in the termination of the program, while opting to
- * view the menu (via the 'menu()' method) would redirect the user to the selection page.
- * Additional functionalities include the ability to prompt the user to enter inputs for a given
- * action (via the 'enter()' method), and 'submit()' the input(s) for the program to
- * appropriately process.
+ * example, opting to 'quit()' would result in the termination of the program, while opting to view
+ * the menu (via the 'menu()' method) would redirect the user to the selection page. Additional
+ * functionalities include the ability to prompt the user to enter inputs for a given action (via
+ * the 'enter()' method), and 'submit()' the input(s) for the program to appropriately process.
  */
 public interface Features {
   /**
@@ -34,7 +33,7 @@ public interface Features {
    * Do action. {@code entries} stores inputs from view.
    *
    * @param actionName The name of the intended action.
-   * @param entries The map from field name to field value.
+   * @param entries    The map from field name to field value.
    */
   void submit(String actionName, Map<String, String> entries);
 
@@ -42,19 +41,19 @@ public interface Features {
    * Notify user if {@code value} is invalid in relation to the given action.
    *
    * @param actionName The name of the intended action.
-   * @param name The name of the field.
-   * @param value The value of the field.
-   * @param label The label panel used for field entry.
-   * @param entry The input panel used for field entry.
+   * @param name       The name of the field.
+   * @param value      The value of the field.
+   * @param label      The label panel used for field entry.
+   * @param entry      The input panel used for field entry.
    */
   void validate(String actionName, String name, String value, JLabel label, JComponent entry);
 
   /**
    * Notify user if provided date is invalid.
    *
-   * @param day The given day.
-   * @param month The given month.
-   * @param year The given year.
+   * @param day     The given day.
+   * @param month   The given month.
+   * @param year    The given year.
    * @param dateBox The panel used for date entry.
    */
   void validateDate(int day, int month, int year, JPanel dateBox);

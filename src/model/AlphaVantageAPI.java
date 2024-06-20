@@ -31,7 +31,7 @@ class AlphaVantageAPI {
    * Retrieve historical data of a stock from the Alpha Vantage API and store the information
    * locally as a .csv file.
    *
-   * @param symbol The stock to examine.
+   * @param symbol   The stock to examine.
    * @param interval The time interval to examine (i.e. either DAILY or HOURLY stock).
    */
   void getData(String symbol, String interval) {

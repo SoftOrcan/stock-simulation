@@ -18,7 +18,7 @@ public class ActionSelectionPanel extends AStockPanel {
    * of a portfolio.
    *
    * @param portfolios The available portfolios for the user to select.
-   * @param selected The portfolio the user selects.
+   * @param selected   The portfolio the user selects.
    */
   public ActionSelectionPanel(List<String> portfolios, String selected) {
     super();

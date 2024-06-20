@@ -11,18 +11,18 @@ import java.util.Objects;
 import javax.swing.*;
 
 /**
- * The EntryPanel class prompts the user to enter the inputs, dependent on the feature selected.
- * For example, selecting "Create a portfolio" will prompt the user to enter the name for the
- * portfolio, while "Buy a Stock" will prompt the user to enter the stock symbol, the quantity of
- * shares, and the date of purchase.
+ * The EntryPanel class prompts the user to enter the inputs, dependent on the feature selected. For
+ * example, selecting "Create a portfolio" will prompt the user to enter the name for the portfolio,
+ * while "Buy a Stock" will prompt the user to enter the stock symbol, the quantity of shares, and
+ * the date of purchase.
  */
 public class EntryPanel extends AStockPanel {
   /**
    * The EntryPanel class prompts the user to enter the inputs, dependent on the feature selected.
    * For example, selecting "Create a portfolio" will prompt the user to enter the name for the
    * portfolio, while "Buy a Stock" will prompt the user to enter the stock symbol, the quantity of
-   * shares, and the date of purchase. This constructor creates the input boxes for the entries,
-   * the input boxes dependent on which feature the user selected.
+   * shares, and the date of purchase. This constructor creates the input boxes for the entries, the
+   * input boxes dependent on which feature the user selected.
    *
    * @param actionName The feature the user selected.
    * @param inputNames The inputs required for the feature (except the date).

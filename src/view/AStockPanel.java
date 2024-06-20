@@ -7,10 +7,9 @@ import javax.swing.*;
 import controller.Features;
 
 /**
- * The AStockPanel abstract class represents the functionality panels of the program. For
- * example, its child, "ActionSelectionPanel", provides a menu of the features of the program,
- * while the "EntryPanel" prompts the user to enter the inputs, dependent on the feature
- * selected.
+ * The AStockPanel abstract class represents the functionality panels of the program. For example,
+ * its child, "ActionSelectionPanel", provides a menu of the features of the program, while the
+ * "EntryPanel" prompts the user to enter the inputs, dependent on the feature selected.
  */
 abstract class AStockPanel extends JPanel {
   protected final JButton quit; // A panel must contain a quit button to terminate the program.

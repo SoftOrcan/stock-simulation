@@ -85,8 +85,8 @@ public interface IStockModel {
   /**
    * Remove a quantity of stock (termed as 'symbol') from a portfolio.
    *
-   * @param name   The name of the portfolio.
-   * @param symbol The stock to remove.
+   * @param name     The name of the portfolio.
+   * @param symbol   The stock to remove.
    * @param quantity The quantity of stock to remove.
    */
   void removeStockFromPortfolio(String name, String symbol, int quantity);
