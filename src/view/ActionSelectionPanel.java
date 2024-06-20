@@ -15,9 +15,11 @@ public class ActionSelectionPanel extends AStockPanel {
 
     this.add(new JLabel("Select portfolio:", SwingConstants.CENTER));
     JComboBox<String> portfolioBox = new JComboBox<>();
+
     for (String portfolio : portfolios) {
       portfolioBox.addItem(portfolio);
     }
+
     if (!selected.isEmpty()) {
       portfolioBox.setSelectedItem(selected);
       System.out.println(selected);

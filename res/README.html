@@ -24,7 +24,7 @@
 </body>
 
 <body>
-<h2>IStockModel (pt. 1)</h2>
+<h2>IStockModel, IStockView & IStockController (pt. 1)</h2>
 <div class="separator"></div>
 <ul style="list-style-type: none;">
     <li>
@@ -62,7 +62,7 @@
 </body>
 
 <body>
-<h2>IStockBetterModel (pt. 2)</h2>
+<h2>IStockBetterModel & IStockBetterController (pt. 2)</h2>
 <div class="separator"></div>
 <ul style="list-style-type: none;">
     <li>
@@ -117,6 +117,52 @@
         <label><input type="checkbox" checked> Persist a portfolio so that it can be saved and
             loaded (i.e. save to and retrieve from files)</label></li>
     <li><p></p></li>
+    <li>
+        <label><input type="checkbox" checked> Quit the application.</label></li>
+</ul>
+</body>
+
+<body>
+<h2>GraphicalStockController & GraphicalStockView (pt. 3)</h2>
+<div class="separator"></div>
+<ul style="list-style-type: none;">
+    <li>
+        <p><span class="bold">Graphical User Interface (GUI):</span></p>
+        <label><input type="checkbox" checked> Provide visual cues about what input is expected
+            (e.g. a hard-to-guess sequence of keystrokes to do something is not acceptable). </label></li>
+    <li>
+        <label><input type="checkbox" checked> Provide visual cues about the effect that a user’s
+            input has had. The user does not have to wait to give more inputs to know that the
+            program accepted the previous inputs.</label></li>
+    <li>
+        <p><span class="bold">Portfolio:</span></p>
+        <label><input type="checkbox" checked> Create a portfolio with a specified name. A
+            portfolio is utilized to contain shares of one or more stock.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Add a stock to a portfolio *on a specific date*,
+            representative of purchasing a share of a stock to a portfolio.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Sell/Remove a stock from a portfolio *on a specific
+            date*.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Calculate the value of a portfolio on a specific
+            date. Calculate by identifying the value of each stock in the portfolio on the
+            specified date multiplied by the quantity of the respective stock.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Determine the composition of a portfolio at a
+            specific date. Note that the composition may change over time. The composition must
+            include (a) the list of stocks and (b) the number of shares of each stock.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Determine the value of a portfolio on a specific
+            date (to be exact, the end of that day). The value for a portfolio before the date of
+            its first purchase would be 0, since each stock in the portfolio now was purchased at
+            a specific point in time.</label></li>
+    <li>
+        <label><input type="checkbox" checked> Persist a portfolio so that it can be saved and
+            loaded (i.e. save to and retrieve from files)</label></li>
+    <li><p></p></li>
+    <li>
+        <label><input type="checkbox" checked> Return to menu.</label></li>
     <li>
         <label><input type="checkbox" checked> Quit the application.</label></li>
 </ul>
