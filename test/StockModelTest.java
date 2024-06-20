@@ -12,14 +12,11 @@ import model.StockModel;
  * This class tests the stock model.
  */
 public class StockModelTest extends IStockModelTest{
-
-
   IStockModel model;
   IStockModel secondModel;
   IStockModel thirdModel;
   IStockModel fourthModel;
   IStockModel fifthModel;
-
 
   @Before
   public void setUp() throws Exception {
@@ -29,28 +26,23 @@ public class StockModelTest extends IStockModelTest{
     fourthModel = new StockModel();
     fifthModel = new StockModel();
 
-
     model.createPortfolio("TechStocks");
     model.createPortfolio("StocksTwo");
     model.createPortfolio("StocksThree");
 
-
     secondModel.createPortfolio("Portfolio One");
     secondModel.createPortfolio("Portfolio Two");
     secondModel.addStockToPortfolio("Portfolio Two", "AAPL", 10);
-
 
     thirdModel.createPortfolio("Portfolio One");
     thirdModel.addStockToPortfolio("Portfolio One", "AAPL", 10);
     thirdModel.addStockToPortfolio("Portfolio One", "GOOG", 100);
     thirdModel.addStockToPortfolio("Portfolio One", "AMZN", 50);
 
-
     fourthModel.createPortfolio("Portfolio One");
     fourthModel.addStockToPortfolio("Portfolio One", "AAPL", 10);
     fourthModel.addStockToPortfolio("Portfolio One", "AMZN", 20);
     fourthModel.addStockToPortfolio("Portfolio One", "GOOG", 30);
-
 
     fifthModel.createPortfolio("Portfolio One");
     fifthModel.addStockToPortfolio("Portfolio One", "AAPL", 10);
@@ -68,18 +60,15 @@ public class StockModelTest extends IStockModelTest{
     super.testCalculateChange(secondModel);
   }
 
-
   @Test
   public void testMovingAverageM() {
     super.testMovingAverage(thirdModel);
   }
 
-
   @Test
   public void testFindCrossoversM() {
     testFindCrossovers(fourthModel);
   }
-
 
   @Test
   public void testValueOfPortfolioM() {

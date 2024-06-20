@@ -107,24 +107,20 @@ public class StockBetterModelTest extends IStockModelTest {
     super.testCreatePortfolio(model2);
   }
 
-
   @Test
   public void testCalculateChangeM() {
     super.testCalculateChange(secondModel2);
   }
-
 
   @Test
   public void testMovingAverageM() {
     super.testMovingAverage(thirdModel2);
   }
 
-
   @Test
   public void testFindCrossoversM() {
     testFindCrossovers(fourthModel2);
   }
-
 
   /**
    * This method tests portfolio value on the better model.
