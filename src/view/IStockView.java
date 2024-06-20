@@ -25,9 +25,22 @@ public interface IStockView {
    */
   void displayError(String error);
 
+  /**
+   * Change the shown panel to the given panel.
+   *
+   * @param panel The new panel to display.
+   */
   void setPanel(AStockPanel panel);
 
+  /**
+   * Turn on the view.
+   */
   void draw();
 
+  /**
+   * Change the {@code Features} that events are sent to.
+   *
+   * @param features The {@code Features} to use.
+   */
   void setFeatures(Features features);
 }
