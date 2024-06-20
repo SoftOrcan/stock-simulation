@@ -17,8 +17,10 @@ public abstract class AStockPanel extends JPanel {
   protected final JButton quit; // A panel must contain a quit button to terminate the program.
   protected Features features; // The additional functionalities on the panel.
 
-  // Initializes the panel. A panel must contain the "Quit" button to allow the user to terminate
-  // the program.
+  /**
+   * Initializes the panel. A panel must contain the "Quit" button to allow the user to terminate
+   * the program.
+   */
   public AStockPanel() {
     quit = new JButton(new AbstractAction("Quit") {
       @Override

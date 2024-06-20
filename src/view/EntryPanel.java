@@ -8,7 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.AbstractAction;
+import javax.swing.JPanel;
+import javax.swing.Action;
+import javax.swing.JTextField;
 
 /**
  * The EntryPanel class prompts the user to enter the inputs, dependent on the feature selected. For

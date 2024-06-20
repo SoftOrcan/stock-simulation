@@ -67,6 +67,7 @@ public class GraphicalStockView extends JFrame implements IStockView {
    */
   @Override
   public void displayMessage(String message) {
+    // Display message via AStockPanel and the inheriting children.
   }
 
   /**
