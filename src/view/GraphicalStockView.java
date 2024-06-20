@@ -1,6 +1,7 @@
 package view;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import controller.Features;
 

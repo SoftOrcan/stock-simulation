@@ -1,7 +1,6 @@
 package view;
 
 import java.io.IOException;
-import java.util.List;
 
 import controller.Features;
 
@@ -49,6 +48,7 @@ public class StockView implements IStockView {
    * @param features The {@code Features} to use.
    */
   public void setFeatures(Features features) {
+    // Utilized in the GUI, this method does nothing in StockView.
   }
 
   /**
@@ -58,6 +58,7 @@ public class StockView implements IStockView {
    * @param panel The new panel to display.
    */
   public void setPanel(AStockPanel panel) {
+    // Utilized in the GUI, this method does nothing in StockView.
   }
 
   /**
@@ -66,6 +67,7 @@ public class StockView implements IStockView {
    */
   @Override
   public void draw() {
+    // Utilized in the GUI, this method does nothing in StockView.
   }
 
   /**

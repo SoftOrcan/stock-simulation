@@ -2,7 +2,9 @@ package view;
 
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.AbstractAction;
 
 import controller.Features;
 
@@ -11,13 +13,13 @@ import controller.Features;
  * its child, "ActionSelectionPanel", provides a menu of the features of the program, while the
  * "EntryPanel" prompts the user to enter the inputs, dependent on the feature selected.
  */
-abstract class AStockPanel extends JPanel {
+public abstract class AStockPanel extends JPanel {
   protected final JButton quit; // A panel must contain a quit button to terminate the program.
   protected Features features; // The additional functionalities on the panel.
 
   // Initializes the panel. A panel must contain the "Quit" button to allow the user to terminate
   // the program.
-  AStockPanel() {
+  public AStockPanel() {
     quit = new JButton(new AbstractAction("Quit") {
       @Override
       public void actionPerformed(ActionEvent e) {

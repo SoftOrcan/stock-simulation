@@ -2,7 +2,9 @@ package controller;
 
 import java.util.Map;
 
-import javax.swing.*;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JComponent;
 
 /**
  * The Features interface is responsible for responding to the user interactions with the GUI. For

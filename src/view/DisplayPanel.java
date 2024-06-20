@@ -1,9 +1,13 @@
 package view;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import javax.swing.*;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.AbstractAction;
 
 /**
  * The DisplayPanel class presents the result of the program to the user, and offers the user the

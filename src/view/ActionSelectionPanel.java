@@ -1,10 +1,15 @@
 package view;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-import javax.swing.*;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.AbstractAction;
 
 /**
  * The ActionSelectionPanel class provides a menu of the features of the program, such as the option
