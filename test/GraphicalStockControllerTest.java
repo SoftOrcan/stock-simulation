@@ -1,4 +1,4 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,13 +20,12 @@ import view.IStockView;
  */
 public class GraphicalStockControllerTest {
 
-  private IStockBetterModel model;
   private IStockView view;
   private GraphicalStockController controller;
 
   @Before
   public void setUp() {
-    model = new BetterMockStockModel();
+    IStockBetterModel model = new BetterMockStockModel();
     view = new MockGraphicalStockView();
     controller = new GraphicalStockController(model, view);
     view.setFeatures(controller);
@@ -256,6 +255,53 @@ public class GraphicalStockControllerTest {
     assertEquals("setPanel(Display)", messages.get(5));
     assertEquals("setPanel(composition)", messages.get(6));
     assertEquals("displayError(Invalid input provided.)", messages.get(7));
+  }
+
+  @Test
+  public void testSavePortfolio() {
+    // First session
+    controller.control();
+    controller.enter("create");
+    Map<String, String> createEntries = new HashMap<>();
+    createEntries.put("name", "TestPortfolio");
+    controller.submit("create", createEntries);
+
+    controller.enter("add");
+    Map<String, String> addEntries = new HashMap<>();
+    addEntries.put("symbol", "AAPL");
+    addEntries.put("shares", "10");
+    addEntries.put("day", "1");
+    addEntries.put("month", "1");
+    addEntries.put("year", "2022");
+    controller.submit("add", addEntries);
+
+    controller.enter("value");
+    Map<String, String> valueEntries = new HashMap<>();
+    valueEntries.put("day", "1");
+    valueEntries.put("month", "1");
+    valueEntries.put("year", "2022");
+    controller.submit("value", valueEntries);
+
+    List<String> messages = ((MockGraphicalStockView) view).getMessages();
+    assertEquals(10, messages.size());
+
+    // Simulate quitting the program
+    setUp(); // Reinitialize the model and view (simulate restart)
+
+    // Second session
+    controller.control();
+
+    // Check the saved portfolio value
+    controller.enter("value");
+    Map<String, String> newValueEntries = new HashMap<>();
+    newValueEntries.put("day", "1");
+    newValueEntries.put("month", "1");
+    newValueEntries.put("year", "2022");
+    controller.submit("value", newValueEntries);
+
+    List<String> newMessages = ((MockGraphicalStockView) view).getMessages();
+    assertEquals(6, newMessages.size()); // Including the previous 8 messages + 3 new ones
+    assertEquals("draw()", newMessages.get(3));
   }
 
   @Test

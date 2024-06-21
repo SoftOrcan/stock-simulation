@@ -2,11 +2,17 @@ package view;
 
 import controller.Features;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.*;
+import java.awt.GridLayout;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 
 /**
  * This class represents a mock representation of the Graphical Stock View.
@@ -52,26 +58,14 @@ public class MockGraphicalStockView implements IStockView {
     currentPanel.setFeatures(features);
   }
 
-  /**
-   * This method returns a list of string representing messages.
-   * @return messages
-   */
   public List<String> getMessages() {
     return messages;
   }
 
-  /**
-   * This method returns the current panel.
-   * @return current Panel
-   */
   public Container getPanel() {
     return currentPanel;
   }
 
-  /**
-   * This method returns the current panel.
-   * @return currentPanel
-   */
   public Component getCreatePanel() {
     return currentPanel;
   }
@@ -119,9 +113,15 @@ public class MockGraphicalStockView implements IStockView {
       month.setName("month");
       year.setName("year");
 
-      for (int i = 1; i <= 31; i++) day.addItem(i);
-      for (int i = 1; i <= 12; i++) month.addItem(i);
-      for (int i = 2000; i <= 2100; i++) year.addItem(i);
+      for (int i = 1; i <= 31; i++) {
+        day.addItem(i);
+      }
+      for (int i = 1; i <= 12; i++) {
+        month.addItem(i);
+      }
+      for (int i = 2000; i <= 2100; i++) {
+        year.addItem(i);
+      }
 
       this.add(new JLabel("Day"));
       this.add(day);

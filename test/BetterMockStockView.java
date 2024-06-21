@@ -35,17 +35,17 @@ public class BetterMockStockView implements IStockView {
 
   @Override
   public void setPanel(AStockPanel panel) {
-
+    String string = null;
   }
 
   @Override
   public void draw() {
-
+    String string = null;
   }
 
   @Override
   public void setFeatures(Features features) {
-
+    String string = null;
   }
 
   /**

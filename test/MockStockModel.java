@@ -28,12 +28,13 @@ public class MockStockModel implements IStockModel {
   }
 
   /**
-   * Returns stock change
+   * Returns stock change.
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
    * @param endDate   The end date to examine.
    * @return double
    */
+  @Override
   public double stockChange(String symbol, LocalDate startDate, LocalDate endDate) {
     log.add(String.format("calculateChange: %s, %s, %s", symbol, startDate, endDate));
     return 0;
@@ -46,6 +47,7 @@ public class MockStockModel implements IStockModel {
    * @param numDays The last x days to examine.
    * @return double
    */
+  @Override
   public double stockMovingAverage(String symbol, LocalDate date, int numDays) {
     log.add(String.format("movingAverage: %s, %s, %d", symbol, date, numDays));
     return 0;
@@ -59,43 +61,44 @@ public class MockStockModel implements IStockModel {
    * @param x   The x-days to examine.
    * @return List<LocalDate>
    */
+  @Override
   public List<LocalDate> stockCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
                                          int x) {
     log.add(String.format("findCrossovers: %s, %s, %s, %d", symbol, startDate, endDate, x));
     return new ArrayList<>();
   }
 
-
+  @Override
   public boolean isValidSymbol(String symbol) {
     return symbol.equals("AAPL");
   }
 
-
+  @Override
   public void createPortfolio(String portfolioName) {
     // Mock implementation for createPortfolio.
     log.add(String.format("createPortfolio: %s", portfolioName));
   }
 
-
+  @Override
   public void addStockToPortfolio(String portfolioName, String symbol, double quantity) {
     // Mock implementation for addStockToPortfolio.
     log.add(String.format("addStockToPortfolio: %s, %s, %f", portfolioName, symbol, quantity));
   }
 
-
+  @Override
   public void removeStockFromPortfolio(String portfolioName, String symbol, int quantity) {
     // Mock implementation for removeStockFromPortfolio.
     log.add(String.format("removeStockFromPortfolio: %s, %s, %d", portfolioName, symbol, quantity));
   }
 
-
+  @Override
   public double portfolioValue(String portfolioName, LocalDate date) {
     // Return a mock value for valueOfPortfolio.
     log.add(String.format("valueOfPortfolio: %s, %s", portfolioName, date));
     return 0;
   }
 
-
+  @Override
   public boolean hasPortfolio(String portfolioName) {
     return portfolioName.equals("MyPortfolio");
   }

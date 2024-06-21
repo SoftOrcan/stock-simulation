@@ -2,7 +2,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.StringReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -64,7 +63,8 @@ public class IStockControllerTest {
   private void setInput(String input) {
     controller = new TextualStockController(mockModel, mockView, new StringReader(input));
     betterController =
-            new TextualStockBetterController(betterMockModel, betterMockView, new StringReader(input));
+            new TextualStockBetterController(betterMockModel, betterMockView,
+                    new StringReader(input));
   }
 
   /**
@@ -200,7 +200,8 @@ public class IStockControllerTest {
     betterController.control();
 
     assertTrue(
-            betterMockView.getMessages().contains("Crossovers of 'AAPL': [2023-01-01, 2023-12-31]."));
+            betterMockView.getMessages().contains("Crossovers of 'AAPL': " +
+                    "[2023-01-01, 2023-12-31]."));
   }
 
   /**
