@@ -71,9 +71,12 @@ public class MockGraphicalStockView implements IStockView {
   }
 
   /**
-   * This class represents mock Panel to ensure getPanel() returns a non-null container
+   * This class represents mock Panel to ensure getPanel() returns a non-null container.
    */
   public class MockPanel extends AStockPanel {
+    /**
+     * This represents mock Panel to ensure getPanel() returns a non-null container.
+     */
     public MockPanel() {
       super();
       this.setName("MockPanel");
