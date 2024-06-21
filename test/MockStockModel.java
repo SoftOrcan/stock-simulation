@@ -5,7 +5,6 @@ import java.util.List;
 
 import model.IStockModel;
 
-
 /**
  * The MockStockModel class is a mock for IStockModel.
  */
@@ -32,7 +31,7 @@ public class MockStockModel implements IStockModel {
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
    * @param endDate   The end date to examine.
-   * @return double
+   * @return 0, because this is a mock implementation.
    */
   @Override
   public double stockChange(String symbol, LocalDate startDate, LocalDate endDate) {
@@ -45,7 +44,7 @@ public class MockStockModel implements IStockModel {
    * @param symbol  The stock to examine.
    * @param date    The start date to examine.
    * @param numDays The last x days to examine.
-   * @return double
+   * @return 0.0, because this is a mock implementation.
    */
   @Override
   public double stockMovingAverage(String symbol, LocalDate date, int numDays) {
@@ -54,12 +53,12 @@ public class MockStockModel implements IStockModel {
   }
 
   /**
-   * Returns list of local dates with crossovers
+   *
    * @param symbol    The stock to examine.
    * @param startDate The start date to examine.
    * @param endDate   The last date to examine.
    * @param x   The x-days to examine.
-   * @return List<LocalDate>
+   * @return Empty array, because this is a mock implementation.
    */
   @Override
   public List<LocalDate> stockCrossovers(String symbol, LocalDate startDate, LocalDate endDate,
